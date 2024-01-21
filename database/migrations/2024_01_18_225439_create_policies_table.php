@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('policies', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('brand');
+            $table->string('matricule');
+            $table->string('contact');
+            $table->date('date_begin');
+            $table->date('date_expired');
+            $table->integer('user_id');
+            $table->integer('entreprise_id');
             $table->timestamps();
         });
     }

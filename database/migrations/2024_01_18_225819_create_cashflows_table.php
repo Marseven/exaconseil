@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('cashflows', function (Blueprint $table) {
             $table->id();
+            $table->enum('type', ['debit', 'credit']);
+            $table->text('reason');
+            $table->double('amount');
+            $table->date('date_cash');
+            $table->integer('user_id');
+            $table->integer('cashbox_id');
             $table->timestamps();
         });
     }
