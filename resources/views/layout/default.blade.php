@@ -230,6 +230,61 @@
                             <!--end:Menu item-->
 
                             <!--begin:Menu item-->
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <!--begin:Menu link-->
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-outline ki-wallet fs-2"></i>
+                                    </span>
+                                    <span class="menu-title">Suivi de Facture</span>
+                                    <span class="menu-arrow"></span>
+                                </span>
+                                <!--end:Menu link-->
+                                <!--begin:Menu sub-->
+                                <div class="menu-sub menu-sub-accordion">
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('admin-list-factures') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Factures Payées</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('admin-list-factures') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Factures Impayées</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('admin-add-cashflow') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Ajouter</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+
+                                </div>
+                                <!--end:Menu sub-->
+                            </div>
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
                             <div class="menu-item pt-5">
                                 <!--begin:Menu content-->
                                 <div class="menu-content">
@@ -269,7 +324,7 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('admin-list-users') }}">
+                                        <a class="menu-link" href="{{ route('admin-list-roles') }}">
 
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -283,12 +338,12 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('admin-list-users') }}">
+                                        <a class="menu-link" href="{{ route('admin-list-permissions') }}">
 
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Privilèges</span>
+                                            <span class="menu-title">Permissions</span>
 
                                         </a>
                                         <!--end:Menu link-->

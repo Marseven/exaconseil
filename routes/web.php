@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CashflowController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EntrepriseController;
+use App\Http\Controllers\Admin\FactureController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Front\WelcomeController;
@@ -80,6 +81,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/create/policy', [PolicyController::class, 'create'])->name('admin-create-policy');
         Route::post('/policy/{policy}', [PolicyController::class, 'update'])->name('admin-update-policy');
 
+        //factures
+        Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');
+        Route::get('/add/facture', [FactureController::class, 'add'])->name('admin-add-facture');
+        Route::get('/edit/policy/{policy}', [FactureController::class, 'edit'])->name('admin-edit-facture');
+        Route::post('/create/policy', [FactureController::class, 'create'])->name('admin-create-facture');
+        Route::post('/policy/{policy}', [FactureController::class, 'update'])->name('admin-update-facture');
+
         //cashflows
         Route::get('/list/cashflows', [CashflowController::class, 'index'])->name('admin-list-cashflows');
         Route::get('/add/cashflow', [CashflowController::class, 'add'])->name('admin-add-cashflow');
@@ -90,6 +98,8 @@ Route::middleware('auth')->group(function () {
         //users
         Route::get('/profil', [UserController::class, 'profil'])->name('admin-profil');
         Route::get('/list/users', [UserController::class, 'index'])->name('admin-list-users');
+        Route::get('/list/roles', [UserController::class, 'roles'])->name('admin-list-roles');
+        Route::get('/list/permissions', [UserController::class, 'permissions'])->name('admin-list-permissions');
         Route::get('/add/user', [UserController::class, 'add'])->name('admin-add-user');
         Route::get('/edit/user/{user}', [UserController::class, 'edit'])->name('admin-edit-user');
         Route::post('/create/user', [UserController::class, 'create'])->name('admin-create-user');
