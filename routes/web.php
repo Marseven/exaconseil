@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
+Route::get('/home', [WelcomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
@@ -69,8 +70,6 @@ Route::middleware('auth')->group(function () {
 
         //entreprise
         Route::get('/list/entreprises', [EntrepriseController::class, 'index'])->name('admin-list-entreprises');
-        Route::get('/add/entreprise', [EntrepriseController::class, 'add'])->name('admin-add-entreprise');
-        Route::get('/edit/entreprise/{entreprise}', [EntrepriseController::class, 'edit'])->name('admin-edit-entreprise');
         Route::post('/create/entreprise', [EntrepriseController::class, 'create'])->name('admin-create-entreprise');
         Route::post('/entreprise/{entreprise}', [EntrepriseController::class, 'update'])->name('admin-update-entreprise');
 
@@ -94,6 +93,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/cashflow/{cashflow}', [CashflowController::class, 'edit'])->name('admin-edit-cashflow');
         Route::post('/create/cashflow', [CashflowController::class, 'create'])->name('admin-create-cashflow');
         Route::post('/cashflow/{cashflow}', [CashflowController::class, 'update'])->name('admin-update-cashflow');
+        //cashbox
+        Route::get('/list/cashboxs', [CashflowController::class, 'cashbox'])->name('admin-list-cashboxs');
+        Route::post('/create/cashbox', [CashflowController::class, 'createCashbox'])->name('admin-create-cashbox');
+        Route::post('/cashbox/{cashbox}', [CashflowController::class, 'updateCashbox'])->name('admin-update-cashbox');
 
         //users
         Route::get('/profil', [UserController::class, 'profil'])->name('admin-profil');
@@ -104,5 +107,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/user/{user}', [UserController::class, 'edit'])->name('admin-edit-user');
         Route::post('/create/user', [UserController::class, 'create'])->name('admin-create-user');
         Route::post('/user/{user}', [UserController::class, 'update'])->name('admin-update-user');
+        Route::post('/create/role', [UserController::class, 'createRole'])->name('admin-create-role');
+        Route::post('/role/{role}', [UserController::class, 'updateRole'])->name('admin-update-role');
+
+        Route::post('/select', [UserController::class, 'select'])->name('admin-select');
     });
 });

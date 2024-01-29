@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Cashbox extends Model
 {
     use HasFactory;
+
+    public function entreprise()
+    {
+        return $this->belongsTo(Entreprise::class);
+    }
 }

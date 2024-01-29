@@ -33,8 +33,9 @@
                                     <div class="text-center mb-11">
                                         <!--begin::Title-->
                                         <a href="{{ url('/') }}">
-                                            <img style="margin-right: 10px;" src="{{ asset('img/blason_rep.png') }}"
-                                                class="header-logo__image" alt="exaconseil">
+                                            <img style="margin-right: 10px;" width="30%"
+                                                src="{{ asset('media/logos/logo_eac.png') }}" class="header-logo__image"
+                                                alt="exaconseil">
                                         </a>
                                         <!--end::Title-->
                                     </div>
@@ -58,7 +59,7 @@
                                     <div class="fv-row mb-3">
                                         <!--begin::Password-->
                                         <input type="password" placeholder="Mot de passe" name="password" autocomplete="off"
-                                            class="form-control bg-transparent" />
+                                            class="form-control bg-transparent" value="{{ old('password') }}" />
                                         <!--end::Password-->
                                         @if ($errors->has('password'))
                                             <div

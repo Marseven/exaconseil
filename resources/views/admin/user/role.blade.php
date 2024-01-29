@@ -75,11 +75,9 @@
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
-                                <a href="{{ url('admin/add-role') }}">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#securityModal">
-                                        <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
-                                </a>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#securityModal">
+                                    <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -108,6 +106,8 @@
                                         <td>{{ $role->name }}</td>
                                         <td>{{ $role->guard_name }}</td>
                                         <td>
+                                            <button class="btn btn-xs btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#cardModalView{{ $role->id }}">Voir</button>
                                             <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#cardModal{{ $role->id }}">Modifier</button>
                                             <button class="btn btn-xs btn-danger" data-bs-toggle="modal"
@@ -131,6 +131,163 @@
         </div>
         <!--end::Post-->
     </div>
+
+    @foreach ($roles as $role)
+        <div class="modal fade" id="cardModalView{{ $role->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabelOne" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabelOne">{{ $role->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="lni lni-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive mb-3">
+                            <table class="table text-nowrap">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="w-75">Permissions du rôle</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($permissions as $permission)
+                                        <tr>
+                                            <td class="border-top-0">
+                                                {{ $permission->name }}
+                                            </td>
+                                            <td class="border-top-0">
+                                                <div class="form-check ">
+                                                    <input type="checkbox"
+                                                        {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
+                                                        disabled class="form-check-input" id="customCheckOne">
+                                                    <label class="form-check-label" for="customCheckOne"></label>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" style="background-color: #2b9753 !important;"
+                            class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach ($roles as $role)
+        <div class="modal fade" id="cardModal{{ $role->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabelOne" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabelOne">{{ $role->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="lni lni-close"></i>
+                        </button>
+                    </div>
+                    <form action="{{ url('admin/role/' . $role->id) }}" method="POST">
+                        <div class="modal-body">
+                            @csrf
+                            <div class="table-responsive mb-3">
+                                <table class="table text-nowrap">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="w-75">Permissions du rôle</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($permissions as $permission)
+                                            <tr>
+                                                <td class="border-top-0">
+                                                    {{ $permission->name }}
+                                                </td>
+                                                <td class="border-top-0">
+                                                    <div class="form-check ">
+                                                        <input type="checkbox"
+                                                            {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
+                                                            name="permissions[]" class="form-check-input"
+                                                            value="{{ $permission->name }}">
+                                                        <label class="form-check-label" for="permissions"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" style="background-color: #2b9753 !important;"
+                                class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    <div class="modal fade" id="securityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelOne">Créer un rôle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="lni lni-close"></i>
+                    </button>
+                </div>
+                <form action="{{ url('admin/create/role') }}" method="POST">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Libellé</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" style="background-color: #2b9753 !important;"
+                            class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @foreach ($roles as $role)
+        <!-- Modal -->
+        <div class="modal fade" id="cardModalCenter{{ $role->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <form action="{{ url('admin/role/' . $role->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="lni lni-close"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Êtes-vous sûr de vouloir supprimer ce rôle ?
+                        </div>
+                        <input type="hidden" name="delete" value="true">
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
 @endsection
 
 @push('scripts')

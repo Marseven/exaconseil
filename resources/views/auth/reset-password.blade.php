@@ -33,8 +33,9 @@
                                     <div class="text-center mb-11">
                                         <!--begin::Title-->
                                         <a href="{{ url('/') }}">
-                                            <img style="margin-right: 10px;" src="{{ asset('front/img/blason_rep.png') }}"
-                                                class="header-logo__image" alt="Assemblée Nationale">
+                                            <img style="margin-right: 10px;" width="30%"
+                                                src="{{ asset('media/logos/logo_eac.png') }}" class="header-logo__image"
+                                                alt="Exa Conseil">
                                         </a>
                                         <!--end::Title-->
                                     </div>

@@ -182,15 +182,31 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Poste</label>
-                                <input class="form-control" name="phone" type="tel" placeholder="Téléphone" />
+                                <input class="form-control" name="poste" type="tel" placeholder="Poste" />
                             </div>
                         </div>
 
                         <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Entreprise</label>
+                            <select target="respeonsable" id="entreprise" class="form-control linked-select"
+                                name="entreprise_id">
+                                @foreach ($entreprises as $entreprise)
+                                    <option value="{{ $entreprise->id }}">{{ $entreprise->company_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Responsable</label>
+                            <select id="respeonsable" class="form-control" name="responsable_id">
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Rôle</label>
                             <select id="selectOne" class="form-control" name="responsable_id">
-                                @foreach ($admins as $admin)
-                                    <option value="{{ $admin->id }}">{{ $admin->lastname . ' ' . $admin->firstname }}
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -211,7 +227,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour l'admin</h5>
+                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour l'utilisateur</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <i class="lni lni-close"></i>
                         </button>
@@ -248,6 +264,19 @@
                                     <input class="form-control" name="phone" type="tel" placeholder="Téléphone"
                                         value="{{ $admin->phone }}" />
                                 </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Responsable</label>
+                                <select class="form-control" name="responsable_id">
+                                    @foreach ($admins as $ad)
+                                        @if ($admin->entreprise_id == $ad->entreprise_id && $admin->id != $ad->id)
+                                            <option value="{{ $ad->id }}">
+                                                {{ $ad->lastname . ' ' . $ad->firstname }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="recipient-name" class="col-form-label">Rôle</label>
@@ -309,5 +338,43 @@
                 }
             });
         });
+
+        $(".linked-select").change(function() {
+            var id = $(this).val();
+            var target = $(this).attr('target');
+            console.log(id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery(
+                            'meta[name="csrf-token"]')
+                        .attr('content')
+                },
+                url: "{{ route('admin-select') }}",
+                data: {
+                    'id': id,
+                },
+                method: 'POST',
+                dataType: 'json',
+                success: function(result) {
+                    console.log(result);
+                    result = JSON.parse(result);
+                    var option_html = "<option value='-1'>Choisir</option>";
+
+                    for (i = 0; i < result.length; i++) {
+                        is_selected = $("#" + target).data('val') == result[i].id ? 'selected' : '';
+                        option_html += "<option " + is_selected + "  value='" + result[i].id +
+                            "'>" +
+                            result[i].lastname + " " +
+                            result[i].firstname +
+                            "</option>";
+                    }
+
+                    $("#" + target).html(option_html);
+                    $("#" + target).change();
+                }
+            });
+        });
+
+        $(".linked-select").change();
     </script>
 @endpush

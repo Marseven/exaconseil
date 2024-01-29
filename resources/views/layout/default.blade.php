@@ -19,7 +19,7 @@
     <meta property="og:url" content="#" />
     <meta property="og:site_name" content="ExaConseil" />
     <link rel="canonical" href="" />
-    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('media/logos/logo_eac.png') }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -33,7 +33,6 @@
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="{{ asset('plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('plugins/custom/dismissable-notification/notification.css') }}" />
     <!--end::Global Stylesheets Bundle-->
 
     @stack('styles')
@@ -83,7 +82,7 @@
                 <div class="aside-logo flex-column-auto" id="kt_aside_logo">
                     <!--begin::Logo-->
                     <a href="{{ route('admin-dashboard') }}">
-                        <img alt="Logo Exaconseil" src="assets/media/logos/demo13.svg" class="h-15px logo" />
+                        <img alt="Logo Exaconseil" src="{{ asset('media/logos/logo_eac.png') }}" class="h-15px logo" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Aside toggler-->
@@ -370,7 +369,7 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('admin-list-users') }}">
+                                        <a class="menu-link" href="{{ route('admin-list-entreprises') }}">
 
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -384,7 +383,7 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('admin-list-users') }}">
+                                        <a class="menu-link" href="{{ route('admin-list-cashboxs') }}">
 
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -444,7 +443,8 @@
                         <!--begin::Mobile logo-->
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="{{ route('admin-dashboard') }}" class="d-lg-none">
-                                <img alt="Logo ExaConseil" src="media/logos/demo13-small.svg" class="h-25px" />
+                                <img alt="Logo ExaConseil" src="{{ asset('media/logos/logo_eac.png') }}"
+                                    class="h-25px" />
                             </a>
                         </div>
                         <!--end::Mobile logo-->
