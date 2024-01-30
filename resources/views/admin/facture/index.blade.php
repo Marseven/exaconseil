@@ -61,6 +61,8 @@
                 @include('layout.alert')
             </div>
             <!--end::Container-->
+
+
         </div>
         <!--end::Post-->
     </div>

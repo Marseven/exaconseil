@@ -93,6 +93,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->entreprise_id =  $request->entreprise_id;
+        $user->responsable =  $request->responsable_id;
         $user->poste = $request->poste;
         $user->password = bcrypt('12345678');
 
@@ -101,6 +102,32 @@ class UserController extends Controller
             return back()->with('success', 'Utilisateur créé avec succès.');
         } else {
             return back()->with('error', 'Un problème est survenu.');
+        }
+    }
+
+    public function update(Request $request, User $user)
+    {
+        if (isset($_POST['delete'])) {
+            if ($user->delete()) {
+                return back()->with('success', "L'utilisateur a été supprimé.");
+            } else {
+                return back()->with('error', "L'utilisateur n'a pas été supprimé.");
+            }
+        } else {
+
+            $user->firstname = $request->firstname;
+            $user->lastname = $request->lastname;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->poste = $request->poste;
+            $user->responsable =  $request->responsable_id;
+
+            if ($user->save()) {
+                $user->sendPasswordResetNotification(app('auth.password.broker')->createToken($user));
+                return back()->with('success', 'Utilisateur créé avec succès.');
+            } else {
+                return back()->with('error', 'Un problème est survenu.');
+            }
         }
     }
 

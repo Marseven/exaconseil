@@ -75,17 +75,16 @@ Route::middleware('auth')->group(function () {
 
         //policies
         Route::get('/list/policies', [PolicyController::class, 'index'])->name('admin-list-policies');
-        Route::get('/add/policy', [PolicyController::class, 'add'])->name('admin-add-policy');
-        Route::get('/edit/policy/{policy}', [PolicyController::class, 'edit'])->name('admin-edit-policy');
+        Route::get('/list/policies/expired', [PolicyController::class, 'expired'])->name('admin-list-policies-expired');
         Route::post('/create/policy', [PolicyController::class, 'create'])->name('admin-create-policy');
         Route::post('/policy/{policy}', [PolicyController::class, 'update'])->name('admin-update-policy');
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');
         Route::get('/add/facture', [FactureController::class, 'add'])->name('admin-add-facture');
-        Route::get('/edit/policy/{policy}', [FactureController::class, 'edit'])->name('admin-edit-facture');
-        Route::post('/create/policy', [FactureController::class, 'create'])->name('admin-create-facture');
-        Route::post('/policy/{policy}', [FactureController::class, 'update'])->name('admin-update-facture');
+        Route::get('/edit/facture/{facture}', [FactureController::class, 'edit'])->name('admin-edit-facture');
+        Route::post('/create/facture', [FactureController::class, 'create'])->name('admin-create-facture');
+        Route::post('/facture/{facture}', [FactureController::class, 'update'])->name('admin-update-facture');
 
         //cashflows
         Route::get('/list/cashflows', [CashflowController::class, 'index'])->name('admin-list-cashflows');

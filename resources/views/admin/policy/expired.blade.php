@@ -42,7 +42,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-dark">Liste des polices d'assurance en cours</li>
+                        <li class="breadcrumb-item text-dark">Liste des polices d'assurance expirées</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -66,7 +66,7 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <h2>Liste des polices d'assurances en cours</h2>
+                            <h2>Liste des polices d'assurances expirées</h2>
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
@@ -75,9 +75,6 @@
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
 
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#securityModal">
-                                    <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
 
                                 <!--end::Add user-->
                             </div>
@@ -141,72 +138,6 @@
         <!--end::Post-->
     </div>
 
-
-    <div class="modal fade" id="securityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter une police</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="lni lni-close"></i>
-                    </button>
-                </div>
-                <form action="{{ url('admin/create/policy/') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Nom Complet</label>
-                                <input class="form-control" name="name" type="text" placeholder="Nom Complet"
-                                    required />
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Marque</label>
-                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Matricule</label>
-                                <input class="form-control" name="matricule" type="text" placeholder="Matricule"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Contact</label>
-                                <input class="form-control" name="contact" type="tel" placeholder="Contact" required />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Date de Début</label>
-                                <input class="form-control" name="date_begin" type="date" placeholder="Date de début"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Date d'Expiration</label>
-                                <input class="form-control" name="date_expired" type="date"
-                                    placeholder="Date d'expiration" required />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" style="background-color: #2b9753 !important;"
-                            class="btn btn-success">Enregistrer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     @foreach ($policies as $policy)
         <div class="modal fade" id="cardModal{{ $policy->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabelOne" aria-hidden="true">
@@ -255,8 +186,8 @@
                             <div class="mb-3">
                                 <div class="input-style-1">
                                     <label>Date de Début</label>
-                                    <input class="form-control" name="date_begin" type="date"
-                                        placeholder="Date de début" value="{{ $policy->date_begin }}" required />
+                                    <input class="form-control" name="date_begin" type="date" placeholder="Date de début"
+                                        value="{{ $policy->date_begin }}" required />
                                 </div>
                             </div>
                             <div class="mb-3">
