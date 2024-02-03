@@ -358,6 +358,20 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ route('admin-list-services') }}">
+
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Services</span>
+
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
                                         <a class="menu-link" href="{{ route('admin-list-cashboxs') }}">
 
                                             <span class="menu-bullet">
@@ -372,11 +386,11 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="{{ route('admin-list-policies') }}">
+                                        <a class="menu-link" href="{{ route('admin-settings') }}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Polices</span>
+                                            <span class="menu-title">Paramètres</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>

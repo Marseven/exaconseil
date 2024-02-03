@@ -112,7 +112,7 @@
                                         <td>{{ $cashflow->reason }}</td>
                                         <td>{{ $cashflow->amount }} FCFA</td>
                                         <td>{{ $cashflow->date_cash }}</td>
-                                        <td>Caisse N°{{ $cashflow->cashbox_id }}</td>
+                                        <td>{{ $cashflow->cashbox->name }}</td>
                                         <td>{{ $cashflow->user->lastname . ' ' . $cashflow->user->firstname }}</td>
                                         <td>
                                             <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
@@ -121,7 +121,6 @@
                                                 data-bs-target="#cardModalCenter{{ $cashflow->id }}">
                                                 Supprimer
                                             </button>
-
                                         </td>
                                     </tr>
                                 @endforeach
@@ -189,7 +188,7 @@
                             </div>
                             <select id="selectOne" class="form-control" name="cashbox_id">
                                 @foreach ($cashboxes as $cashbox)
-                                    <option value="{{ $cashbox->id }}">Caisse {{ $cashbox->id }}</option>
+                                    <option value="{{ $cashbox->id }}">{{ $cashbox->name }}</option>
                                 @endforeach
                             </select>
                         </div>

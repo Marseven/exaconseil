@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EntrepriseController;
 use App\Http\Controllers\Admin\FactureController;
 use App\Http\Controllers\Admin\PolicyController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Front\WelcomeController;
 use App\Models\User;
@@ -66,12 +68,20 @@ Route::middleware('auth')->group(function () {
         //dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
         Route::get('/', [DashboardController::class, 'index']);
-        Route::get('/notifications', [DashboardController::class, 'notifications']);
+        Route::get('/notifications', [DashboardController::class, 'notifications'])->name('admin-notifications');
+
+        Route::get('/settings', [SettingController::class, 'index'])->name('admin-settings');
+        Route::post('/save/setting', [SettingController::class, 'save'])->name('admin-save-settings');
 
         //entreprise
         Route::get('/list/entreprises', [EntrepriseController::class, 'index'])->name('admin-list-entreprises');
         Route::post('/create/entreprise', [EntrepriseController::class, 'create'])->name('admin-create-entreprise');
         Route::post('/entreprise/{entreprise}', [EntrepriseController::class, 'update'])->name('admin-update-entreprise');
+
+        //service
+        Route::get('/list/services', [ServiceController::class, 'index'])->name('admin-list-services');
+        Route::post('/create/service', [ServiceController::class, 'create'])->name('admin-create-service');
+        Route::post('/service/{service}', [ServiceController::class, 'update'])->name('admin-update-service');
 
         //policies
         Route::get('/list/policies', [PolicyController::class, 'index'])->name('admin-list-policies');
@@ -81,10 +91,11 @@ Route::middleware('auth')->group(function () {
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');
-        Route::get('/add/facture', [FactureController::class, 'add'])->name('admin-add-facture');
-        Route::get('/edit/facture/{facture}', [FactureController::class, 'edit'])->name('admin-edit-facture');
+        Route::post('/ajax/factures', [FactureController::class, 'ajaxList'])->name('admin-ajax-factures');
+        Route::post('/ajax/facture/{facture}', [FactureController::class, 'edit'])->name('admin-ajax-facture');
         Route::post('/create/facture', [FactureController::class, 'create'])->name('admin-create-facture');
         Route::post('/facture/{facture}', [FactureController::class, 'update'])->name('admin-update-facture');
+        Route::post('/facture/status/{facture}', [FactureController::class, 'status'])->name('admin-status-facture');
 
         //cashflows
         Route::get('/list/cashflows', [CashflowController::class, 'index'])->name('admin-list-cashflows');
@@ -92,6 +103,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/cashflow/{cashflow}', [CashflowController::class, 'edit'])->name('admin-edit-cashflow');
         Route::post('/create/cashflow', [CashflowController::class, 'create'])->name('admin-create-cashflow');
         Route::post('/cashflow/{cashflow}', [CashflowController::class, 'update'])->name('admin-update-cashflow');
+
         //cashbox
         Route::get('/list/cashboxs', [CashflowController::class, 'cashbox'])->name('admin-list-cashboxs');
         Route::post('/create/cashbox', [CashflowController::class, 'createCashbox'])->name('admin-create-cashbox');

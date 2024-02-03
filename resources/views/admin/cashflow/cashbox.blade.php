@@ -94,6 +94,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Entreprise</th>
+                                    <th>Libellé</th>
                                     <th>Solde</th>
                                     <th>Actions</th>
                                 </tr>
@@ -103,6 +104,7 @@
                                     <tr>
                                         <td>{{ $cashbox->id }}</td>
                                         <td>{{ $cashbox->entreprise->company_name }}</td>
+                                        <td>{{ $cashbox->name ?? '-' }}</td>
                                         <td>{{ $cashbox->solde }} FCFA</td>
                                         <td>
                                             <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
@@ -144,6 +146,12 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
+                                <label>Nom</label>
+                                <input class="form-control" name="name" type="text" placeholder="Nom de la caisse" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
                                 <label>Solde</label>
                                 <input class="form-control" name="solde" type="number" placeholder="0 FCFA" />
                             </div>
@@ -182,9 +190,16 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <div class="input-style-1">
+                                    <label>Nom</label>
+                                    <input class="form-control" name="name" type="text"
+                                        placeholder="Nom de la caisse" value="{{ $cashbox->name }}" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-style-1">
                                     <label>Solde</label>
-                                    <input class="form-control" name="solde" type="number"
-                                        placeholder="Nom de l'entreprise" value="{{ $cashbox->solde }}" />
+                                    <input class="form-control" name="solde" type="number" placeholder="Solde"
+                                        value="{{ $cashbox->solde }}" />
                                 </div>
                             </div>
                         </div>

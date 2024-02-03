@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Entreprise extends Model
 {
     use HasFactory;
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'service_entreprises', 'service_id', 'entreprise_id');
+    }
 }
