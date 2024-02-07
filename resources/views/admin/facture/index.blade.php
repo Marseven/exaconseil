@@ -150,9 +150,16 @@
                         <i class="lni lni-close"></i>
                     </button>
                 </div>
-                <form action="{{ url('admin/create/cashflow/') }}" method="POST">
+                <form action="{{ url('admin/create/facture/') }}" method="POST">
                     @csrf
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Numéro de facture</label>
+                                <input class="form-control" name="number_facture" type="text"
+                                    placeholder="N° de facture" />
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Compagnie d'assurance</label>
@@ -215,7 +222,7 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Type de prestation</label>
-                                <select class="form-control" name="type" required>
+                                <select class="form-control" name="type_prestation" required>
                                     <option value="Standard">Standard</option>
                                     <option value="Particulier">Particulier</option>
                                     <option value="Intérieur">Intérieur</option>

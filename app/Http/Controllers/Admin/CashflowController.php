@@ -32,6 +32,7 @@ class CashflowController extends Controller
 
         $cashbox = new Cashbox();
 
+        $cashbox->name = $request->name;
         $cashbox->solde = $request->solde;
         $cashbox->user_id = Auth::user()->id;
         $cashbox->entreprise_id = $request->entreprise_id;
@@ -54,7 +55,7 @@ class CashflowController extends Controller
             }
         } else {
 
-
+            $cashbox->name = $request->name;
             $cashbox->solde = $request->solde;
 
             if ($cashbox->save()) {

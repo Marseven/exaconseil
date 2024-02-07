@@ -15,7 +15,7 @@
                     data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
                     class="page-title d-flex align-items-center me-3 flex-wrap lh-1">
                     <!--begin::Title-->
-                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Service</h1>
+                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Sinistre</h1>
                     <!--end::Title-->
                     <!--begin::Separator-->
                     <span class="h-20px border-gray-200 border-start mx-4"></span>
@@ -34,7 +34,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Gestion des Services</li>
+                        <li class="breadcrumb-item text-muted">Suivi des Sinistres</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -42,7 +42,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-dark">Liste des Service</li>
+                        <li class="breadcrumb-item text-dark">Liste des sinistres</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -66,7 +66,7 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <h2>Liste des Services</h2>
+                            <h2>Liste des sinistres</h2>
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
@@ -74,9 +74,11 @@
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
+
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#securityModal">
                                     <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
+
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -93,22 +95,32 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Libellé</th>
-                                    <th>Description</th>
+                                    <th>Nom & Prénoms</th>
+                                    <th>Marque</th>
+                                    <th>Matricule</th>
+                                    <th>Contact</th>
+                                    <th>Assurance</th>
+                                    <th>Tiers</th>
+                                    <th>Date d'ouverture</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($services as $service)
+                                @foreach ($sinistres as $sinistre)
                                     <tr>
-                                        <td>{{ $service->id }}</td>
-                                        <td>{{ $service->name }}</td>
-                                        <td>{{ $service->description }}</td>
+                                        <td>{{ $sinistre->id }}</td>
+                                        <td>{{ $sinistre->name }}</td>
+                                        <td>{{ $sinistre->brand }}</td>
+                                        <td>{{ $sinistre->matricule }}</td>
+                                        <td>{{ $sinistre->contact }}</td>
+                                        <td>{{ $sinistre->assurance }}</td>
+                                        <td>{{ $sinistre->tiers }}</td>
+                                        <td>{{ $sinistre->date_open }}</td>
                                         <td>
                                             <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#cardModal{{ $service->id }}">Modifier</button>
+                                                data-bs-target="#cardModal{{ $sinistre->id }}">Modifier</button>
                                             <button class="btn btn-xs btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#cardModalCenter{{ $service->id }}">
+                                                data-bs-target="#cardModalCenter{{ $sinistre->id }}">
                                                 Supprimer
                                             </button>
 
@@ -125,33 +137,78 @@
                 <!--end::Card-->
             </div>
             <!--end::Container-->
+
+
         </div>
         <!--end::Post-->
     </div>
+
 
     <div class="modal fade" id="securityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter un service</h5>
+                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter un sinistre</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="lni lni-close"></i>
                     </button>
                 </div>
-                <form action="{{ url('admin/create/service/') }}" method="POST">
+                <form action="{{ url('admin/create/sinistre/') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Nom</label>
-                                <input class="form-control" name="name" type="text" placeholder="Nom du service" />
+                                <input class="form-control" name="lastname" type="text" placeholder="Nom" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Description</label>
-                                <textarea class="form-control" name="description"></textarea>
+                                <label>Prénom</label>
+                                <input class="form-control" name="firstname" type="text" placeholder="Prénom" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Marque / Type</label>
+                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Immatriculation</label>
+                                <input class="form-control" name="matricule" type="text" placeholder="Matricule"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Contact</label>
+                                <input class="form-control" name="contact" type="tel" placeholder="Contact" required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Assurance</label>
+                                <input class="form-control" name="name" type="text" placeholder="Assurance"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Date d'ouverture</label>
+                                <input class="form-control" name="date_open" type="date"
+                                    placeholder="Date d'ouverture" required />
                             </div>
                         </div>
                     </div>
@@ -164,31 +221,85 @@
         </div>
     </div>
 
-    @foreach ($services as $service)
-        <div class="modal fade" id="cardModal{{ $service->id }}" tabindex="-1" role="dialog"
+    @foreach ($sinistres as $sinistre)
+        <div class="modal fade" id="cardModal{{ $sinistre->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabelOne" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour le solde de la caisse</h5>
+                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour le sinistre</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <i class="lni lni-close"></i>
                         </button>
                     </div>
-                    <form action="{{ url('admin/service/' . $service->id) }}" method="POST">
+                    <form action="{{ url('admin/sinistre/' . $sinistre->id) }}" method="POST">
                         @csrf
                         <div class="modal-body">
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Nom Complet</label>
+                                    <input class="form-control" name="name" type="text" placeholder="Nom Complet"
+                                        value="{{ $sinistre->name }}" required />
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <div class="input-style-1">
                                     <label>Nom</label>
-                                    <input class="form-control" name="name" type="text"
-                                        placeholder="Nom de la caisse" value="{{ $service->name }}" />
+                                    <input class="form-control" name="lastname" type="text" placeholder="Nom"
+                                        value="{{ $sinistre->lastname }}" required />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Description</label>
-                                    <textarea class="form-control" name="description">{{ $service->description }}</textarea>
+                                    <label>Prénom</label>
+                                    <input class="form-control" name="firstname" type="text" placeholder="Prénom"
+                                        value="{{ $sinistre->firstname }}" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Marque / Type</label>
+                                    <input class="form-control" name="brand" type="text" placeholder="Marque"
+                                        value="{{ $sinistre->brand }}" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Immatriculation</label>
+                                    <input class="form-control" name="matricule" type="text" placeholder="Matricule"
+                                        value="{{ $sinistre->matricule }}" required />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Contact</label>
+                                    <input class="form-control" name="contact" type="tel" placeholder="Contact"
+                                        value="{{ $sinistre->contact }}" required />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Assurance</label>
+                                    <input class="form-control" name="name" type="text" placeholder="Assurance"
+                                        value="{{ $sinistre->assurance }}" required />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Tiers</label>
+                                    <input class="form-control" name="tiers" type="text" placeholder="Tiers"
+                                        value="{{ $sinistre->tiers }}" required />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Date d'ouverture</label>
+                                    <input class="form-control" name="date_open" type="date"
+                                        placeholder="Date d'ouverture" value="{{ $sinistre->date_open }}" required />
                                 </div>
                             </div>
                         </div>
@@ -202,9 +313,9 @@
         </div>
     @endforeach
 
-    @foreach ($services as $service)
+    @foreach ($sinistres as $sinistre)
         <!-- Modal -->
-        <div class="modal fade" id="cardModalCenter{{ $service->id }}" tabindex="-1" role="dialog"
+        <div class="modal fade" id="cardModalCenter{{ $sinistre->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -215,11 +326,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Êtes-vous sûr de vouloir supprimer ce service ?
+                        Êtes-vous sûr de vouloir supprimer ce sinistre ?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
-                        <form method="POST" action="{{ url('admin/update/service' . $service->id) }}">
+                        <form method="POST" action="{{ url('admin/sinistre/' . $sinistre->id) }}">
                             @csrf
                             <input type="hidden" name="delete" value="true">
                             <button class="btn btn-danger" style="background-color: #D50100 !important;"

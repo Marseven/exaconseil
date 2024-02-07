@@ -63,8 +63,6 @@ class PolicyController extends Controller
             $policy->contact = $request->contact;
             $policy->date_begin =  $request->date_begin;
             $policy->date_expired = $request->date_expired;
-            $policy->entreprise_id = Auth::user()->entreprise_id;
-            $policy->user_id = Auth::user()->id;
 
             if ($policy->save()) {
                 return back()->with('success', 'Police mis à jour avec succès.');

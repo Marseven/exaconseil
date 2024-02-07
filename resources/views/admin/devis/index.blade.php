@@ -15,7 +15,7 @@
                     data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
                     class="page-title d-flex align-items-center me-3 flex-wrap lh-1">
                     <!--begin::Title-->
-                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Service</h1>
+                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Devis</h1>
                     <!--end::Title-->
                     <!--begin::Separator-->
                     <span class="h-20px border-gray-200 border-start mx-4"></span>
@@ -34,7 +34,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Gestion des Services</li>
+                        <li class="breadcrumb-item text-muted">Suivi des Deviss</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -42,7 +42,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-dark">Liste des Service</li>
+                        <li class="breadcrumb-item text-dark">Liste des Devis</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -66,7 +66,7 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <h2>Liste des Services</h2>
+                            <h2>Liste des Devis</h2>
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
@@ -74,9 +74,11 @@
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
+
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#securityModal">
                                     <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
+
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -93,22 +95,28 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Libellé</th>
-                                    <th>Description</th>
+                                    <th>Société / Particlier</th>
+                                    <th>Marque</th>
+                                    <th>Matricule</th>
+                                    <th>N° de châssis</th>
+                                    <th>Contact</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($services as $service)
+                                @foreach ($devis as $devi)
                                     <tr>
-                                        <td>{{ $service->id }}</td>
-                                        <td>{{ $service->name }}</td>
-                                        <td>{{ $service->description }}</td>
+                                        <td>{{ $devi->id }}</td>
+                                        <td>{{ $devi->name }}</td>
+                                        <td>{{ $devi->brand }}</td>
+                                        <td>{{ $devi->matricule }}</td>
+                                        <td>{{ $devi->number_chassis }}</td>
+                                        <td>{{ $devi->contact }}</td>
                                         <td>
                                             <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#cardModal{{ $service->id }}">Modifier</button>
+                                                data-bs-target="#cardModal{{ $devi->id }}">Modifier</button>
                                             <button class="btn btn-xs btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#cardModalCenter{{ $service->id }}">
+                                                data-bs-target="#cardModalCenter{{ $devi->id }}">
                                                 Supprimer
                                             </button>
 
@@ -125,35 +133,64 @@
                 <!--end::Card-->
             </div>
             <!--end::Container-->
+
+
         </div>
         <!--end::Post-->
     </div>
+
 
     <div class="modal fade" id="securityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter un service</h5>
+                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter un devis</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="lni lni-close"></i>
                     </button>
                 </div>
-                <form action="{{ url('admin/create/service/') }}" method="POST">
+                <form action="{{ url('admin/create/devis/') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Nom</label>
-                                <input class="form-control" name="name" type="text" placeholder="Nom du service" />
+                                <label>Nom de la société / particulier</label>
+                                <input class="form-control" name="name" type="text" placeholder="Nom Complet"
+                                    required />
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Description</label>
-                                <textarea class="form-control" name="description"></textarea>
+                                <label>Marque / Type</label>
+                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Immatriculation</label>
+                                <input class="form-control" name="matricule" type="text" placeholder="Matricule"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>N° de Châssis</label>
+                                <input class="form-control" name="number_chassis" type="text" placeholder="N° de Chassis"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Contact</label>
+                                <input class="form-control" name="contact" type="tel" placeholder="Contact" required />
+                            </div>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" style="background-color: #2b9753 !important;"
@@ -164,31 +201,66 @@
         </div>
     </div>
 
-    @foreach ($services as $service)
-        <div class="modal fade" id="cardModal{{ $service->id }}" tabindex="-1" role="dialog"
+    @foreach ($devis as $devi)
+        <div class="modal fade" id="cardModal{{ $devi->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabelOne" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour le solde de la caisse</h5>
+                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour le devis</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <i class="lni lni-close"></i>
                         </button>
                     </div>
-                    <form action="{{ url('admin/service/' . $service->id) }}" method="POST">
+                    <form action="{{ url('admin/devis/' . $devi->id) }}" method="POST">
                         @csrf
                         <div class="modal-body">
+
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Nom</label>
-                                    <input class="form-control" name="name" type="text"
-                                        placeholder="Nom de la caisse" value="{{ $service->name }}" />
+                                    <label>Nom Complet</label>
+                                    <input class="form-control" name="name" type="text" placeholder="Nom Complet"
+                                        value="{{ $devi->name }}" required />
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Description</label>
-                                    <textarea class="form-control" name="description">{{ $service->description }}</textarea>
+                                    <label>Nom de la société / particulier</label>
+                                    <input class="form-control" name="name" type="text" placeholder="Nom Complet"
+                                        value="{{ $devi->name }}" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Marque / Type</label>
+                                    <input class="form-control" name="brand" type="text" placeholder="Marque"
+                                        value="{{ $devi->brand }}" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Immatriculation</label>
+                                    <input class="form-control" name="matricule" type="text" placeholder="Matricule"
+                                        value="{{ $devi->matricule }}" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>N° de Châssis</label>
+                                    <input class="form-control" name="number_chassis" type="text"
+                                        placeholder="N° de Chassis" value="{{ $devi->number_chassis }}" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Contact</label>
+                                    <input class="form-control" name="contact" type="tel" placeholder="Contact"
+                                        value="{{ $devi->contact }}" required />
                                 </div>
                             </div>
                         </div>
@@ -202,9 +274,9 @@
         </div>
     @endforeach
 
-    @foreach ($services as $service)
+    @foreach ($devis as $devi)
         <!-- Modal -->
-        <div class="modal fade" id="cardModalCenter{{ $service->id }}" tabindex="-1" role="dialog"
+        <div class="modal fade" id="cardModalCenter{{ $devi->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -215,11 +287,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Êtes-vous sûr de vouloir supprimer ce service ?
+                        Êtes-vous sûr de vouloir supprimer ce devis ?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
-                        <form method="POST" action="{{ url('admin/update/service' . $service->id) }}">
+                        <form method="POST" action="{{ url('admin/devis/' . $devi->id) }}">
                             @csrf
                             <input type="hidden" name="delete" value="true">
                             <button class="btn btn-danger" style="background-color: #D50100 !important;"

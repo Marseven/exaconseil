@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Entreprise;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -38,6 +40,22 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'edit cashflow']);
         Permission::create(['name' => 'view cashflow']);
 
+        Permission::create(['name' => 'add devis']);
+        Permission::create(['name' => 'delete devis']);
+        Permission::create(['name' => 'edit devis']);
+        Permission::create(['name' => 'view devis']);
+
+        Permission::create(['name' => 'add sinistre']);
+        Permission::create(['name' => 'delete sinistre']);
+        Permission::create(['name' => 'edit sinistre']);
+        Permission::create(['name' => 'view sinistre']);
+
+
+        Permission::create(['name' => 'add facture']);
+        Permission::create(['name' => 'delete facture']);
+        Permission::create(['name' => 'edit facture']);
+        Permission::create(['name' => 'view facture']);
+
         Permission::create(['name' => 'add entreprise']);
         Permission::create(['name' => 'delete entreprise']);
         Permission::create(['name' => 'edit entreprise']);
@@ -60,6 +78,12 @@ class DatabaseSeeder extends Seeder
         $role1->givePermissionTo('view policy');
         $role1->givePermissionTo('add cashflow');
         $role1->givePermissionTo('view cashflow');
+        $role1->givePermissionTo('add sinistre');
+        $role1->givePermissionTo('view sinistre');
+        $role1->givePermissionTo('add devis');
+        $role1->givePermissionTo('view devis');
+        $role1->givePermissionTo('add facture');
+        $role1->givePermissionTo('view facture');
 
         $role2 = Role::create(['name' => 'Gerant']);
 
@@ -83,8 +107,90 @@ class DatabaseSeeder extends Seeder
         $role2->givePermissionTo('view setting');
         $role2->givePermissionTo('delete setting');
         $role2->givePermissionTo('edit setting');
+        $role2->givePermissionTo('add sinistre');
+        $role2->givePermissionTo('view sinistre');
+        $role2->givePermissionTo('delete sinistre');
+        $role2->givePermissionTo('edit sinistre');
+        $role2->givePermissionTo('add devis');
+        $role2->givePermissionTo('view devis');
+        $role2->givePermissionTo('delete devis');
+        $role2->givePermissionTo('edit devis');
+        $role2->givePermissionTo('add facture');
+        $role2->givePermissionTo('view facture');
+        $role2->givePermissionTo('delete facture');
+        $role2->givePermissionTo('edit facture');
 
         $role3 = Role::create(['name' => 'SuperAdmin']);
+
+        $role3->givePermissionTo('add policy');
+        $role3->givePermissionTo('view policy');
+        $role3->givePermissionTo('delete policy');
+        $role3->givePermissionTo('edit policy');
+        $role3->givePermissionTo('add cashflow');
+        $role3->givePermissionTo('view cashflow');
+        $role3->givePermissionTo('delete cashflow');
+        $role3->givePermissionTo('edit cashflow');
+        $role3->givePermissionTo('add entreprise');
+        $role3->givePermissionTo('view entreprise');
+        $role3->givePermissionTo('delete entreprise');
+        $role3->givePermissionTo('edit entreprise');
+        $role3->givePermissionTo('add cashbox');
+        $role3->givePermissionTo('view cashbox');
+        $role3->givePermissionTo('delete cashbox');
+        $role3->givePermissionTo('edit cashbox');
+        $role3->givePermissionTo('add setting');
+        $role3->givePermissionTo('view setting');
+        $role3->givePermissionTo('delete setting');
+        $role3->givePermissionTo('edit setting');
+        $role3->givePermissionTo('add sinistre');
+        $role3->givePermissionTo('view sinistre');
+        $role3->givePermissionTo('delete sinistre');
+        $role3->givePermissionTo('edit sinistre');
+        $role3->givePermissionTo('add devis');
+        $role3->givePermissionTo('view devis');
+        $role3->givePermissionTo('delete devis');
+        $role3->givePermissionTo('edit devis');
+        $role3->givePermissionTo('add facture');
+        $role3->givePermissionTo('view facture');
+        $role3->givePermissionTo('delete facture');
+        $role3->givePermissionTo('edit facture');
+
+        Entreprise::create([
+            'company_name' => 'Expertise Akom Conseil',
+            'business_sector' => 'Expertise Conseil',
+            'phone' => '074010203',
+            'email' => 'conatct@eac.ga',
+            'address' => 'Nzeng-Ayong',
+        ]);
+
+        Entreprise::create([
+            'company_name' => 'EIA',
+            'business_sector' => 'Conseil',
+            'phone' => '074010204',
+            'email' => 'conatct@eia.ga',
+            'address' => 'Nzeng-Ayong',
+        ]);
+
+        Service::create([
+            'name' => 'Police d\'assurance',
+            'description' => 'Police d\'assurance',
+        ]);
+        Service::create([
+            'name' => 'Sinistre',
+            'description' => 'Sinistre',
+        ]);
+        Service::create([
+            'name' => 'Devis',
+            'description' => 'Devis',
+        ]);
+        Service::create([
+            'name' => 'Caisse',
+            'description' => 'Caisse',
+        ]);
+        Service::create([
+            'name' => 'Facture',
+            'description' => 'Facture',
+        ]);
 
         $superadmin = User::create([
             'lastname' => 'Superadmin',
@@ -101,7 +207,7 @@ class DatabaseSeeder extends Seeder
             'lastname' => 'Gérant',
             'email' => 'gerant@exa.ga',
             'phone' => '074010204',
-            'entreprise_id' => 0,
+            'entreprise_id' => 1,
             'poste' => 'Gérant',
             'password' => bcrypt('12345678'),
         ]);
@@ -112,7 +218,7 @@ class DatabaseSeeder extends Seeder
             'lastname' => 'Agent',
             'email' => 'agent@exa.ga',
             'phone' => '074010205',
-            'entreprise_id' => 0,
+            'entreprise_id' => 1,
             'poste' => 'Agent',
             'password' => bcrypt('12345678'),
         ]);

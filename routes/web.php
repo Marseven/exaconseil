@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Admin\CashflowController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DevisController;
 use App\Http\Controllers\Admin\EntrepriseController;
 use App\Http\Controllers\Admin\FactureController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SinistreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Front\WelcomeController;
 use App\Models\User;
@@ -88,6 +90,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/list/policies/expired', [PolicyController::class, 'expired'])->name('admin-list-policies-expired');
         Route::post('/create/policy', [PolicyController::class, 'create'])->name('admin-create-policy');
         Route::post('/policy/{policy}', [PolicyController::class, 'update'])->name('admin-update-policy');
+
+        //sinistres
+        Route::get('/list/sinsitres', [SinistreController::class, 'index'])->name('admin-list-sinistres');
+        Route::post('/create/sinistre', [SinistreController::class, 'create'])->name('admin-create-sinistre');
+        Route::post('/sinistre/{sinistre}', [SinistreController::class, 'update'])->name('admin-update-sinistre');
+
+        //devis
+        Route::get('/list/devis', [DevisController::class, 'index'])->name('admin-list-devis');
+        Route::post('/create/devis', [DevisController::class, 'create'])->name('admin-create-devis');
+        Route::post('/devis/{devis}', [DevisController::class, 'update'])->name('admin-update-devis');
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');
