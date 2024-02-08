@@ -34,7 +34,7 @@
                                         <!--begin::Title-->
                                         <a href="{{ url('/') }}">
                                             <img style="margin-right: 10px;" width="30%"
-                                                src="{{ asset('media/logos/logo_eac.png') }}" class="header-logo__image"
+                                                src="{{ asset('media/logos/logo_eaceia.png') }}" class="header-logo__image"
                                                 alt="exaconseil">
                                         </a>
                                         <!--end::Title-->

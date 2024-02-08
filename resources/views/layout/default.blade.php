@@ -47,7 +47,7 @@
 
 <!--begin::Body-->
 
-<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
+<body id="kt_body" class="aside-enabled aside-fixed header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
     <!--begin::Theme mode setup on page load-->
     <script>
         var defaultThemeMode = "light";
@@ -86,7 +86,7 @@
                     <a href="{{ route('admin-dashboard') }}">
                         <img alt="Logo Exaconseil"
                             src="{{ $user->entreprise_id == 1 ? asset('media/logos/logo_eac.png') : asset('media/logos/logo_eia.png') }}"
-                            class="h-15px logo" />
+                            class="h-75px logo" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Aside toggler-->
@@ -478,7 +478,7 @@
             <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
                 <!--begin::Header-->
-                <div id="kt_header" style="" class="header align-items-stretch">
+                <div id="kt_header" class="header align-items-stretch">
                     <!--begin::Container-->
                     <div class="container-fluid d-flex align-items-stretch justify-content-between">
                         <!--begin::Aside mobile toggle-->
@@ -502,11 +502,6 @@
                             <!--begin::Navbar-->
                             <div class="d-flex align-items-stretch" id="kt_header_nav">
                                 <!--begin::Menu wrapper-->
-                                <a href="{{ route('admin-dashboard') }}" class="d-lg-none">
-                                    <img alt="Logo ExaConseil"
-                                        src="{{ $user->entreprise_id == 1 ? asset('media/logos/logo_eac.png') : asset('media/logos/logo_eia.png') }}"
-                                        class="h-25px" />
-                                </a>
                                 <!--end::Menu wrapper-->
                             </div>
                             <!--end::Navbar-->
@@ -741,8 +736,8 @@
                         <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-muted fw-semibold me-1"> {{ date('Y') }} &copy;</span>
-                            <a href="" target="_blank" class="text-gray-800 text-hover-primary">Exa
-                                Conseil</a>
+                            <a href="" target="_blank" class="text-gray-800 text-hover-primary">Gestion de
+                                Service</a>
                         </div>
                         <!--end::Copyright-->
                         <!--begin::Menu-->
