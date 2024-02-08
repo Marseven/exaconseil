@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Entreprise;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
@@ -10,6 +11,7 @@ class WelcomeController extends Controller
     //
     public function index()
     {
-        return view('welcome');
+        $entreprises = Entreprise::all();
+        return view('welcome', compact('entreprises'));
     }
 }

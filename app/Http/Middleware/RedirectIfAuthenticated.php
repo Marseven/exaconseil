@@ -23,10 +23,6 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                $authUser = User::find(Auth::user()->id);
-
-                Session::put('entreprise_id', $authUser->entreprise_id);
-
                 return redirect(RouteServiceProvider::HOME);
             }
         }

@@ -4,6 +4,7 @@
 
 @php
     $user = Auth::user();
+    $user->load(['entreprise']);
     $role = $user->roles->first();
 @endphp
 
@@ -21,7 +22,7 @@
     <meta property="og:site_name" content="ExaConseil" />
     <link rel="canonical" href="" />
     <link rel="shortcut icon"
-        href="{{ $user->entreprise_id == 1 ? asset('media/logos/logo_eac.png') : asset('media/logos/logo_eia.png') }}" />
+        href="{{ $user->entreprise ? asset($user->entreprise->photo) : asset('media/logos/logo_eaceia.png') }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -85,7 +86,7 @@
                     <!--begin::Logo-->
                     <a href="{{ route('admin-dashboard') }}">
                         <img alt="Logo Exaconseil"
-                            src="{{ $user->entreprise_id == 1 ? asset('media/logos/logo_eac.png') : asset('media/logos/logo_eia.png') }}"
+                            src="{{ $user->entreprise ? asset($user->entreprise->photo) : asset('media/logos/logo_eaceia.png') }}"
                             class="h-75px logo" />
                     </a>
                     <!--end::Logo-->
@@ -492,7 +493,7 @@
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="{{ route('admin-dashboard') }}" class="d-lg-none">
                                 <img alt="Logo ExaConseil"
-                                    src="{{ $user->entreprise_id == 1 ? asset('media/logos/logo_eac.png') : asset('media/logos/logo_eia.png') }}"
+                                    src="{{ $user->entreprise ? asset($user->entreprise->photo) : asset('media/logos/logo_eaceia.png') }}"
                                     class="h-25px" />
                             </a>
                         </div>
