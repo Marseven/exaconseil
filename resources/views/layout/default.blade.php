@@ -5,6 +5,7 @@
 @php
     $user = Auth::user();
     $user->load(['entreprise']);
+    dd($user->entreprise);
     $role = $user->roles->first();
 @endphp
 
