@@ -5,7 +5,6 @@
 @php
     $user = Auth::user();
     $user->load(['entreprise']);
-    dd($user->entreprise);
     $role = $user->roles->first();
 @endphp
 
@@ -88,7 +87,7 @@
                     <a href="{{ route('admin-dashboard') }}">
                         <img alt="Logo Exaconseil"
                             src="{{ $user->entreprise ? asset($user->entreprise->photo) : asset('media/logos/logo_eaceia.png') }}"
-                            class="h-75px logo" />
+                            class="h-65px logo" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Aside toggler-->
