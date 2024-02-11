@@ -66,7 +66,12 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <h2>Liste des polices d'assurances expirées</h2>
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <span class="svg-icon fs-1 position-absolute ms-4"><i class="bi bi-search fs-2"></i></span>
+                                <input type="text" data-kt-filter="search"
+                                    class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher" />
+                            </div>
+                            <!--end::Search-->
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
@@ -75,7 +80,13 @@
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
 
+                                <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
+                                    data-bs-target="#export">
+                                    <i class="bi bi-download fs-2"></i>Exporter</button>
 
+                                <button type="button" class="btn btn-success m-5" data-bs-toggle="modal"
+                                    data-bs-target="#import">
+                                    <i class="bi bi-upload fs-2"></i>Impoter</button>
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -87,6 +98,7 @@
                     <!--end::Card header-->
                     <!--begin::Card body-->
                     <div class="card-body py-4">
+
                         <!--begin::Table-->
                         <table class="table" id="kt_datatable">
                             <thead>
@@ -102,27 +114,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($policies as $policy)
-                                    <tr>
-                                        <td>{{ $policy->id }}</td>
-                                        <td>{{ $policy->name }}</td>
-                                        <td>{{ $policy->brand }}</td>
-                                        <td>{{ $policy->matricule }}</td>
-                                        <td>{{ $policy->contact }}</td>
-                                        <td>{{ $policy->date_begin }}</td>
-                                        <td>{{ $policy->date_expired }}</td>
-                                        <td>
-                                            <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#cardModal{{ $policy->id }}">Modifier</button>
-                                            <button class="btn btn-xs btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#cardModalCenter{{ $policy->id }}">
-                                                Supprimer
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tr>
                             </tbody>
                         </table>
                         <!--end::Table-->
@@ -138,114 +129,220 @@
         <!--end::Post-->
     </div>
 
-    @foreach ($policies as $policy)
-        <div class="modal fade" id="cardModal{{ $policy->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabelOne" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour la police</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="lni lni-close"></i>
-                        </button>
-                    </div>
-                    <form action="{{ url('admin/policy/' . $policy->id) }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-
-                            <div class="mb-3">
-                                <div class="input-style-1">
-                                    <label>Nom Complet</label>
-                                    <input class="form-control" name="name" type="text" placeholder="Nom Complet"
-                                        value="{{ $policy->name }}" required />
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="input-style-1">
-                                    <label>Marque</label>
-                                    <input class="form-control" name="brand" type="text" placeholder="Marque"
-                                        value="{{ $policy->brand }}" />
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="input-style-1">
-                                    <label>Matricule</label>
-                                    <input class="form-control" name="matricule" type="text" placeholder="Matricule"
-                                        value="{{ $policy->matricule }}" required />
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-style-1">
-                                    <label>Contact</label>
-                                    <input class="form-control" name="contact" type="tel" placeholder="Contact"
-                                        value="{{ $policy->phone }}" required />
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-style-1">
-                                    <label>Date de Début</label>
-                                    <input class="form-control" name="date_begin" type="date" placeholder="Date de début"
-                                        value="{{ $policy->date_begin }}" required />
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-style-1">
-                                    <label>Date d'Expiration</label>
-                                    <input class="form-control" name="date_expired" type="date"
-                                        placeholder="Date d'expiration" value="{{ $policy->date_expired }}" required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" style="background-color: #2b9753 !important;"
-                                class="btn btn-success">Enregistrer</button>
-                        </div>
-                    </form>
+    <div class="modal fade" id="cardModalView" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelOne"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
 
-    @foreach ($policies as $policy)
-        <!-- Modal -->
-        <div class="modal fade" id="cardModalCenter{{ $policy->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modal-content">
+            </div>
+        </div>
+    </div>
 
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Êtes-vous sûr de vouloir supprimer cette police d'assurance ?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
-                        <form method="POST" action="{{ url('admin/policy/' . $policy->id) }}">
-                            @csrf
-                            <input type="hidden" name="delete" value="true">
-                            <button class="btn btn-danger" style="background-color: #D50100 !important;"
-                                type="submit"><i class="me-2 icon-xxs dropdown-item-icon"
-                                    data-feather="trash-2"></i>Supprimer</button>
-                        </form>
-                    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="cardModalCenter" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer cette police d'assurance ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
 @endsection
 
 @push('scripts')
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $('#kt_datatable').DataTable({
-                language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        "use strict";
+
+        // Class definition
+        var KTDatatablesExample = function() {
+            // Shared variables
+            var table;
+            var datatable;
+
+            // Private functions
+            var initDatatable = function() {
+                // Set date data order
+
+                // Init datatable --- more info on datatables: https://datatables.net/manual/
+                datatable = $(table).DataTable({
+                    language: {
+                        'url': "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+                    },
+                    processing: true,
+                    serverSide: true,
+                    searching: true,
+                    ajax: "{{ url('admin/ajax/policies/expired') }}",
+                    columnDefs: [{
+                        className: "upper",
+                        targets: [1]
+                    }],
+                    columns: [{
+                            data: 'id'
+                        },
+                        {
+                            data: 'name'
+                        },
+                        {
+                            data: 'brand'
+                        },
+                        {
+                            data: 'matricule'
+                        },
+                        {
+                            data: 'contact'
+                        },
+                        {
+                            data: 'date_begin'
+                        },
+                        {
+                            data: 'date_expired'
+                        },
+                        {
+                            data: 'actions'
+                        },
+                    ]
+
+                });
+            }
+
+            // Hook export buttons
+
+            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+            var handleSearchDatatable = () => {
+                const filterSearch = document.querySelector('[data-kt-filter="search"]');
+                filterSearch.addEventListener('keyup', function(e) {
+                    datatable.search(e.target.value).draw();
+                });
+            }
+            var filterDatatable = () => {
+                const t = document.querySelector('[data-kt-filter="status"]');
+                $(t).on("change", (t => {
+                    let n = t.target.value;
+                    "all" === n && (n = ""),
+                        datatable.column(8).search(n).draw()
+                }));
+            }
+
+            // Public methods
+            return {
+                init: function() {
+                    table = document.querySelector('#kt_datatable');
+
+                    if (!table) {
+                        return;
+                    }
+
+                    initDatatable();
+                    handleSearchDatatable();
+                    filterDatatable();
+                }
+            };
+        }();
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function() {
+            KTDatatablesExample.init();
+        });
+        $(document).on("click", ".modal_view_action", function() {
+
+            var id = $(this).data('id');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('admin-ajax-policy') }}",
+                dataType: 'json',
+                data: {
+                    "id": id,
+                    "action": "view",
+                },
+                success: function(data) {
+                    //get data value params
+                    var title = data.title;
+                    var body = data.body;
+
+                    $('#cardModalView .modal-title').text(title); //dynamic title
+                    $('#cardModalView .modal-body').html(body); //url to delete item
+                    $('#cardModalView').modal('show');
+                }
+            });
+
+            //show the modal
+        });
+
+        $(document).on("click", ".modal_edit_action", function() {
+            var id = $(this).data('id');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('admin-ajax-policy') }}",
+                dataType: 'json',
+                data: {
+                    "id": id,
+                    "action": "edit",
+                },
+                success: function(data) {
+                    //get data value params
+                    var body = data.body;
+                    //dynamic title
+                    $('#cardModal .modal-content').html(body); //url to delete item
+                    $('#cardModal').modal('show');
+                }
+            });
+
+        });
+
+        $(document).on("click", ".modal_delete_action", function() {
+            var id = $(this).data('id');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('admin-ajax-policy') }}",
+                dataType: 'json',
+                data: {
+                    "id": id,
+                    "action": "delete",
+                },
+                success: function(data) {
+                    //get data value params
+                    var body = data.body;
+                    //dynamic title
+                    $('#cardModalCenter .modal-footer').html(body); //url to delete item
+                    $('#cardModalCenter').modal('show');
                 }
             });
         });

@@ -66,7 +66,11 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <h2>Liste des Factures Payées</h2>
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <span class="svg-icon fs-1 position-absolute ms-4"><i class="bi bi-search fs-2"></i></span>
+                                <input type="text" data-kt-filter="search"
+                                    class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher" />
+                            </div>
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
@@ -74,11 +78,9 @@
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
-
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#securityModal">
                                     <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
-
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -105,26 +107,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($factures as $facture)
-                                    <tr>
-                                        <td>{{ $facture->id }}</td>
-                                        <td>{{ $facture->number_facture }}</td>
-                                        <td>{{ $facture->type_prestation }}</td>
-                                        <td>{{ $facture->amount }} FCFA</td>
-                                        <td>{{ $facture->date_facture }}</td>
-                                        <td>{{ $facture->user->lastname . ' ' . $facture->user->firstname }}</td>
-                                        <td>{{ $facture->status }}</td>
-                                        <td>
-                                            <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#cardModal{{ $facture->id }}">Modifier</button>
-                                            <button class="btn btn-xs btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#cardModalCenter{{ $facture->id }}">
-                                                Supprimer
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tr>
                             </tbody>
                         </table>
                         <!--end::Table-->
@@ -194,7 +176,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Référence Sinistre</label>
+                                <label>Référence sinistre</label>
                                 <input class="form-control" name="ref_sinistre" type="text"
                                     placeholder="Référence" />
                             </div>
@@ -246,7 +228,6 @@
                                     placeholder="Date de début" required />
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" style="background-color: #2b9753 !important;"
@@ -256,15 +237,222 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="cardModalView" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelOne"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cardModalCenter" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer cette facture ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $('#kt_datatable').DataTable({
-                language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        "use strict";
+
+        // Class definition
+        var KTDatatablesExample = function() {
+            // Shared variables
+            var table;
+            var datatable;
+
+            // Private functions
+            var initDatatable = function() {
+                // Set date data order
+
+                // Init datatable --- more info on datatables: https://datatables.net/manual/
+                datatable = $(table).DataTable({
+                    language: {
+                        'url': "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+                    },
+                    processing: true,
+                    serverSide: true,
+                    searching: true,
+                    ajax: "{{ url('admin/ajax/factures/paid') }}",
+                    columnDefs: [{
+                        className: "upper",
+                        targets: [1]
+                    }],
+                    columns: [{
+                            data: 'id'
+                        },
+                        {
+                            data: 'number_facture'
+                        },
+                        {
+                            data: 'type_prestation'
+                        },
+                        {
+                            data: 'amount'
+                        },
+                        {
+                            data: 'date_facture'
+                        },
+                        {
+                            data: 'user'
+                        },
+                        {
+                            data: 'status'
+                        },
+                        {
+                            data: 'actions'
+                        },
+                    ]
+
+                });
+            }
+
+            // Hook export buttons
+
+            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+            var handleSearchDatatable = () => {
+                const filterSearch = document.querySelector('[data-kt-filter="search"]');
+                filterSearch.addEventListener('keyup', function(e) {
+                    datatable.search(e.target.value).draw();
+                });
+            }
+            var filterDatatable = () => {
+                const t = document.querySelector('[data-kt-filter="status"]');
+                $(t).on("change", (t => {
+                    let n = t.target.value;
+                    "all" === n && (n = ""),
+                        datatable.column(8).search(n).draw()
+                }));
+            }
+
+            // Public methods
+            return {
+                init: function() {
+                    table = document.querySelector('#kt_datatable');
+
+                    if (!table) {
+                        return;
+                    }
+
+                    initDatatable();
+                    handleSearchDatatable();
+                    filterDatatable();
+                }
+            };
+        }();
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function() {
+            KTDatatablesExample.init();
+        });
+
+        $(document).on("click", ".modal_view_action", function() {
+
+            var id = $(this).data('id');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('admin-ajax-facture') }}",
+                dataType: 'json',
+                data: {
+                    "id": id,
+                    "action": "view",
+                },
+                success: function(data) {
+                    //get data value params
+                    var title = data.title;
+                    var body = data.body;
+
+                    $('#cardModalView .modal-title').text(title); //dynamic title
+                    $('#cardModalView .modal-body').html(body); //url to delete item
+                    $('#cardModalView').modal('show');
+                }
+            });
+
+            //show the modal
+        });
+
+        $(document).on("click", ".modal_edit_action", function() {
+            var id = $(this).data('id');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('admin-ajax-facture') }}",
+                dataType: 'json',
+                data: {
+                    "id": id,
+                    "action": "edit",
+                },
+                success: function(data) {
+                    //get data value params
+                    var body = data.body;
+                    //dynamic title
+                    $('#cardModal .modal-content').html(body); //url to delete item
+                    $('#cardModal').modal('show');
+                }
+            });
+
+        });
+
+        $(document).on("click", ".modal_delete_action", function() {
+            var id = $(this).data('id');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('admin-ajax-facture') }}",
+                dataType: 'json',
+                data: {
+                    "id": id,
+                    "action": "delete",
+                },
+                success: function(data) {
+                    //get data value params
+                    var body = data.body;
+                    //dynamic title
+                    $('#cardModalCenter .modal-footer').html(body); //url to delete item
+                    $('#cardModalCenter').modal('show');
                 }
             });
         });

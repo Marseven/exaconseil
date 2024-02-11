@@ -9,6 +9,17 @@ class Cashflow extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'brand',
+        'matricule',
+        'contact',
+        'date_begin',
+        'date_expired',
+        'user_id',
+        'entreprise_id',
+    ];
+
     public function cashbox()
     {
         return $this->belongsTo(Cashbox::class);

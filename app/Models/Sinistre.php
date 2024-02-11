@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Sinistre extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'brand',
+        'matricule',
+        'contact',
+        'assurance',
+        'tiers',
+        'date_open',
+        'user_id',
+        'entreprise_id',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

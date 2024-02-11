@@ -12,5 +12,6 @@ class ServiceEntreprise extends Model
     protected $fillable = [
         'service_id',
         'entreprise_id'
+
     ];
 }

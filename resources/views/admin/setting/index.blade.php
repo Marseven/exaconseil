@@ -86,11 +86,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="d-flex justify-content-end">
                                                     <div class="form-check form-check-solid form-check-custom form-switch">
                                                         <input class="form-check-input w-45px h-30px" type="checkbox"
                                                             name="services[]" value="{{ $service->id }}"
-                                                            @if ($entreprise->services->contains($service->id)) checked @endif>
+                                                            @if ($entreprise->services->contains($service)) checked @endif>
                                                         <label class="form-check-label" for="services"></label>
                                                     </div>
                                                 </div>

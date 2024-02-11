@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\Policy;
+use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+class PoliciesImport implements ToModel, WithHeadingRow
+{
+    /**
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function model(array $row)
+    {
+        $day = new \DateTime();
+
+        return new Policy([
+            //
+            'name'     => $row['noms'] ?? "-",
+            'brand'    => $row['marque'] ?? "-",
+            'matricule' => $row['immatriculation'] ?? "-",
+            'contact' => $row['contact'] ?? "-",
+            'date_begin' => $row['date_effet'] ? Date::excelToDateTimeObject($row['date_effet']) : $day->format('Y-m-d'),
+            'date_expired' => $row['date_expiration'] ? Date::excelToDateTimeObject($row['date_expiration'])  : $day->format('Y-m-d'),
+            'user_id' => Auth::user()->id,
+            'entreprise_id' => Auth::user()->entreprise_id == 0 ? 2 : Auth::user()->entreprise_id,
+        ]);
+    }
+}

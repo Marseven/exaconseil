@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Entreprise extends Model
 {
@@ -18,8 +19,8 @@ class Entreprise extends Model
         'photo',
     ];
 
-    public function services()
+    public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class, 'service_entreprises', 'service_id', 'entreprise_id');
+        return $this->belongsToMany(Service::class);
     }
 }

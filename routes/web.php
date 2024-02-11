@@ -90,21 +90,33 @@ Route::middleware('auth')->group(function () {
         Route::get('/list/policies/expired', [PolicyController::class, 'expired'])->name('admin-list-policies-expired');
         Route::post('/create/policy', [PolicyController::class, 'create'])->name('admin-create-policy');
         Route::post('/policy/{policy}', [PolicyController::class, 'update'])->name('admin-update-policy');
+        Route::get('/ajax/policies/{type}', [PolicyController::class, 'ajaxList'])->name('admin-ajax-policies');
+        Route::post('/ajax/policy', [PolicyController::class, 'ajaxItem'])->name('admin-ajax-policy');
+        Route::post('/export/policy', [PolicyController::class, 'export'])->name('admin-export-policy');
+        Route::post('/import/policy', [PolicyController::class, 'import'])->name('admin-import-policy');
 
         //sinistres
-        Route::get('/list/sinsitres', [SinistreController::class, 'index'])->name('admin-list-sinistres');
+        Route::get('/list/sinistres', [SinistreController::class, 'index'])->name('admin-list-sinistres');
         Route::post('/create/sinistre', [SinistreController::class, 'create'])->name('admin-create-sinistre');
         Route::post('/sinistre/{sinistre}', [SinistreController::class, 'update'])->name('admin-update-sinistre');
+        Route::get('/ajax/sinistres', [SinistreController::class, 'ajaxList'])->name('admin-ajax-sinistres');
+        Route::post('/ajax/sinistre', [SinistreController::class, 'ajaxItem'])->name('admin-ajax-sinistre');
+        Route::post('/export/sinistre', [SinistreController::class, 'export'])->name('admin-export-sinistre');
+        Route::post('/import/sinistre', [SinistreController::class, 'import'])->name('admin-import-sinistre');
 
         //devis
         Route::get('/list/devis', [DevisController::class, 'index'])->name('admin-list-devis');
         Route::post('/create/devis', [DevisController::class, 'create'])->name('admin-create-devis');
         Route::post('/devis/{devis}', [DevisController::class, 'update'])->name('admin-update-devis');
+        Route::get('/ajax/devis', [DevisController::class, 'ajaxList'])->name('admin-ajax-devis');
+        Route::post('/ajax/devis', [DevisController::class, 'ajaxItem'])->name('admin-ajax-devis');
+        Route::post('/export/devis', [DevisController::class, 'export'])->name('admin-export-devis');
+        Route::post('/import/devis', [DevisController::class, 'import'])->name('admin-import-devis');
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');
-        Route::post('/ajax/factures', [FactureController::class, 'ajaxList'])->name('admin-ajax-factures');
-        Route::post('/ajax/facture/{facture}', [FactureController::class, 'edit'])->name('admin-ajax-facture');
+        Route::get('/ajax/factures/{status}', [FactureController::class, 'ajaxList'])->name('admin-ajax-factures');
+        Route::post('/ajax/facture', [FactureController::class, 'ajaxItem'])->name('admin-ajax-facture');
         Route::post('/create/facture', [FactureController::class, 'create'])->name('admin-create-facture');
         Route::post('/facture/{facture}', [FactureController::class, 'update'])->name('admin-update-facture');
         Route::post('/facture/status/{facture}', [FactureController::class, 'status'])->name('admin-status-facture');
