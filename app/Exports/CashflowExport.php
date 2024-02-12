@@ -3,15 +3,26 @@
 namespace App\Exports;
 
 use App\Models\Cashflow;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class CashflowExport implements FromCollection
+class CashflowExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    protected $begin;
+    protected $end;
+
+    public function __construct($begin, $end)
     {
-        return Cashflow::all();
+        $this->begin = new \DateTime($begin);
+        $this->end = new \DateTime($end);
+        $this->end->modify('+1 day');
+    }
+
+    public function view(): View
+    {
+        $cashflows = Cashflow::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
+        return view('admin.cashflow.export', [
+            'cashflows' => $cashflows,
+        ]);
     }
 }
