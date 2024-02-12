@@ -155,7 +155,7 @@ class FileController extends Controller
         }
     }
 
-    static function cover(UploadedFile $request)
+    static function piece(UploadedFile $request)
     {
         $result = [];
 
@@ -172,12 +172,12 @@ class FileController extends Controller
             $extension = $request->getClientOriginalExtension();
 
             //filename to store
-            $filenametostore = $filename . '_' . time() . '_cover.' . $extension;
+            $filenametostore = $filename . '_' . time() . '_piece.' . $extension;
 
             //Upload File
-            $request->move(public_path('/upload/cover/'),  $filenametostore);
+            $request->move(public_path('/upload/piece/'),  $filenametostore);
 
-            $filePath_traite = '/upload/cover/' . $filenametostore;
+            $filePath_traite = '/upload/piece/' . $filenametostore;
 
             $result['state'] = true;
             $result['url'] =  $filePath_traite;

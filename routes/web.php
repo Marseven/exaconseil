@@ -127,6 +127,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/cashflow/{cashflow}', [CashflowController::class, 'edit'])->name('admin-edit-cashflow');
         Route::post('/create/cashflow', [CashflowController::class, 'create'])->name('admin-create-cashflow');
         Route::post('/cashflow/{cashflow}', [CashflowController::class, 'update'])->name('admin-update-cashflow');
+        Route::get('/ajax/cashflows', [CashflowController::class, 'ajaxList'])->name('admin-ajax-cashflows');
+        Route::post('/ajax/cashflow', [CashflowController::class, 'ajaxItem'])->name('admin-ajax-cashflow');
+        Route::post('/export/cashflow', [CashflowController::class, 'export'])->name('admin-export-cashflow');
 
         //cashbox
         Route::get('/list/cashboxs', [CashflowController::class, 'cashbox'])->name('admin-list-cashboxs');
