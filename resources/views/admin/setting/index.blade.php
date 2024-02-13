@@ -116,12 +116,47 @@
                     </form>
                 @endforeach
 
-
-
+                <form method="POST" action="{{ route('admin-save-notification') }}">
+                    <div class="card mb-5 mb-xl-10">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                            data-bs-target="#kt_account_connected_accounts" aria-expanded="true"
+                            aria-controls="kt_account_connected_accounts">
+                            <div class="card-title m-0">
+                                <h3 class="fw-bold m-0">Paramètres</h3>
+                                @csrf
+                            </div>
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Content-->
+                        <div id="kt_account_settings_connected_accounts" class="collapse show">
+                            <!--begin::Card body-->
+                            <div class="card-body border-top p-9">
+                                @foreach ($settings as $setting)
+                                    <div class="mb-10">
+                                        <label for="{{ $setting->key }}" class="form-label">{{ $setting->label }}</label>
+                                        <input type="{{ $setting->type }}" class="form-control form-control-solid"
+                                            name="{{ $setting->key }}" value="{{ $setting->value }}" />
+                                    </div>
+                                @endforeach
+                            </div>
+                            <!--end::Items-->
+                        </div>
+                        <!--end::Card body-->
+                        <!--begin::Card footer-->
+                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                        <!--end::Card footer-->
+                    </div>
+                    <!--end::Content-->
             </div>
-            <!--end::Container-->
+            </form>
+
         </div>
-        <!--end::Post-->
+        <!--end::Container-->
+    </div>
+    <!--end::Post-->
     </div>
 @endsection
 

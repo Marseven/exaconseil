@@ -190,9 +190,11 @@
                             <div class="input-style-1">
                                 <label>Service</label>
                             </div>
-                            <select id="selectOne" class="form-control" name="service_id">
+                            <select target="entity" id="service" class="form-control linked-select" name="service_id">
+                                <option value='-1'>Choisir</option>
                                 @foreach ($services as $service)
-                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                    <option id="service_{{ $service->id }}" data-name="{{ $service->name }}"
+                                        value="{{ $service->id }}">{{ $service->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -201,7 +203,7 @@
                             <div class="input-style-1">
                                 <label>Élément du service</label>
                             </div>
-                            <select id="selectOne" class="form-control" name="element_id">
+                            <select id="entity" class="form-control" name="element_id">
                             </select>
                         </div>
                     </div>
@@ -298,6 +300,42 @@
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script>
         "use strict";
+
+        $(".linked-select").change(function() {
+            var id = $(this).val();
+            var target = $(this).attr('target');
+            var name = $("#service_" + id).data('name');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery(
+                            'meta[name="csrf-token"]')
+                        .attr('content')
+                },
+                url: "{{ route('admin-select-service') }}",
+                data: {
+                    'id': id,
+                },
+                method: 'POST',
+                dataType: 'json',
+                success: function(result) {
+
+                    result = JSON.parse(result);
+                    var option_html = "<option value='-1'>Choisir</option>";
+                    let j = 0;
+                    for (j = 0; j < result.length; j++) {
+                        is_selected = $("#" + target).data('val') == result[i].id ? 'selected' : '';
+                        option_html += "<option " + is_selected + "  value='" + result[i].id +
+                            "'>  " + name + " N°" + result[i].id + "</option>";
+                    }
+
+                    $("#" + target).html(option_html);
+                    $("#" + target).change();
+                }
+            });
+        });
+
+        $(".linked-select").change();
 
         // Class definition
         var KTDatatablesExample = function() {

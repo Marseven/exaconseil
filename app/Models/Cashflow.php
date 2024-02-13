@@ -10,12 +10,13 @@ class Cashflow extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'brand',
-        'matricule',
-        'contact',
-        'date_begin',
-        'date_expired',
+        'type',
+        'reason',
+        'amount',
+        'date_cash',
+        'service_id',
+        'cashbox_id',
+        'entity_id',
         'user_id',
         'entreprise_id',
     ];

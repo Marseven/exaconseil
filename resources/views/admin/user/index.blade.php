@@ -188,7 +188,7 @@
 
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Entreprise</label>
-                            <select target="respeonsable" id="entreprise" class="form-control linked-select"
+                            <select target="responsable" id="entreprise" class="form-control linked-select"
                                 name="entreprise_id">
                                 @foreach ($entreprises as $entreprise)
                                     <option value="{{ $entreprise->id }}">{{ $entreprise->company_name }}</option>
@@ -198,7 +198,7 @@
 
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Responsable</label>
-                            <select id="respeonsable" class="form-control" name="responsable_id">
+                            <select id="responsable" class="form-control" name="responsable_id">
                             </select>
                         </div>
 
@@ -342,7 +342,7 @@
         $(".linked-select").change(function() {
             var id = $(this).val();
             var target = $(this).attr('target');
-            console.log(id);
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': jQuery(

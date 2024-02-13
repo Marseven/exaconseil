@@ -7,8 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileController;
 use App\Models\Cashbox;
 use App\Models\Cashflow;
+use App\Models\Devis;
 use App\Models\Entreprise;
+use App\Models\Facture;
+use App\Models\Policy;
 use App\Models\Service;
+use App\Models\Sinistre;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -368,11 +372,11 @@ class CashflowController extends Controller
         $cashflow->amount = $request->amount;
         $cashflow->date_cash = $request->date_cash;
         $cashflow->cashbox_id =  $request->cashbox_id;
-        $cashflow->service_id =  $request->service_id;
+        $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
         $cashflow->entity_id =  $request->entity_id;
 
         if ($request->file('piece')) {
-            $picture = FileController::piece($request->file('logo'));
+            $picture = FileController::piece($request->file('piece'));
             if ($picture['state'] == false) {
                 return back()->withErrors($picture['message']);
             }
@@ -407,7 +411,7 @@ class CashflowController extends Controller
             $cashflow->service_id =  $request->service_id;
             $cashflow->entity_id =  $request->entity_id;
             if ($request->file('piece')) {
-                $picture = FileController::piece($request->file('logo'));
+                $picture = FileController::piece($request->file('piece'));
                 if ($picture['state'] == false) {
                     return back()->withErrors($picture['message']);
                 }
@@ -428,5 +432,34 @@ class CashflowController extends Controller
     {
         $day = Carbon::now();
         return Excel::download(new CashflowExport($request->begin, $request->end), 'Transactions - ' . $day . '.xlsx');
+    }
+
+    public function select(Request $request)
+    {
+        $service = Service::where('id', $request->id)->first();
+
+        $entrepriseId = Auth::user()->entreprise_id == 0 ? 1 : Auth::user()->entreprise_id;
+
+        switch ($service->id) {
+            case 1:
+                $entities = Policy::where('entreprise_id', $entrepriseId)->get();
+                break;
+            case 2:
+                $entities = Sinistre::where('entreprise_id', $entrepriseId)->get();
+                break;
+            case 3:
+                $entities = Devis::where('entreprise_id', $entrepriseId)->get();
+                break;
+            case 5:
+                $entities = Facture::where('entreprise_id', $entrepriseId)->get();
+                break;
+            default:
+                $entities = [];
+                break;
+        }
+
+        $response = json_encode($entities);
+
+        return response()->json($response);
     }
 }

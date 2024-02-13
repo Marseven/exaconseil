@@ -11,9 +11,11 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SinistreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Front\WelcomeController;
+use App\Mail\PolicyExpirationMail;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +31,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/home', [WelcomeController::class, 'index'])->name('home');
+
+Route::get('/test-notification', function () {
+    // Récupérez une instance de la police depuis votre base de données
+    $policy = App\Models\Policy::all()->first(); // Remplacez 1 par l'ID de la police que vous souhaitez tester
+
+    // Envoyez l'e-mail de notification
+    Mail::to('destinataire@example.com')->send(new PolicyExpirationMail($policy));
+
+    return 'Notification envoyée avec succès !';
+});
 
 Auth::routes();
 
@@ -74,6 +86,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/settings', [SettingController::class, 'index'])->name('admin-settings');
         Route::post('/save/setting', [SettingController::class, 'save'])->name('admin-save-settings');
+        Route::post('/save/notification', [SettingController::class, 'notification'])->name('admin-save-notification');
 
         //entreprise
         Route::get('/list/entreprises', [EntrepriseController::class, 'index'])->name('admin-list-entreprises');
@@ -149,5 +162,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/role/{role}', [UserController::class, 'updateRole'])->name('admin-update-role');
 
         Route::post('/select', [UserController::class, 'select'])->name('admin-select');
+        Route::post('/select/service', [CashflowController::class, 'select'])->name('admin-select-service');
     });
 });
