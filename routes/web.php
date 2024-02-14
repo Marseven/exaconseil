@@ -33,12 +33,8 @@ Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/home', [WelcomeController::class, 'index'])->name('home');
 
 Route::get('/test-notification', function () {
-    // Récupérez une instance de la police depuis votre base de données
-    $policy = App\Models\Policy::all()->first(); // Remplacez 1 par l'ID de la police que vous souhaitez tester
-
-    // Envoyez l'e-mail de notification
-    Mail::to('destinataire@example.com')->send(new PolicyExpirationMail($policy));
-
+    $policy = App\Models\Policy::all()->first();
+    Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policy));
     return 'Notification envoyée avec succès !';
 });
 
