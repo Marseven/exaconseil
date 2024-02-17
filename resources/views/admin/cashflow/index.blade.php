@@ -4,6 +4,12 @@
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@php
+    $user = Auth::user();
+    $user->load(['entreprise']);
+    $role = $user->roles->first();
+@endphp
+
 @section('content')
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Toolbar-->
@@ -34,7 +40,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Suivu de Caisse</li>
+                        <li class="breadcrumb-item text-muted">Suivi de Caisse</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -203,7 +209,7 @@
                             <div class="input-style-1">
                                 <label>Élément du service</label>
                             </div>
-                            <select id="entity" class="form-control" name="element_id">
+                            <select id="entity" class="form-control" name="entity_id">
                             </select>
                         </div>
                     </div>
@@ -233,32 +239,34 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" id="modal-content">
+    @if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Caisse'))
+        <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="modal-content">
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="cardModalCenter" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer cette transaction ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+        <!-- Modal -->
+        <div class="modal fade" id="cardModalCenter" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Êtes-vous sûr de vouloir supprimer cette transaction ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <!-- Modal -->
     <div class="modal fade" id="export" role="dialog">
@@ -324,9 +332,9 @@
                     var option_html = "<option value='-1'>Choisir</option>";
                     let j = 0;
                     for (j = 0; j < result.length; j++) {
-                        is_selected = $("#" + target).data('val') == result[i].id ? 'selected' : '';
-                        option_html += "<option " + is_selected + "  value='" + result[i].id +
-                            "'>  " + name + " N°" + result[i].id + "</option>";
+                        var is_selected = $("#" + target).data('val') == result[j].id ? 'selected' : '';
+                        option_html += "<option " + is_selected + "  value='" + result[j].id +
+                            "'>  " + name + " N°" + result[j].id + "</option>";
                     }
 
                     $("#" + target).html(option_html);

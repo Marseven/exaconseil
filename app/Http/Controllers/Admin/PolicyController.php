@@ -6,6 +6,7 @@ use App\Exports\PoliciesExport;
 use App\Http\Controllers\Controller;
 use App\Imports\PoliciesImport;
 use App\Models\Policy;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,10 @@ class PolicyController extends Controller
 
     public function ajaxList(Request $request, $type)
     {
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+        $role = $user->roles->first();
+
         $today = new \DateTime(date('Y-m-d'));
         $today = $today->format('Y-m-d');
         $sign = '>=';
@@ -99,7 +104,7 @@ class PolicyController extends Controller
 
 
 
-            if (Auth::user()->id) {
+            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"

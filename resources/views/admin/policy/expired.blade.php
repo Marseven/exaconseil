@@ -4,6 +4,12 @@
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@php
+    $user = Auth::user();
+    $user->load(['entreprise']);
+    $role = $user->roles->first();
+@endphp
+
 @section('content')
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Toolbar-->
@@ -146,29 +152,93 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" id="modal-content">
+    @if ($role->hasPermissionTo('edit policy') && $user->hasService('Police d\'assurance'))
+        <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="modal-content">
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="cardModalCenter" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Êtes-vous sûr de vouloir supprimer cette police d'assurance ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal -->
+    <div class="modal fade" id="export" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Exporter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form action="{{ route('admin-export-policy') }}" method="POST">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Date de Début</label>
+                                <input class="form-control" name="date_begin" type="date" placeholder="Date de début"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Date de fin</label>
+                                <input class="form-control" name="date_end" type="date"
+                                    placeholder="Date d'expiration" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-dark" data-bs-dismiss="modal">Valider</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="cardModalCenter" role="dialog">
+    <div class="modal fade" id="import" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Importer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer cette police d'assurance ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
-                </div>
+                <form action="{{ route('admin-import-policy') }}" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Uploader le fichier</label>
+                                <input class="form-control" name="file_policies" type="file" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-dark" data-bs-dismiss="modal">Valider</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

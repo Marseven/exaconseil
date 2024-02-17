@@ -4,6 +4,12 @@
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@php
+    $user = Auth::user();
+    $user->load(['entreprise']);
+    $role = $user->roles->first();
+@endphp
+
 @section('content')
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Toolbar-->

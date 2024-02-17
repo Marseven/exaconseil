@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Entreprise;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -14,9 +15,20 @@ class UserController extends Controller
     //
     public function index()
     {
-        $admins = User::all();
-        $roles = Role::all();
-        $entreprises = Entreprise::all();
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+        $role = $user->roles->first();
+
+        if ($user->entreprise_id == 0) {
+            $admins = User::all();
+            $roles = Role::all();
+            $entreprises = Entreprise::all();
+        } else {
+            $admins = User::where('entreprise_id', $user->entreprise_id)->get();
+            $roles = Role::whereIn('name', ['Gerant', 'Agent'])->get();
+            $entreprises = Entreprise::where('id', $user->entreprise_id)->get();
+        }
+
         return view('admin.user.index', compact('admins', 'roles', 'entreprises'));
     }
 
@@ -98,6 +110,8 @@ class UserController extends Controller
         $user->password = bcrypt('12345678');
 
         if ($user->save()) {
+            $role = Role::find($request->role_id);
+            $user->assignRole($role);
             $user->sendPasswordResetNotification(app('auth.password.broker')->createToken($user));
             return back()->with('success', 'Utilisateur créé avec succès.');
         } else {
@@ -134,8 +148,10 @@ class UserController extends Controller
     public function select(Request $request)
     {
         $responsables = User::where('entreprise_id', $request->id)->get();
+        foreach ($responsables as $responsable) {
+            $responsable->firstname = $responsable->firstname == null ? "" : $responsable->firstname;
+        }
         $response = json_encode($responsables);
-
         return response()->json($response);
     }
 }

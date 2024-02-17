@@ -124,11 +124,12 @@ Route::middleware('auth')->group(function () {
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');
+        Route::get('/list/factures/unpaid', [FactureController::class, 'pending'])->name('admin-list-factures-unpaid');
         Route::get('/ajax/factures/{status}', [FactureController::class, 'ajaxList'])->name('admin-ajax-factures');
         Route::post('/ajax/facture', [FactureController::class, 'ajaxItem'])->name('admin-ajax-facture');
         Route::post('/create/facture', [FactureController::class, 'create'])->name('admin-create-facture');
         Route::post('/facture/{facture}', [FactureController::class, 'update'])->name('admin-update-facture');
-        Route::post('/facture/status/{facture}', [FactureController::class, 'status'])->name('admin-status-facture');
+        Route::post('/facture/status/{facture}', [FactureController::class, 'statusFacture'])->name('admin-status-facture');
 
         //cashflows
         Route::get('/list/cashflows', [CashflowController::class, 'index'])->name('admin-list-cashflows');

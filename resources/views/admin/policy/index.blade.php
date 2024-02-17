@@ -4,6 +4,12 @@
     <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@php
+    $user = Auth::user();
+    $user->load(['entreprise']);
+    $role = $user->roles->first();
+@endphp
+
 @section('content')
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Toolbar-->
@@ -216,34 +222,34 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" id="modal-content">
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="cardModalCenter" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer cette police d'assurance ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+    @if ($role->hasPermissionTo('edit policy') && $user->hasService('Police d\'assurance'))
+        <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="modal-content">
                 </div>
             </div>
         </div>
-    </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="cardModalCenter" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Suppression</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Êtes-vous sûr de vouloir supprimer cette police d'assurance ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <!-- Modal -->
     <div class="modal fade" id="export" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -293,7 +299,7 @@
                         @csrf
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Uploder le fichier</label>
+                                <label>Uploader le fichier</label>
                                 <input class="form-control" name="file_policies" type="file" required />
                             </div>
                         </div>

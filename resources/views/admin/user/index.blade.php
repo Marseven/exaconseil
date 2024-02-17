@@ -204,7 +204,7 @@
 
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Rôle</label>
-                            <select id="selectOne" class="form-control" name="responsable_id">
+                            <select id="selectOne" class="form-control" name="role_id">
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}
                                     </option>

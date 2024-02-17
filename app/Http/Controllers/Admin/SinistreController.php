@@ -6,6 +6,7 @@ use App\Exports\SinistresExport;
 use App\Http\Controllers\Controller;
 use App\Imports\SinistresImport;
 use App\Models\Sinistre;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,9 @@ class SinistreController extends Controller
 
     public function ajaxList(Request $request)
     {
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+        $role = $user->roles->first();
 
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -93,7 +97,7 @@ class SinistreController extends Controller
 
 
 
-            if (Auth::user()->id) {
+            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"

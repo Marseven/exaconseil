@@ -135,7 +135,7 @@
                             </div>
                             <!--end:Menu item-->
 
-                            @if ($role->hasPermissionTo('view policy'))
+                            @if ($role->hasPermissionTo('view policy') && $user->hasService("Police d'assurance"))
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
@@ -179,7 +179,7 @@
                                 <!--end:Menu item-->
                             @endif
 
-                            @if ($role->hasPermissionTo('view sinistre'))
+                            @if ($role->hasPermissionTo('view sinistre') && $user->hasService('Sinistre'))
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
@@ -210,7 +210,7 @@
                                 </div>
                                 <!--end:Menu item-->
                             @endif
-                            @if ($role->hasPermissionTo('view devis'))
+                            @if ($role->hasPermissionTo('view devis') && $user->hasService('Devis'))
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
@@ -241,7 +241,7 @@
                                 </div>
                                 <!--end:Menu item-->
                             @endif
-                            @if ($role->hasPermissionTo('view cashflow'))
+                            @if ($role->hasPermissionTo('view cashflow') && $user->hasService('Caisse'))
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
@@ -273,7 +273,7 @@
                                 </div>
                                 <!--end:Menu item-->
                             @endif
-                            @if ($role->hasPermissionTo('view facture'))
+                            @if ($role->hasPermissionTo('view facture') && $user->hasService('Facture'))
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
@@ -302,7 +302,7 @@
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="{{ route('admin-list-factures') }}">
+                                            <a class="menu-link" href="{{ route('admin-list-factures-unpaid') }}">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -354,34 +354,36 @@
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="{{ route('admin-list-roles') }}">
+                                        @if ($role->name == 'SuperAdmin')
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="{{ route('admin-list-roles') }}">
 
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Rôles</span>
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Rôles</span>
 
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="{{ route('admin-list-permissions') }}">
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="{{ route('admin-list-permissions') }}">
 
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Permissions</span>
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Permissions</span>
 
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                        @endif
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -400,34 +402,39 @@
                                     <!--end:Menu link-->
                                     <!--begin:Menu sub-->
                                     <div class="menu-sub menu-sub-accordion">
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="{{ route('admin-list-entreprises') }}">
+                                        @if ($role->name == 'SuperAdmin')
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="{{ route('admin-list-entreprises') }}">
 
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Entreprises</span>
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Entreprises</span>
 
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="{{ route('admin-list-services') }}">
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
 
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Services</span>
 
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="{{ route('admin-list-services') }}">
+
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Services</span>
+
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                        @endif
+
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
@@ -442,18 +449,21 @@
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="{{ route('admin-settings') }}">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Paramètres</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
+
+                                        @if ($role->name == 'SuperAdmin')
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="{{ route('admin-settings') }}">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Paramètres</span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                        @endif
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>

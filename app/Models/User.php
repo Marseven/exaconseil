@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Entreprise::class);
     }
+
+    public function hasService($name)
+    {
+        return $this->entreprise && $this->entreprise->services()->where('name', $name)->exists();
+    }
 }

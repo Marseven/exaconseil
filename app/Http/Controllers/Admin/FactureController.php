@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Facture;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,28 +68,43 @@ class FactureController extends Controller
 
         foreach ($records as $record) {
 
+            $user = User::find(Auth::user()->id);
+            $user->load(['entreprise']);
+            $role = $user->roles->first();
+
             $record->load(['user']);
 
             $id = $record->id;
 
-            $number_facture = $record->name;
-            $type_prestation = $record->brand;
-            $amount = $record->matricule;
-            $_status = $record->status;
-            $user = $record->user->lastname . ' ' . $record->user->firstname;
-            $date_facture = date_format(date_create($record->date_begin), 'd-m-Y');
+            $number_facture = $record->number_facture;
+            $type_prestation = $record->type_prestation;
+            $amount = Controller::format_amount($record->amount) . ' FCFA';
+
+            $_status = Controller::status($record->status);
+
+            $_status = '<span class="badge py-3 px-4 fs-7 badge-light-' . $_status['type'] . '">' . $_status['message'] . '</span>';
+
+            $_user = $record->user->lastname . ' ' . $record->user->firstname;
+            $date_facture = date_format(date_create($record->date_facture), 'd-m-Y');
 
             $actions = '<button style="padding: 10px !important" type="button"
             class="btn btn-primary modal_view_action"
             data-bs-toggle="modal"
             data-id="' . $record->id . '"
             data-bs-target="#cardModalView' . $record->id . '"><i
-                class="bi bi-eye"></i></button> ';
+                class="bi bi-eye"></i></button>';
 
+            if ($record->status != 'paid') {
+                $actions .= '<button style="padding: 10px !important; margin-left:4px;" type="button"
+                        class="btn btn-info modal_status_action"
+                        data-bs-toggle="modal"
+                        data-id="' . $record->id . '"
+                        data-bs-target="#cardModal' . $record->id . '">
+                        <i class="bi bi-currency-exchange"></i>
+                    </button> ';
+            }
 
-
-
-            if (Auth::user()->id) {
+            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture')) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -112,7 +128,7 @@ class FactureController extends Controller
                 "number_facture" => $number_facture,
                 "type_prestation" => $type_prestation,
                 "amount" => $amount,
-                "user" => $user,
+                "user" => $_user,
                 "date_facture" => $date_facture,
                 "status" => $_status,
                 "actions" => $actions,
@@ -142,47 +158,47 @@ class FactureController extends Controller
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Compagnie Assurance </h6>
-                <p class="mb-0">' . $facture->company_assurance ?? '-' . '</p>
+                <p class="mb-0">' . $facture->company_assurance . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Assuré
                 </h6>
-                <p class="mb-0">' . $facture->assure ?? '-' . ' XAF</p>
+                <p class="mb-0">' . $facture->assure . ' XAF</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Tiers
                 </h6>
-                <p class="mb-0">' . $facture->tiers ?? '-' . '</p>
+                <p class="mb-0">' . $facture->tiers . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Véhicule
                 </h6>
-                <p class="mb-0">' . $facture->vehicule ?? '-' . '</p>
+                <p class="mb-0">' . $facture->vehicule . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Immatriculation
                 </h6>
-                <p class="mb-0">' . $facture->immatricualtion ?? '-' . '</p>
+                <p class="mb-0">' . $facture->immatriculation  . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Référence Sinistre
                 </h6>
-                <p class="mb-0">' . $facture->ref_sinsitre ?? '-' . '</p>
+                <p class="mb-0">' . $facture->ref_sinistre . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Date de sinistre
                 </h6>
-                <p class="mb-0">' . date_format(date_create($facture->date_sinistre), 'd-m-Y') ?? '-' . '</p>
+                <p class="mb-0">' . date_format(date_create($facture->date_sinistre), 'd-m-Y')  . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Date de mission
                 </h6>
-                <p class="mb-0">' . date_format(date_create($facture->date_mission), 'd-m-Y') ?? '-' . '</p>
+                <p class="mb-0">' . date_format(date_create($facture->date_mission), 'd-m-Y')  . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ville
                 </h6>
-                <p class="mb-0">' . $facture->place ?? '-' . '</p>
+                <p class="mb-0">' . $facture->place  . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Montant de la facture
@@ -199,8 +215,6 @@ class FactureController extends Controller
                 </h6>
                 <p class="mb-0">' . $facture->user->lastname . ' ' . $facture->user->firstname . '</p>
             </div>';
-
-            $body .= '</div>';
         } elseif ($request->action == "edit") {
 
             $body = '<div class="modal-header">
@@ -312,6 +326,41 @@ class FactureController extends Controller
                         <button type="submit" class="btn btn-success">Enregistrer</button>
                     </div>
             </form>';
+        } elseif ($request->action == "status") {
+
+            $body = '<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour la facture N° : ' . $facture->number_facture . '</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                </button>
+            </div>
+
+            <form action="' . url('admin/facture/status/' . $request->id) . '" method="POST">
+                <div class="modal-body">
+                <input type="hidden" name="_token" value="' . csrf_token() . '">
+                <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Statut</label>
+                                <select class="form-control" name="status" id="_status" onChange="paid_partial()" required>
+                                    <option value="paid">Payée</option>
+                                    <option value="paid_partially">Payée Partiellement</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="amount_partiel" class="mb-3" style="display:none;">
+                            <div class="input-style-1">
+                                <label>Montant</label>
+                                <input class="form-control" name="amount" type="number" placeholder="Montant"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-success">Enregistrer</button>
+                    </div>
+            </form>';
         } else {
 
             $body = '
@@ -390,10 +439,10 @@ class FactureController extends Controller
         }
     }
 
-    public function status(Request $request, Facture $facture)
+    public function statusFacture(Request $request, Facture $facture)
     {
 
-        $facture->status =  $request->company_assurance;
+        $facture->status =  $request->status;
 
         if ($facture->status == 'paid_partially') {
             $facture->amount_paid += $request->amount_paid;
@@ -408,7 +457,7 @@ class FactureController extends Controller
         $facture->date_paid =  $request->date_paid;
 
         if ($facture->save()) {
-            return back()->with('success', 'La facture mis à jour avec succès.');
+            return redirect('admin/list/factures')->with('success', 'La facture mis à jour avec succès.');
         } else {
             return back()->with('error', 'Un problème est survenu.');
         }

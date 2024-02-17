@@ -13,6 +13,7 @@ use App\Models\Facture;
 use App\Models\Policy;
 use App\Models\Service;
 use App\Models\Sinistre;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class CashflowController extends Controller
             $entrepriseId = Auth::user()->entreprise_id;
             $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
             $entreprise = Entreprise::with('services')->find($entrepriseId);
-            $services = $entreprise->services;
+            $services = $entreprise->services()->whereNot('name', "Caisse")->get();
         }
 
         return view('admin.cashflow.index', compact('cashboxes', 'services'));
@@ -38,6 +39,18 @@ class CashflowController extends Controller
 
     public function ajaxList(Request $request)
     {
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+        $role = $user->roles->first();
+        if ($user->entreprise_id == 0) {
+            $cashbox = Cashbox::all();
+        } else {
+            $cashbox = Cashbox::where('entreprise_id', $user->entreprise_id)->get();
+        }
+        $cashboxs = [];
+        foreach ($cashbox as $cash) {
+            $cashboxs[] = $cash->id;
+        }
 
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -55,14 +68,14 @@ class CashflowController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Cashflow::select('count(*) as allcount')->count();
+        $totalRecords = Cashflow::whereIn('cashbox_id', $cashboxs)->select('count(*) as allcount')->count();
         $totalRecordswithFilter = Cashflow::select('count(*) as allcount')
             ->where(function ($query) {
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
-            })->count();
+            })->whereIn('cashbox_id', $cashboxs)->count();
 
         // Fetch records
         $records = Cashflow::orderBy($columnName, $columnSortOrder)
@@ -71,7 +84,7 @@ class CashflowController extends Controller
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
-            })
+            })->whereIn('cashbox_id', $cashboxs)
             ->select('cashflows.*')
             ->skip($start)
             ->take($rowperpage)
@@ -84,11 +97,11 @@ class CashflowController extends Controller
             $record->load(['user', 'cashbox']);
 
             $id = $record->id;
-            $type = $record->type;
+            $type = $record->type == 'credit' ? 'CREDIT' : 'DEBIT';
             $reason = $record->reason;
-            $amount = $record->amount;
+            $amount = Controller::format_amount($record->amount) . " FCFA";
             $caisse = $record->cashbox->name;
-            $user = $record->user->firstname . ' ' . $record->lastname;
+            $_user = $record->user->firstname . ' ' . $record->user->lastname;
             $date = date_format(date_create($record->date_cash), 'd-m-Y');
 
             $actions = '<button style="padding: 10px !important" type="button"
@@ -99,7 +112,7 @@ class CashflowController extends Controller
                 class="bi bi-eye"></i></button> ';
 
 
-            if (Auth::user()->id) {
+            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Facture')) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -124,7 +137,7 @@ class CashflowController extends Controller
                 "amount" => $amount,
                 "date_cash" => $date,
                 "cashbox" => $caisse,
-                "agent" => $user,
+                "agent" => $_user,
                 "actions" => $actions,
             );
         }
@@ -178,16 +191,12 @@ class CashflowController extends Controller
                 </h6>
                 <p class="mb-0">' . $cashflow->service->name . '</p>
             </div>
-            <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Entité
-                </h6>
-                <p class="mb-0">' . $cashflow->service->name . '</p>
-            </div>';
+            ';
             if ($cashflow->piece_url) {
                 $body .= '<div class="col-6 mb-5">
                     <h6 class="text-uppercase fs-5 ls-2">Pièce Jointe
                     </h6>
-                    <p class="mb-0"><a href="' . asset($cashflow->piece_url) . '"
+                    <p class="mb-0"><a target="_blank" href="' . asset($cashflow->piece_url) . '"
                     class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
                     data-kt-menu-trigger="click"
                     data-kt-menu-placement="bottom-end">Télécharger
@@ -318,8 +327,18 @@ class CashflowController extends Controller
 
     public function cashbox()
     {
-        $cashboxs = Cashbox::all();
-        $entreprises = Entreprise::all();
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+        $role = $user->roles->first();
+
+        if ($user->entreprise_id == 0) {
+            $entreprises = Entreprise::all();
+            $cashboxs = Cashbox::all();
+        } else {
+            $entreprises = Entreprise::where('id', $user->entreprise_id)->get();
+            $cashboxs = Cashbox::where('entreprise_id', $user->entreprise_id)->get();
+        }
+
         $cashboxs->load(['entreprise']);
         return view('admin.cashflow.cashbox', compact('cashboxs', 'entreprises'));
     }
@@ -457,6 +476,8 @@ class CashflowController extends Controller
                 $entities = [];
                 break;
         }
+
+
 
         $response = json_encode($entities);
 
