@@ -3,15 +3,26 @@
 namespace App\Exports;
 
 use App\Models\Sinistre;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class SinistresExport implements FromCollection
+class SinistresExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    protected $begin;
+    protected $end;
+
+    public function __construct($begin, $end)
     {
-        return Sinistre::all();
+        $this->begin = new \DateTime($begin);
+        $this->end = new \DateTime($end);
+        $this->end->modify('+1 day');
+    }
+
+    public function view(): View
+    {
+        $sinistres = Sinistre::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
+        return view('admin.sinistre.export', [
+            'sinistres' => $sinistres,
+        ]);
     }
 }
