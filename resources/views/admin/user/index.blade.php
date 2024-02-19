@@ -182,7 +182,7 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Poste</label>
-                                <input class="form-control" name="poste" type="tel" placeholder="Poste" />
+                                <input class="form-control" name="poste" type="text" placeholder="Poste" />
                             </div>
                         </div>
 
@@ -238,16 +238,16 @@
                             <div class="mb-3">
                                 <div class="input-style-1">
                                     <label>Nom</label>
-                                    <input class="form-control" name="lastname" type="text" placeholder="Nom Complet"
-                                        value="{{ $admin->name }}" />
+                                    <input class="form-control" name="lastname" type="text" placeholder="Nom"
+                                        value="{{ $admin->lastname }}" />
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="input-style-1">
                                     <label>Prénom</label>
-                                    <input class="form-control" name="firstname" type="text"
-                                        placeholder="Nom Complet" value="{{ $admin->name }}" />
+                                    <input class="form-control" name="firstname" type="text" placeholder="Prénom"
+                                        value="{{ $admin->firstname }}" />
                                 </div>
                             </div>
 
@@ -263,6 +263,14 @@
                                     <label>Téléphone</label>
                                     <input class="form-control" name="phone" type="tel" placeholder="Téléphone"
                                         value="{{ $admin->phone }}" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label>Poste</label>
+                                    <input class="form-control" name="poste" type="text"
+                                        value="{{ $admin->poste }}" placeholder="Poste" />
                                 </div>
                             </div>
 

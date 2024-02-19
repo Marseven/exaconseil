@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DevisController;
 use App\Http\Controllers\Admin\EntrepriseController;
 use App\Http\Controllers\Admin\FactureController;
+use App\Http\Controllers\Admin\MandatController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -121,6 +122,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/ajax/devis', [DevisController::class, 'ajaxItem'])->name('admin-ajax-devis');
         Route::post('/export/devis', [DevisController::class, 'export'])->name('admin-export-devis');
         Route::post('/import/devis', [DevisController::class, 'import'])->name('admin-import-devis');
+
+        //mandats
+        Route::get('/list/mandats', [MandatController::class, 'index'])->name('admin-list-mandats');
+        Route::post('/create/mandat', [MandatController::class, 'create'])->name('admin-create-devis');
+        Route::post('/mandat/{mandat}', [MandatController::class, 'update'])->name('admin-update-devis');
+        Route::get('/ajax/mandats', [MandatController::class, 'ajaxList'])->name('admin-ajax-mandats');
+        Route::post('/ajax/mandat', [MandatController::class, 'ajaxItem'])->name('admin-ajax-mandat');
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');

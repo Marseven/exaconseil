@@ -138,7 +138,7 @@ class UserController extends Controller
 
             if ($user->save()) {
                 $user->sendPasswordResetNotification(app('auth.password.broker')->createToken($user));
-                return back()->with('success', 'Utilisateur créé avec succès.');
+                return back()->with('success', 'Utilisateur mis à jour avec succès.');
             } else {
                 return back()->with('error', 'Un problème est survenu.');
             }
