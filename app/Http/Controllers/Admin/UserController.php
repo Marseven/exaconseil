@@ -137,7 +137,6 @@ class UserController extends Controller
             $user->responsable =  $request->responsable_id;
 
             if ($user->save()) {
-                $user->sendPasswordResetNotification(app('auth.password.broker')->createToken($user));
                 return back()->with('success', 'Utilisateur mis à jour avec succès.');
             } else {
                 return back()->with('error', 'Un problème est survenu.');
