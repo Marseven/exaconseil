@@ -91,7 +91,7 @@ class Controller extends BaseController
         }
     }
 
-    function daysBeforeDate($date)
+    static function daysBeforeDate($date)
     {
         // Convertir la date en objet Carbon
         $givenDate = Carbon::parse($date);
