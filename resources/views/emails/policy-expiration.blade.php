@@ -8,10 +8,10 @@
             <li>{{ $policy->name }}</li>
         </ul>
     @endforeach
-
-    Nombre de jour restant : {{ App\Http\Controllers\Controller::daysBeforeDate($policies->first()->date_expired) }}
-    Date d'expiration : {{ $policies->first()->date_expired }}
-
+    @if ($policies->count() > 0)
+        Nombre de jour restant : {{ App\Http\Controllers\Controller::daysBeforeDate($policies->first()->date_expired) }}
+        Date d'expiration : {{ $policies->first()->date_expired }}
+    @endif
     Cordialment,
     Entreprise d'Intermédiation en Assurance
 @endcomponent
