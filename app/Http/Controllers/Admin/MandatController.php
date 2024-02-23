@@ -220,7 +220,7 @@ class MandatController extends Controller
             $body .= '<div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ajouté par
                 </h6>
-                <p class="mb-0">' . $mandat->user->lastname . ' ' . $mandat->user->firstname . '</p>
+                <p class="mb-0">' . ($mandat->user ? $mandat->user->lastname : "-") . ' ' . ($mandat->user ? $mandat->user->firstname : "-") . '</p>
             </div>';
         } elseif ($request->action == "edit") {
 
