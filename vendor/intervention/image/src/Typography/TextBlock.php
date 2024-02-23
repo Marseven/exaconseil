@@ -26,6 +26,19 @@ class TextBlock extends Collection
     }
 
     /**
+     * Set lines of the text block
+     *
+     * @param array $lines
+     * @return self
+     */
+    public function setLines(array $lines): self
+    {
+        $this->items = $lines;
+
+        return $this;
+    }
+
+    /**
      * Get line by given key
      *
      * @param mixed $key
@@ -52,7 +65,7 @@ class TextBlock extends Collection
             if (mb_strlen((string) $a) === mb_strlen((string) $b)) {
                 return 0;
             }
-            return (mb_strlen((string) $a) > mb_strlen((string) $b)) ? -1 : 1;
+            return mb_strlen((string) $a) > mb_strlen((string) $b) ? -1 : 1;
         });
 
         return $lines[0];

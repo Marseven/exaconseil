@@ -27,11 +27,11 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Setting::create([
-            'label' => 'Délais de notification',
-            'key' => 'date_notification',
-            'type' => 'number',
-        ]);
+        // Setting::create([
+        //     'label' => 'Délais de notification',
+        //     'key' => 'date_notification',
+        //     'type' => 'number',
+        // ]);
 
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
