@@ -81,7 +81,11 @@ class MandatController extends Controller
             $vehicule = $record->vehicule;
             $immatriculation = $record->immatriculation;
 
-            $_user = $record->user->lastname . ' ' . $record->user->firstname;
+            $_user = "";
+            if ($record->user) {
+                $_user = $record->user->lastname . ' ' . $record->user->firstname;
+            }
+
             $date_mandat = date_format(date_create($record->date_mandat), 'd-m-Y');
 
             $actions = '<button style="padding: 10px !important" type="button"
