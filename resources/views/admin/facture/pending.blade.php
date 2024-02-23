@@ -246,31 +246,15 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cardModalView" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelOne"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
-                </div>
+    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modal-content">
             </div>
         </div>
     </div>
-    @if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture'))
-        <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" id="modal-content">
-                </div>
-            </div>
-        </div>
 
+    @if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture'))
         <!-- Modal -->
         <div class="modal fade" id="cardModalCenter" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -454,7 +438,6 @@
 
         $(document).on("click", ".modal_status_action", function() {
             var id = $(this).data('id');
-
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -469,7 +452,6 @@
                 success: function(data) {
                     //get data value params
                     var body = data.body;
-                    //dynamic title
                     $('#cardModal .modal-content').html(body); //url to delete item
                     $('#cardModal').modal('show');
                 }

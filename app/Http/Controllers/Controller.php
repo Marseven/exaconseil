@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -74,5 +76,32 @@ class Controller extends BaseController
                 return $message;
                 break;
         }
+    }
+
+    function isBefore($date)
+    {
+        $dateTime = new DateTime($date);
+        $hour = $dateTime->format('H');
+        $today = new DateTime('today');
+
+        if ($hour < 18 && $dateTime->format('Y-m-d') === $today->format('Y-m-d')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function daysBeforeDate($date)
+    {
+        // Convertir la date en objet Carbon
+        $givenDate = Carbon::parse($date);
+
+        // Date actuelle
+        $currentDate = Carbon::now();
+
+        // Calculer la différence de jours
+        $differenceInDays = $currentDate->diffInDays($givenDate);
+
+        return $differenceInDays;
     }
 }

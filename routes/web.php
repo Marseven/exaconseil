@@ -129,6 +129,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/mandat/{mandat}', [MandatController::class, 'update'])->name('admin-update-devis');
         Route::get('/ajax/mandats', [MandatController::class, 'ajaxList'])->name('admin-ajax-mandats');
         Route::post('/ajax/mandat', [MandatController::class, 'ajaxItem'])->name('admin-ajax-mandat');
+        Route::post('/export/mandat', [MandatController::class, 'export'])->name('admin-export-mandat');
 
         //factures
         Route::get('/list/factures', [FactureController::class, 'index'])->name('admin-list-factures');

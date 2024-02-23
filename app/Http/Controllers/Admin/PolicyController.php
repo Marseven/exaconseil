@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PolicyController extends Controller
@@ -104,7 +105,7 @@ class PolicyController extends Controller
 
 
 
-            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance")) {
+            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && Controller::isBefore($record->created_at)) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -269,6 +270,22 @@ class PolicyController extends Controller
 
     public function create(Request $request)
     {
+        $rules = [
+            'name' => ['required', 'string'],
+            'brand' => ['required', 'string'],
+            'matricule' => ['required', 'string'],
+            'contact' => ['required', 'string'],
+            'date_begin' => ['required', 'date'],
+            'date_expired' => ['required', 'date'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->with('error', $errors->first());
+        }
+
         $policy = new Policy();
 
         $policy->name = $request->name;
@@ -296,6 +313,22 @@ class PolicyController extends Controller
                 return back()->with('error', "La police n'a pas été supprimé.");
             }
         } else {
+
+            $rules = [
+                'name' => ['required', 'string'],
+                'brand' => ['required', 'string'],
+                'matricule' => ['required', 'string'],
+                'contact' => ['required', 'string'],
+                'date_begin' => ['required', 'date'],
+                'date_expired' => ['required', 'date'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return back()->with('error', $errors->first());
+            }
 
             $policy->name = $request->name;
             $policy->brand = $request->brand;

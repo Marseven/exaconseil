@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DevisController extends Controller
@@ -94,7 +95,7 @@ class DevisController extends Controller
 
 
 
-            if ($role->hasPermissionTo('edit devis') && $user->hasService("Devis")) {
+            if ($role->hasPermissionTo('edit devis') && $user->hasService("Devis") && Controller::isBefore($record->created_at)) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -256,6 +257,21 @@ class DevisController extends Controller
 
     public function create(Request $request)
     {
+        $rules = [
+            'name' => ['required', 'string'],
+            'brand' => ['required', 'string'],
+            'matricule' => ['required', 'string'],
+            'contact' => ['required', 'string'],
+            'number_chassis' => ['required', 'string'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->with('error', $errors->first());
+        }
+
         $devis = new Devis();
 
         $devis->name = $request->name;

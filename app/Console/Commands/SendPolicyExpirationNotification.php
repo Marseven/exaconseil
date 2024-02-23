@@ -24,7 +24,7 @@ class SendPolicyExpirationNotification extends Command
      *
      * @var string
      */
-    protected $description = 'Send notification emails for policies approaching expiration';
+    protected $description = 'Envoyer des emails de notification pour les politiques approchant de leur expiration.';
 
     /**
      * Execute the console command.
@@ -32,23 +32,26 @@ class SendPolicyExpirationNotification extends Command
     public function handle()
     {
 
-        // Récupérer la valeur du délai de notification depuis les paramètres
-        $notificationDays = (int) config('settings.date_notification');
+        // Date actuelle
+        $currentDate = Carbon::now();
 
-        // Calculer la date d'expiration limite
-        $expirationDateLimit = Carbon::now()->addDays($notificationDays);
+        $expirationDateLimitMonth = $currentDate->copy()->addMonth();
+        $expirationDateLimitTwoWeeks = $currentDate->copy()->addWeeks(2);
+        $expirationDateLimitOneWeek = $currentDate->copy()->addWeek();
+        $expirationDateLimitTwoDays = $currentDate->copy()->addDays(2);
 
-        // Récupérer toutes les politiques qui expirent dans la limite de notification
-        $policies = Policy::where('date_expired', '<=', $expirationDateLimit)->get();
+        $policiesOneMonth = Policy::where('date_expired', '<=', $expirationDateLimitMonth)->get();
+        $policiesTwoWeeks = Policy::where('date_expired', '<=', $expirationDateLimitTwoWeeks)->get();
+        $policiesOneWeek = Policy::where('date_expired', '<=', $expirationDateLimitOneWeek)->get();
+        $policiesTwoDays = Policy::where('date_expired', '<=', $expirationDateLimitTwoDays)->get();
 
-        foreach ($policies as $policy) {
-            // Récupérer les administrateurs associés à cette politique
-            $admins = $policy->admins;
+        $admins = User::where('entreprise_id', 2)->get();
 
-            // Envoyer un e-mail de notification à chaque administrateur
-            foreach ($admins as $admin) {
-                Mail::to($admin->email)->send(new PolicyExpirationMail($policy));
-            }
+        foreach ($admins as $admin) {
+            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesTwoWeeks));
+            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesOneMonth));
+            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesOneWeek));
+            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesTwoDays));
         }
     }
 }

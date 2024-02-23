@@ -9,9 +9,10 @@ class ServiceEntreprise extends Model
 {
     use HasFactory;
 
+    protected $table = 'entreprise_service';
+
     protected $fillable = [
         'service_id',
         'entreprise_id'
-
     ];
 }

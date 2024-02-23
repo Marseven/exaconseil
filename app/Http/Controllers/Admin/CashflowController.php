@@ -17,6 +17,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CashflowController extends Controller
@@ -112,7 +113,7 @@ class CashflowController extends Controller
                 class="bi bi-eye"></i></button> ';
 
 
-            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Facture')) {
+            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Facture') && Controller::isBefore($record->created_at)) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -384,6 +385,20 @@ class CashflowController extends Controller
 
     public function create(Request $request)
     {
+        $rules = [
+            'type' => ['required', 'string'],
+            'reason' => ['required', 'string'],
+            'amount' => ['required', 'numeric'],
+            'cashbox_id' => ['required', 'numeric'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->with('error', $errors->first());
+        }
+
         $cashflow = new Cashflow();
 
         $cashflow->type = $request->type;
@@ -392,7 +407,26 @@ class CashflowController extends Controller
         $cashflow->date_cash = $request->date_cash;
         $cashflow->cashbox_id =  $request->cashbox_id;
         $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
-        $cashflow->entity_id =  $request->entity_id;
+
+        if (!empty($request->entity_id)) {
+            if (count($request->entity_id) == 1) {
+                $cashflow->entity_id =  $request->entity_id[0];
+            } else {
+                $amount = 0;
+                foreach ($request->entity_id as $entity) {
+                    if ($request->service_id == 5) {
+                        $facture = Facture::find($entity);
+                        $amount += $facture->amount;
+                    }
+                }
+
+                if ($amount != $request->amount) {
+                    return back()->with('error', "Le montant de la transaction ne correspond au montant total des factures.");
+                }
+
+                $cashflow->entity_id = null;
+            }
+        }
 
         if ($request->file('piece')) {
             $picture = FileController::piece($request->file('piece'));
@@ -407,6 +441,17 @@ class CashflowController extends Controller
         $cashflow->user_id = Auth::user()->id;
 
         if ($cashflow->save()) {
+            if ($cashflow->service_id = 5 && $cashflow->entity_id == null) {
+                foreach ($request->entity_id as $entity) {
+                    if ($request->service_id == 5) {
+                        $facture = Facture::find($entity);
+                        $facture->cashflow_id = $cashflow->id;
+                        $facture->status = "paid";
+                        $facture->save();
+                    }
+                }
+            }
+
             return back()->with('success', 'Transaction créé avec succès.');
         } else {
             return back()->with('error', 'Un problème est survenu.');

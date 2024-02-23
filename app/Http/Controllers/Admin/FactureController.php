@@ -3,22 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FileController;
 use App\Models\Facture;
+use App\Models\Mandat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class FactureController extends Controller
 {
     //
     public function index()
     {
-        return view('admin.facture.index');
+        $mandats = Mandat::with('facture')->get();
+        return view('admin.facture.index', compact('mandats'));
     }
 
     public function pending()
     {
-        return view('admin.facture.pending');
+        $mandats = Mandat::with('facture')->get();
+        return view('admin.facture.pending', compact('mandats'));
     }
 
     public function ajaxList(Request $request, $status)
@@ -89,35 +94,27 @@ class FactureController extends Controller
 
             $actions = '<button style="padding: 10px !important" type="button"
             class="btn btn-primary modal_view_action"
-            data-bs-toggle="modal"
-            data-id="' . $record->id . '"
-            data-bs-target="#cardModalView' . $record->id . '"><i
+            data-id="' . $record->id . '"><i
                 class="bi bi-eye"></i></button>';
 
             if ($record->status != 'paid') {
                 $actions .= '<button style="padding: 10px !important; margin-left:4px;" type="button"
                         class="btn btn-info modal_status_action"
-                        data-bs-toggle="modal"
-                        data-id="' . $record->id . '"
-                        data-bs-target="#cardModal' . $record->id . '">
+                        data-id="' . $record->id . '">
                         <i class="bi bi-currency-exchange"></i>
                     </button> ';
             }
 
-            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture')) {
+            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture') && Controller::isBefore($record->created_at)) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
-                            data-bs-toggle="modal"
-                            data-id="' . $record->id . '"
-                            data-bs-target="#cardModal' . $record->id . '">
+                            data-id="' . $record->id . '">
                             <i class="bi bi-pencil"></i>
                         </button>
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-danger modal_delete_action"
-                            data-bs-toggle="modal"
-                            data-id="' . $record->id . '"
-                            data-bs-target="#cardModalCenter' . $record->id . '">
+                            data-id="' . $record->id . '">
                             <i class="bi bi-trash"></i>
                         </button>';
             }
@@ -150,7 +147,7 @@ class FactureController extends Controller
         $facture = Facture::find($request->id);
         $title = "";
         if ($request->action == "view") {
-            $facture->load(['user']);
+            $facture->load(['user', 'mandat']);
 
             $title = "Facture N°" . $facture->id;
             $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Numéro de facture</h6>
@@ -209,8 +206,32 @@ class FactureController extends Controller
                 <h6 class="text-uppercase fs-5 ls-2">Date de facture
                 </h6>
                 <p class="mb-0">' . date_format(date_create($facture->date_facture), 'd-m-Y') . '</p>
-            </div>
-            <div class="col-6 mb-5">
+            </div>';
+
+            if ($facture->facture_physical) {
+                $body .= '<div class="col-6 mb-5">
+                    <h6 class="text-uppercase fs-5 ls-2">Pièce Jointe
+                    </h6>
+                    <p class="mb-0"><a target="_blank" href="' . asset($facture->facture_physical) . '"
+                    class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end">Télécharger
+                    <i class="ki-duotone ki-cloud-download">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i></a></p>
+                </div>';
+            }
+
+            if ($facture->mandat_id != null) {
+                $body .= '<div class="col-6 mb-5">
+                    <h6 class="text-uppercase fs-5 ls-2">Mandat
+                    </h6>
+                    <p class="mb-0">' . $facture->mandat->number_mandat . '</p>
+                </div>';
+            }
+
+            $body .= '<div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ajouté par
                 </h6>
                 <p class="mb-0">' . $facture->user->lastname . ' ' . $facture->user->firstname . '</p>
@@ -381,6 +402,29 @@ class FactureController extends Controller
 
     public function create(Request $request)
     {
+        $rules = [
+            'number_facture' => ['required', 'string'],
+            'company_assurance' => ['required', 'string'],
+            'ref_sinistre' => ['required', 'string'],
+            'assure' => ['required', 'string'],
+            'tiers' => ['required', 'string'],
+            'vehicule' => ['required', 'string'],
+            'immatriculation' => ['required', 'string'],
+            'date_sinistre' => ['required', 'date'],
+            'date_mission' => ['required', 'date'],
+            'place' => ['required', 'string'],
+            'type_prestation' => ['required', 'string'],
+            'amount' => ['required', 'numeric'],
+            'date_facture' => ['required', 'date'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->with('error', $errors->first());
+        }
+
         $facture = new Facture();
 
         $facture->number_facture = $request->number_facture;
@@ -400,6 +444,21 @@ class FactureController extends Controller
         $facture->user_id = Auth::user()->id;
         $facture->entreprise_id = Auth::user()->entreprise_id;
 
+        if ($request->mandat_id != 0) {
+            $facture->mandat_id =  $request->mandat_id;
+        }
+
+        if ($request->file('facture_physical')) {
+
+            $picture = FileController::piece($request->file('facture_physical'));
+            if ($picture['state'] == false) {
+                return back()->withErrors($picture['message']);
+            }
+
+            $url = $picture['url'];
+            $facture->facture_physical =  $url;
+        }
+
         if ($facture->save()) {
             return back()->with('success', 'Facture créé avec succès.');
         } else {
@@ -417,6 +476,29 @@ class FactureController extends Controller
             }
         } else {
 
+            $rules = [
+                'number_facture' => ['required', 'string'],
+                'company_assurance' => ['required', 'string'],
+                'ref_sinistre' => ['required', 'string'],
+                'assure' => ['required', 'string'],
+                'tiers' => ['required', 'string'],
+                'vehicule' => ['required', 'string'],
+                'immatriculation' => ['required', 'string'],
+                'date_sinistre' => ['required', 'date'],
+                'date_mission' => ['required', 'date'],
+                'place' => ['required', 'string'],
+                'type_prestation' => ['required', 'string'],
+                'amount' => ['required', 'numeric'],
+                'date_facture' => ['required', 'date'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return back()->with('error', $errors->first());
+            }
+
             $facture->number_facture = $request->number_facture;
             $facture->company_assurance = $request->company_assurance;
             $facture->date_sinistre = $request->date_sinistre;
@@ -430,6 +512,21 @@ class FactureController extends Controller
             $facture->type_prestation =  $request->type_prestation;
             $facture->amount =  $request->amount;
             $facture->date_facture =  $request->date_facture;
+
+            if ($request->mandat_id) {
+                $facture->mandat_id =  $request->mandat_id;
+            }
+
+            if ($request->file('facture_physical')) {
+
+                $picture = FileController::piece($request->file('facture_physical'));
+                if ($picture['state'] == false) {
+                    return back()->withErrors($picture['message']);
+                }
+
+                $url = $picture['url'];
+                $facture->facture_physical =  $url;
+            }
 
             if ($facture->save()) {
                 return back()->with('success', 'La facture mis à jour avec succès.');

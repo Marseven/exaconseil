@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\MandatExport;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FileController;
 use App\Models\Mandat;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MandatController extends Controller
 {
     //
     public function index()
     {
-        return view('admin.devis.index');
+
+        return view('admin.mandat.index');
     }
 
     public function ajaxList(Request $request)
     {
-        $user = User::find(Auth::user()->id);
-        $user->load(['entreprise']);
-        $role = $user->roles->first();
 
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -42,24 +45,20 @@ class MandatController extends Controller
         $totalRecordswithFilter = Mandat::select('count(*) as allcount')
             ->where(function ($query) {
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
-                $query->where('devis.name', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.brand', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.matricule', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.number_chassis', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.contact', 'like', '%' . $searchValue . '%');
+                $query->where('mandats.number_mandat', 'like', '%' . $searchValue . '%')
+                    ->orWhere('mandats.number_police', 'like', '%' . $searchValue . '%')
+                    ->orWhere('mandats.assure', 'like', '%' . $searchValue . '%');
             })->count();
 
         // Fetch records
         $records = Mandat::orderBy($columnName, $columnSortOrder)
             ->where(function ($query) {
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
-                $query->where('devis.name', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.brand', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.matricule', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.number_chassis', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.contact', 'like', '%' . $searchValue . '%');
+                $query->where('mandats.number_mandat', 'like', '%' . $searchValue . '%')
+                    ->orWhere('mandats.number_police', 'like', '%' . $searchValue . '%')
+                    ->orWhere('mandats.assure', 'like', '%' . $searchValue . '%');
             })
-            ->select('devis.*')
+            ->select('mandats.*')
             ->skip($start)
             ->take($rowperpage)
             ->get();
@@ -68,28 +67,31 @@ class MandatController extends Controller
 
         foreach ($records as $record) {
 
+            $user = User::find(Auth::user()->id);
+            $user->load(['entreprise']);
+            $role = $user->roles->first();
+
             $record->load(['user']);
 
             $id = $record->id;
 
-            $name = $record->name;
-            $brand = $record->brand;
-            $matricule = $record->matricule;
-            $chassis = $record->number_chassis;
-            $contact = $record->contact;
-            $created_at = date_format(date_create($record->created_at), 'd-m-Y');
+            $number_mandat = $record->number_mandat;
+            $assure = $record->assure;
+            $tiers = $record->tiers;
+            $vehicule = $record->vehicule;
+            $immatriculation = $record->immatriculation;
+
+            $_user = $record->user->lastname . ' ' . $record->user->firstname;
+            $date_mandat = date_format(date_create($record->date_mandat), 'd-m-Y');
 
             $actions = '<button style="padding: 10px !important" type="button"
             class="btn btn-primary modal_view_action"
             data-bs-toggle="modal"
             data-id="' . $record->id . '"
             data-bs-target="#cardModalView' . $record->id . '"><i
-                class="bi bi-eye"></i></button> ';
+                class="bi bi-eye"></i></button>';
 
-
-
-
-            if ($role->hasPermissionTo('edit devis') && $user->hasService("Devis")) {
+            if ($role->hasPermissionTo('edit mandat') && $user->hasService('Mandat') && Controller::isBefore($record->created_at)) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -110,12 +112,12 @@ class MandatController extends Controller
 
             $data_arr[] = array(
                 "id" => $id,
-                "name" => $name,
-                "brand" => $brand,
-                "matricule" => $matricule,
-                "contact" => $contact,
-                "number_chassis" => $chassis,
-                "created_at" => $created_at,
+                "number_mandat" => $number_mandat,
+                "assure" => $assure,
+                "tiers" => $tiers,
+                "vehicule" => $vehicule,
+                "immatriculation" => $immatriculation,
+                "user" => $_user,
                 "actions" => $actions,
             );
         }
@@ -132,100 +134,232 @@ class MandatController extends Controller
 
     public function ajaxItem(Request $request)
     {
-        $devis = Mandat::find($request->id);
+        $mandat = Mandat::find($request->id);
         $title = "";
         if ($request->action == "view") {
-            $devis->load(['user']);
+            $mandat->load(['user']);
 
-            $title = "Police d'assurance N°" . $devis->id;
-            $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Nom Complet</h6>
-                <p class="text-uppercase mb-0">' . $devis->name . '</p>
+            $title = "Mandat N°" . $mandat->id;
+            $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">N° de Mandat</h6>
+                <p class="text-uppercase mb-0">' . $mandat->number_mandat . '</p>
             </div>
             <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Marque </h6>
-                <p class="mb-0">' . $devis->brand . '</p>
-            </div>
-            <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Matricule
+                <h6 class="text-uppercase fs-5 ls-2">N° de Police
                 </h6>
-                <p class="mb-0">' . $devis->matricule . ' XAF</p>
+                <p class="mb-0">' . $mandat->number_police . '</p>
             </div>
             <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">N° de Châssis
+                <h6 class="text-uppercase fs-5 ls-2">N° de Sinistre
                 </h6>
-                <p class="mb-0">' . $devis->number_chassis . ' XAF</p>
+                <p class="mb-0">' . $mandat->number_sinistre . '</p>
             </div>
             <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Contact
+                <h6 class="text-uppercase fs-5 ls-2">Assuré
                 </h6>
-                <p class="mb-0">' . $devis->contact . '</p>
+                <p class="mb-0">' . $mandat->assure . '</p>
             </div>
             <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Date de création
+                <h6 class="text-uppercase fs-5 ls-2">Tiers
                 </h6>
-                <p class="mb-0">' . date_format(date_create($devis->created_at), 'd-m-Y') . '</p>
+                <p class="mb-0">' . $mandat->tiers . '</p>
             </div>
             <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Véhicule
+                </h6>
+                <p class="mb-0">' . $mandat->vehicule . '</p>
+            </div>
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Immatriculation
+                </h6>
+                <p class="mb-0">' . $mandat->immatriculation  . '</p>
+            </div>
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Date de sinistre
+                </h6>
+                <p class="mb-0">' . date_format(date_create($mandat->date_sinistre), 'd-m-Y')  . '</p>
+            </div>
+
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Ville
+                </h6>
+                <p class="mb-0">' . $mandat->place  . '</p>
+            </div>
+            <div class="col-12 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Circonstances
+                </h6>
+                <p class="mb-0">' . $mandat->circonstances . ' </p>
+            </div>
+            <div class="col-12 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Observations
+                </h6>
+                <p class="mb-0">' . $mandat->observations . ' </p>
+            </div>
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Date de mandat
+                </h6>
+                <p class="mb-0">' . date_format(date_create($mandat->date_mandat), 'd-m-Y') . '</p>
+            </div>';
+            if ($mandat->mandat_physical) {
+                $body .= '<div class="col-6 mb-5">
+                    <h6 class="text-uppercase fs-5 ls-2">Pièce Jointe
+                    </h6>
+                    <p class="mb-0"><a target="_blank" href="' . asset($mandat->mandat_physical) . '"
+                    class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end">Télécharger
+                    <i class="ki-duotone ki-cloud-download">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i></a></p>
+                </div>';
+            }
+            $body .= '<div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ajouté par
                 </h6>
-                <p class="mb-0">' . $devis->user->lastname . ' ' . $devis->user->firstname . '</p>
+                <p class="mb-0">' . $mandat->user->lastname . ' ' . $mandat->user->firstname . '</p>
             </div>';
-
-            $body .= '</div>';
         } elseif ($request->action == "edit") {
 
             $body = '<div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour le devis N° : ' . $devis->id . '</h5>
+                <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour le mandat N° : ' . $mandat->number_mandat . '</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
                 </button>
             </div>
 
-            <form action="' . url('admin/devis/' . $request->id) . '" method="POST">
+            <form action="' . url('admin/mandat/' . $request->id) . '" method="POST">
                 <div class="modal-body">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
-                <div class="mb-3">
-                    <div class="input-style-1">
-                        <label>Nom Complet</label>
-                        <input class="form-control" name="name" type="text" placeholder="Nom Complet"
-                            value="' . $devis->name . '" required />
+                <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Numéro de mandat</label>
+                                <input class="form-control" name="number_mandat" type="text"
+                                    placeholder="N° de mandat" value="' . $mandat->number_mandat . '" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Numéro de Mandat</label>
+                                <input class="form-control" name="number_mandat" type="text"
+                                    placeholder="N° de Mandat" value="' . $mandat->number_mandat . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Numéro de Police</label>
+                                <input class="form-control" name="number_police" type="text"
+                                    placeholder="N° de Police" value="' . $mandat->number_police . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Numéro de Sinistre</label>
+                                <input class="form-control" name="number_sinistre" type="text"
+                                    placeholder="N° de Sinistre" value="' . $mandat->number_sinistre . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Nom de l\'assuré</label>
+                                <input class="form-control" name="assure" type="text"
+                                    placeholder="Assurance" value="' . $mandat->assure . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" value="' . $mandat->tiers . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Véhicule</label>
+                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" value="' . $mandat->vehicule . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Immatriculation</label>
+                                <input class="form-control" name="immatriculation" type="text"
+                                    placeholder="Immatriculation" value="' . $mandat->immatriculation . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Date de sinistre</label>
+                                <input class="form-control" name="date_sinistre" type="date"
+                                    placeholder="Date de sinistre" value="' . $mandat->date_sinistre . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Ville</label>
+                                <input class="form-control" name="place" type="text" placeholder="Ville" value="' . $mandat->place . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Circonsances</label>
+                                <textarea class="form-control" name="circonstances" placeholder="Circonstances et point de choc">' . $mandat->circonstances . '</textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Observations</label>
+                                <textarea class="form-control" name="observations" placeholder="Observations">v' . $mandat->observations . '</textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Date du mandat</label>
+                                <input class="form-control" name="date_mandat" type="date"
+                                    placeholder="Date du mandat" value="' . $mandat->date_mandat . '" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Pièce Jointe</label>
+                                <input class="form-control" name="mandat_physical" type="file" value="' . $mandat->mandat_physical . '" />
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="input-style-1">
-                        <label>Marque</label>
-                        <input class="form-control" name="brand" type="text" placeholder="Marque"
-                            value="' . $devis->brand . '" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-success">Enregistrer</button>
                     </div>
-                </div>
+            </form>';
+        } elseif ($request->action == "status") {
 
-                <div class="mb-3">
-                    <div class="input-style-1">
-                        <label>Matricule</label>
-                        <input class="form-control" name="matricule" type="text" placeholder="Matricule"
-                            value="' . $devis->matricule . '" required />
+            $body = '<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelOne">Mettre à jour la mandat N° : ' . $mandat->number_mandat . '</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                </button>
+            </div>
+
+            <form action="' . url('admin/mandat/status/' . $request->id) . '" method="POST">
+                <div class="modal-body">
+                <input type="hidden" name="_token" value="' . csrf_token() . '">
+                <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Statut</label>
+                                <select class="form-control" name="status" id="_status" onChange="paid_partial()" required>
+                                    <option value="paid">Payée</option>
+                                    <option value="paid_partially">Payée Partiellement</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="amount_partiel" class="mb-3" style="display:none;">
+                            <div class="input-style-1">
+                                <label>Montant</label>
+                                <input class="form-control" name="amount" type="number" placeholder="Montant"/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="input-style-1">
-                        <label>N° de Châssis</label>
-                        <input class="form-control" name="number_chassis" type="text"
-                            placeholder="N° de Chassis" value="' . $devis->number_chassis . '" required />
-                    </div>
-                </div>
-
-
-                <div class="mb-3">
-                    <div class="input-style-1">
-                        <label>Contact</label>
-                        <input class="form-control" name="contact" type="tel" placeholder="Contact"
-                            value="' . $devis->contact . '" required />
-                    </div>
-                </div>
-
-                </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
                         <button type="submit" class="btn btn-success">Enregistrer</button>
@@ -234,7 +368,7 @@ class MandatController extends Controller
         } else {
 
             $body = '
-            <form method="POST" action="' . url('admin/devis/' . $request->id) . '">
+            <form method="POST" action="' . url('admin/mandat/' . $request->id) . '">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="delete" value="true">
                 <button class="btn btn-danger" type="submit">Supprimer</button>
@@ -251,44 +385,126 @@ class MandatController extends Controller
 
     public function create(Request $request)
     {
-        $devis = new Mandat();
+        $rules = [
+            'number_mandat' => ['required', 'string'],
+            'number_police' => ['required', 'string'],
+            'number_sinistre' => ['required', 'string'],
+            'assure' => ['required', 'string'],
+            'tiers' => ['required', 'string'],
+            'vehicule' => ['required', 'string'],
+            'immatriculation' => ['required', 'string'],
+            'date_sinistre' => ['required', 'date'],
+            'place' => ['required', 'string'],
+            'date_mandat' => ['required', 'date'],
+        ];
 
-        $devis->name = $request->name;
-        $devis->brand = $request->brand;
-        $devis->matricule = $request->matricule;
-        $devis->contact = $request->contact;
-        $devis->number_chassis =  $request->number_chassis;
-        $devis->entreprise_id = Auth::user()->entreprise_id;
-        $devis->user_id = Auth::user()->id;
+        $validator = Validator::make($request->all(), $rules);
 
-        if ($devis->save()) {
-            return back()->with('success', 'devis créé avec succès.');
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->with('error', $errors->first());
+        }
+
+        $mandat = new Mandat();
+
+        $mandat->number_mandat = $request->number_mandat;
+        $mandat->number_police = $request->number_police;
+        $mandat->number_sinistre = $request->number_sinistre;
+        $mandat->date_sinistre = $request->date_sinistre;
+        $mandat->assure =  $request->assure;
+        $mandat->tiers =  $request->tiers;
+        $mandat->vehicule =  $request->vehicule;
+        $mandat->immatriculation =  $request->immatriculation;
+        $mandat->place =  $request->place;
+        $mandat->date_mandat =  $request->date_mandat;
+        $mandat->circonstances = $request->circonstances;
+        $mandat->observations = $request->observations;
+        $mandat->user_id = Auth::user()->id;
+        $mandat->entreprise_id = Auth::user()->entreprise_id;
+
+        if ($request->file('mandat_physical')) {
+
+            $picture = FileController::piece($request->file('mandat_physical'));
+            if ($picture['state'] == false) {
+                return back()->withErrors($picture['message']);
+            }
+
+            $url = $picture['url'];
+            $mandat->mandat_physical =  $url;
+        }
+
+        if ($mandat->save()) {
+            return back()->with('success', 'mandat créé avec succès.');
         } else {
             return back()->with('error', 'Un problème est survenu.');
         }
     }
 
-    public function update(Request $request, Mandat $devis)
+    public function update(Request $request, Mandat $mandat)
     {
         if (isset($_POST['delete'])) {
-            if ($devis->delete()) {
-                return back()->with('success', "Le debis a été supprimé.");
+            if ($mandat->delete()) {
+                return back()->with('success', "La transaction a été supprimé.");
             } else {
-                return back()->with('error', "Le devis n'a pas été supprimé.");
+                return back()->with('error', "La police n'a pas été supprimé.");
             }
         } else {
 
-            $devis->name = $request->name;
-            $devis->brand = $request->brand;
-            $devis->matricule = $request->matricule;
-            $devis->contact = $request->contact;
-            $devis->number_chassis =  $request->number_chassis;
+            $rules = [
+                'number_mandat' => ['required', 'string'],
+                'number_police' => ['required', 'string'],
+                'number_sinistre' => ['required', 'string'],
+                'assure' => ['required', 'string'],
+                'tiers' => ['required', 'string'],
+                'vehicule' => ['required', 'string'],
+                'immatriculation' => ['required', 'string'],
+                'date_sinistre' => ['required', 'date'],
+                'place' => ['required', 'string'],
+                'date_mandat' => ['required', 'date'],
+            ];
 
-            if ($devis->save()) {
-                return back()->with('success', 'Devis mis à jour avec succès.');
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return back()->with('error', $errors->first());
+            }
+
+            $mandat->number_mandat = $request->number_mandat;
+            $mandat->number_police = $request->number_police;
+            $mandat->number_sinistre = $request->number_sinistre;
+            $mandat->date_sinistre = $request->date_sinistre;
+            $mandat->assure =  $request->assure;
+            $mandat->tiers =  $request->tiers;
+            $mandat->vehicule =  $request->vehicule;
+            $mandat->immatriculation =  $request->immatriculation;
+            $mandat->place =  $request->place;
+            $mandat->date_mandat =  $request->date_mandat;
+            $mandat->circonstances = $request->circonstances;
+            $mandat->observations = $request->observations;
+
+            if ($request->file('mandat_physical')) {
+
+                $picture = FileController::piece($request->file('mandat_physical'));
+                if ($picture['state'] == false) {
+                    return back()->withErrors($picture['message']);
+                }
+
+                $url = $picture['url'];
+                $mandat->mandat_physical =  $url;
+            }
+
+            if ($mandat->save()) {
+                return back()->with('success', 'La mandat mis à jour avec succès.');
             } else {
                 return back()->with('error', 'Un problème est survenu.');
             }
         }
+    }
+
+    public function export(Request $request)
+    {
+        $day = Carbon::now();
+        return Excel::download(new MandatExport($request->begin, $request->end), 'Mandats - ' . $day . '.xlsx');
     }
 }

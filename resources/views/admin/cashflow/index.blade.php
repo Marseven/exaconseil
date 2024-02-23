@@ -209,7 +209,9 @@
                             <div class="input-style-1">
                                 <label>Élément du service</label>
                             </div>
-                            <select id="entity" class="form-control" name="entity_id">
+                            <select id="entity" class="form-control" name="entity_id[]" data-control="select2"
+                                data-close-on-select="false" data-placeholder="Choisir" data-allow-clear="true"
+                                multiple="multiple">
                             </select>
                         </div>
                     </div>

@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SinistreController extends Controller
@@ -97,7 +98,7 @@ class SinistreController extends Controller
 
 
 
-            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre")) {
+            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre") && Controller::isBefore($record->created_at)) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -287,6 +288,25 @@ class SinistreController extends Controller
 
     public function create(Request $request)
     {
+        $rules = [
+            'name' => ['required', 'string'],
+            'brand' => ['required', 'string'],
+            'matricule' => ['required', 'string'],
+            'contact' => ['required', 'string'],
+            'date_open' => ['required', 'date'],
+            'lastname' => ['required', 'string'],
+            'firstname' => ['required', 'string'],
+            'assurance' => ['required', 'string'],
+            'tiers' => ['required', 'string'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->with('error', $errors->first());
+        }
+
         $sinistre = new Sinistre();
 
         $sinistre->lastname = $request->lastname;
@@ -316,6 +336,25 @@ class SinistreController extends Controller
                 return back()->with('error', "Le sinistre n'a pas été supprimé.");
             }
         } else {
+
+            $rules = [
+                'name' => ['required', 'string'],
+                'brand' => ['required', 'string'],
+                'matricule' => ['required', 'string'],
+                'contact' => ['required', 'string'],
+                'date_open' => ['required', 'date'],
+                'lastname' => ['required', 'string'],
+                'firstname' => ['required', 'string'],
+                'assurance' => ['required', 'string'],
+                'tiers' => ['required', 'string'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return back()->with('error', $errors->first());
+            }
 
             $sinistre->lastname = $request->lastname;
             $sinistre->firstname = $request->firstname;

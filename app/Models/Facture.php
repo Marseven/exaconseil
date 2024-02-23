@@ -18,4 +18,9 @@ class Facture extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function mandat()
+    {
+        return $this->belongsTo(Mandat::class);
+    }
 }

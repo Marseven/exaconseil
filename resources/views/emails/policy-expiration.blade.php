@@ -1,11 +1,17 @@
 @component('mail::message')
-    <h1>Hello {{ config('app.name') }},</h1>
+    <h1>Bonjour,</h1>
 
-    Ceci est une notification pour vous informer que la police suivante expirera bientôt :
+    Ceci est une notification pour vous informer que les polices suivante expireront bientôt :
 
-    Nom de la police : {{ $policy->name }}
-    Date d'expiration : {{ $policy->date_expired }}
+    @foreach ($policies as $policy)
+        <ul>
+            <li>{{ $policy->name }}</li>
+        </ul>
+    @endforeach
+
+    Nombre de jour restant : {{ App\Http\Controllers\Controller::daysBeforeDate($policies->first()->date_expired) }}
+    Date d'expiration : {{ $policies->first()->date_expired }}
 
     Cordialment,
-    EAC
+    Entreprise d'Intermédiation en Assurance
 @endcomponent

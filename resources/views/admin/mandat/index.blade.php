@@ -21,7 +21,7 @@
                     data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
                     class="page-title d-flex align-items-center me-3 flex-wrap lh-1">
                     <!--begin::Title-->
-                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Devis</h1>
+                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Mandats</h1>
                     <!--end::Title-->
                     <!--begin::Separator-->
                     <span class="h-20px border-gray-200 border-start mx-4"></span>
@@ -40,7 +40,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Suivi des Deviss</li>
+                        <li class="breadcrumb-item text-muted">Suivi des Mandats</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -48,7 +48,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-dark">Liste des Devis</li>
+                        <li class="breadcrumb-item text-dark">Liste des Mandats</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -92,10 +92,6 @@
                                 <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
                                     data-bs-target="#export">
                                     <i class="bi bi-download fs-2"></i>Exporter</button>
-
-                                <button type="button" class="btn btn-success m-5" data-bs-toggle="modal"
-                                    data-bs-target="#import">
-                                    <i class="bi bi-upload fs-2"></i>Impoter</button>
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -112,12 +108,12 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Société / Particlier</th>
-                                    <th>Marque</th>
-                                    <th>Matricule</th>
-                                    <th>N° de châssis</th>
-                                    <th>Contact</th>
-                                    <th>Date de création</th>
+                                    <th>N° Mandat</th>
+                                    <th>Assuré</th>
+                                    <th>Tiers</th>
+                                    <th>Véhicule</th>
+                                    <th>Immatriculation</th>
+                                    <th>Agent</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -143,53 +139,98 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter un devis</h5>
+                    <h5 class="modal-title" id="exampleModalLabelOne">Ajouter un Mandat</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="lni lni-close"></i>
                     </button>
                 </div>
-                <form action="{{ url('admin/create/devis/') }}" method="POST">
+                <form action="{{ url('admin/create/mandat/') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Nom de la société / particulier</label>
-                                <input class="form-control" name="name" type="text" placeholder="Nom Complet"
-                                    required />
+                                <label>Numéro de Mandat</label>
+                                <input class="form-control" name="number_mandat" type="text"
+                                    placeholder="N° de Mandat" />
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Marque / Type</label>
-                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
+                                <label>Numéro de Police</label>
+                                <input class="form-control" name="number_police" type="text"
+                                    placeholder="N° de Police" />
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Numéro de Sinistre</label>
+                                <input class="form-control" name="number_sinistre" type="text"
+                                    placeholder="N° de Sinistre" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Nom de l'assuré</label>
+                                <input class="form-control" name="assure" type="text" placeholder="Assurance" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Véhicule</label>
+                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" />
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Immatriculation</label>
-                                <input class="form-control" name="matricule" type="text" placeholder="Matricule"
-                                    required />
+                                <input class="form-control" name="immatriculation" type="text"
+                                    placeholder="Immatriculation" />
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>N° de Châssis</label>
-                                <input class="form-control" name="number_chassis" type="text"
-                                    placeholder="N° de Chassis" required />
+                                <label>Date de sinistre</label>
+                                <input class="form-control" name="date_sinistre" type="date"
+                                    placeholder="Date de sinistre" />
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Contact</label>
-                                <input class="form-control" name="contact" type="tel" placeholder="Contact"
-                                    required />
+                                <label>Ville</label>
+                                <input class="form-control" name="place" type="text" placeholder="Ville" />
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Circonsances</label>
+                                <textarea class="form-control" name="circonstances" placeholder="Circonstances et point de choc"></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Observations</label>
+                                <textarea class="form-control" name="observations" placeholder="Observations"></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Date du mandat</label>
+                                <input class="form-control" name="date_mandat" type="date"
+                                    placeholder="Date du mandat" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Pièce Jointe</label>
+                                <input class="form-control" name="mandat_physical" type="file" />
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" style="background-color: #2b9753 !important;"
@@ -216,7 +257,7 @@
             </div>
         </div>
     </div>
-    @if ($role->hasPermissionTo('edit devis') && $user->hasService('Devis'))
+    @if ($role->hasPermissionTo('edit mandat') && $user->hasService('Mandat'))
         <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -235,7 +276,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Êtes-vous sûr de vouloir supprimer ce devis ?
+                        Êtes-vous sûr de vouloir supprimer ce mandat ?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
@@ -253,7 +294,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form action="{{ route('admin-export-devis') }}" method="POST">
+                <form action="{{ route('admin-export-mandat') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="mb-3">
@@ -268,33 +309,6 @@
                                 <label>Date de fin</label>
                                 <input class="form-control" name="date_end" type="date"
                                     placeholder="Date d'expiration" required />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-dark" data-bs-dismiss="modal">Valider</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="import" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Importer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <form action="{{ route('admin-import-devis') }}" method="POST" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        @csrf
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Uploder le fichier</label>
-                                <input class="form-control" name="file_policies" type="file" required />
                             </div>
                         </div>
                     </div>
@@ -330,7 +344,7 @@
                     processing: true,
                     serverSide: true,
                     searching: true,
-                    ajax: "{{ url('admin/ajax/devis') }}",
+                    ajax: "{{ url('admin/ajax/mandats') }}",
                     columnDefs: [{
                         className: "upper",
                         targets: [1]
@@ -339,22 +353,22 @@
                             data: 'id'
                         },
                         {
-                            data: 'name'
+                            data: 'number_mandat'
                         },
                         {
-                            data: 'brand'
+                            data: 'assure'
                         },
                         {
-                            data: 'matricule'
+                            data: 'tiers'
                         },
                         {
-                            data: 'number_chassis'
+                            data: 'vehicule'
                         },
                         {
-                            data: 'contact'
+                            data: 'immatriculation'
                         },
                         {
-                            data: 'created_at'
+                            data: 'user'
                         },
                         {
                             data: 'actions'
@@ -412,7 +426,7 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 },
                 type: "POST",
-                url: "{{ route('admin-ajax-devis') }}",
+                url: "{{ route('admin-ajax-mandat') }}",
                 dataType: 'json',
                 data: {
                     "id": id,
@@ -440,7 +454,7 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 },
                 type: "POST",
-                url: "{{ route('admin-ajax-devis') }}",
+                url: "{{ route('admin-ajax-mandat') }}",
                 dataType: 'json',
                 data: {
                     "id": id,
@@ -465,7 +479,7 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 },
                 type: "POST",
-                url: "{{ route('admin-ajax-devis') }}",
+                url: "{{ route('admin-ajax-mandat') }}",
                 dataType: 'json',
                 data: {
                     "id": id,

@@ -138,9 +138,23 @@
                         <i class="lni lni-close"></i>
                     </button>
                 </div>
-                <form action="{{ url('admin/create/facture/') }}" method="POST">
+                <form action="{{ url('admin/create/facture/') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Mandat</label>
+                                <select class="form-control" name="mandat_id">
+                                    <option value="0">Choisir</option>
+                                    @foreach ($mandats as $mandat)
+                                        @if ($mandat->facture->count() == 0)
+                                            <option value="{{ $mandat->id }}">Mandat N°{{ $mandat->number_mandat }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Numéro de facture</label>
@@ -234,6 +248,12 @@
                                     placeholder="Date de début" required />
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Pièce Jointe</label>
+                                <input class="form-control" name="facture_physical" type="file" />
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" style="background-color: #2b9753 !important;"
@@ -261,15 +281,15 @@
         </div>
     </div>
 
-    @if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture'))
-        <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" id="modal-content">
-                </div>
+    <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modal-content">
             </div>
         </div>
+    </div>
 
+    @if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture'))
         <!-- Modal -->
         <div class="modal fade" id="cardModalCenter" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">

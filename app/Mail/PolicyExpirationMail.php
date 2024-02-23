@@ -12,16 +12,16 @@ class PolicyExpirationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $policy;
+    public $policies;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Policy $policy)
+    public function __construct($policies)
     {
-        $this->policy = $policy;
+        $this->policies = $policies;
     }
 
     /**
@@ -34,6 +34,6 @@ class PolicyExpirationMail extends Mailable
         return $this->from("contact@exa.ga", env('APP_NAME'))
             ->subject('Notification de date d\'expiration de la police')
             ->markdown('emails.policy-expiration')
-            ->with('policy', $this->policy);
+            ->with('policies', $this->policies);
     }
 }
