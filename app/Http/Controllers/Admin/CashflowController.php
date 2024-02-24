@@ -441,7 +441,7 @@ class CashflowController extends Controller
         $cashflow->user_id = Auth::user()->id;
 
         if ($cashflow->save()) {
-            if ($cashflow->service_id = 5 && $cashflow->entity_id == null) {
+            if ($cashflow->service_id == 5 && $cashflow->entity_id == null) {
                 foreach ($request->entity_id as $entity) {
                     if ($request->service_id == 5) {
                         $facture = Facture::find($entity);
