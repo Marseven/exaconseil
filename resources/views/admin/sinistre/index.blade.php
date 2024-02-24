@@ -188,7 +188,7 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Assurance</label>
-                                <input class="form-control" name="name" type="text" placeholder="Assurance"
+                                <input class="form-control" name="assurance" type="text" placeholder="Assurance"
                                     required />
                             </div>
                         </div>
