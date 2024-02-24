@@ -3,7 +3,6 @@
 @php
     $user = Auth::user();
     $user->load(['entreprise']);
-    dd($user->roles);
     $role = $user->roles->first();
 @endphp
 
