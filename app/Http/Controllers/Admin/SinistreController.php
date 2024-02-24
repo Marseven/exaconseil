@@ -289,7 +289,8 @@ class SinistreController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'name' => ['required', 'string'],
+            'lastname' => ['required', 'string'],
+            'firstname' => ['required', 'string'],
             'brand' => ['required', 'string'],
             'matricule' => ['required', 'string'],
             'contact' => ['required', 'string'],
@@ -338,7 +339,8 @@ class SinistreController extends Controller
         } else {
 
             $rules = [
-                'name' => ['required', 'string'],
+                'lastname' => ['required', 'string'],
+                'firstname' => ['required', 'string'],
                 'brand' => ['required', 'string'],
                 'matricule' => ['required', 'string'],
                 'contact' => ['required', 'string'],
