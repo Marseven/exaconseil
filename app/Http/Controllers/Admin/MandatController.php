@@ -235,13 +235,6 @@ class MandatController extends Controller
                 <div class="modal-body">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <div class="modal-body">
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label>Numéro de mandat</label>
-                                <input class="form-control" name="number_mandat" type="text"
-                                    placeholder="N° de mandat" value="' . $mandat->number_mandat . '" />
-                            </div>
-                        </div>
 
                         <div class="mb-3">
                             <div class="input-style-1">
