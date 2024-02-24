@@ -223,7 +223,7 @@
                     <!--end::Col-->
                 </div>
 
-                @if ($role->name == 'Gerant' || $role->name == 'SuperAdmin')
+                @if ($role && ($role->name == 'Gerant' || $role->name == 'SuperAdmin'))
                     <!--begin::Row-->
                     <div class="row g-5 gx-xl-10 mb-5 mb-xl-10">
                         <!--begin::Col-->
