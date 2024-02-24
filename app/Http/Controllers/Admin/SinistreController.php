@@ -296,7 +296,7 @@ class SinistreController extends Controller
             'date_open' => ['required', 'date'],
             'lastname' => ['required', 'string'],
             'firstname' => ['required', 'string'],
-            'assurance' => ['required', 'string'],
+            'assure' => ['required', 'string'],
             'tiers' => ['required', 'string'],
         ];
 
