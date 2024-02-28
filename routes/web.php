@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AssuranceController;
 use App\Http\Controllers\Admin\CashflowController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DevisController;
@@ -94,6 +95,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/list/services', [ServiceController::class, 'index'])->name('admin-list-services');
         Route::post('/create/service', [ServiceController::class, 'create'])->name('admin-create-service');
         Route::post('/service/{service}', [ServiceController::class, 'update'])->name('admin-update-service');
+
+        //assurance
+        Route::get('/list/assurances', [AssuranceController::class, 'index'])->name('admin-list-assurances');
+        Route::post('/create/assurance', [AssuranceController::class, 'create'])->name('admin-create-assurance');
+        Route::post('/assurance/{assurance}', [AssuranceController::class, 'update'])->name('admin-update-assurance');
 
         //policies
         Route::get('/list/policies', [PolicyController::class, 'index'])->name('admin-list-policies');

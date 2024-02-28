@@ -113,7 +113,7 @@ class CashflowController extends Controller
                 class="bi bi-eye"></i></button> ';
 
 
-            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Facture') && Controller::isBefore($record->created_at)) {
+            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Caisse') && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"

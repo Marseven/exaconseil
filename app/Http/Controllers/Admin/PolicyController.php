@@ -105,7 +105,7 @@ class PolicyController extends Controller
 
 
 
-            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && Controller::isBefore($record->created_at)) {
+            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"

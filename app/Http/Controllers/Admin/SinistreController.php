@@ -95,10 +95,7 @@ class SinistreController extends Controller
             data-bs-target="#cardModalView' . $record->id . '"><i
                 class="bi bi-eye"></i></button> ';
 
-
-
-
-            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre") && Controller::isBefore($record->created_at)) {
+            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre") && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"

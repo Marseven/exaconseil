@@ -95,7 +95,7 @@ class DevisController extends Controller
 
 
 
-            if ($role->hasPermissionTo('edit devis') && $user->hasService("Devis") && Controller::isBefore($record->created_at)) {
+            if ($role->hasPermissionTo('edit devis') && $user->hasService("Devis") && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"

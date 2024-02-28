@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileController;
+use App\Models\Assurance;
 use App\Models\Facture;
 use App\Models\Mandat;
 use App\Models\User;
@@ -17,13 +18,15 @@ class FactureController extends Controller
     public function index()
     {
         $mandats = Mandat::with('facture')->get();
-        return view('admin.facture.index', compact('mandats'));
+        $assurances = Assurance::all();
+        return view('admin.facture.index', compact('mandats', 'assurances'));
     }
 
     public function pending()
     {
         $mandats = Mandat::with('facture')->get();
-        return view('admin.facture.pending', compact('mandats'));
+        $assurances = Assurance::all();
+        return view('admin.facture.pending', compact('mandats', 'assurances'));
     }
 
     public function ajaxList(Request $request, $status)
@@ -52,7 +55,8 @@ class FactureController extends Controller
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('factures.number_facture', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.type_prestation', 'like', '%' . $searchValue . '%')
-                    ->orWhere('factures.amount', 'like', '%' . $searchValue . '%');
+                    ->orWhere('factures.amount', 'like', '%' . $searchValue . '%')
+                    ->orWhere('factures.assurance_id', 'like', '%' . $searchValue . '%');
             })->count();
 
         // Fetch records
@@ -62,7 +66,8 @@ class FactureController extends Controller
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('factures.number_facture', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.type_prestation', 'like', '%' . $searchValue . '%')
-                    ->orWhere('factures.amount', 'like', '%' . $searchValue . '%');
+                    ->orWhere('factures.amount', 'like', '%' . $searchValue . '%')
+                    ->orWhere('factures.assurance_id', 'like', '%' . $searchValue . '%');
             })
             ->select('factures.*')
             ->skip($start)
@@ -77,11 +82,12 @@ class FactureController extends Controller
             $user->load(['entreprise']);
             $role = $user->roles->first();
 
-            $record->load(['user']);
+            $record->load(['user', 'assurance']);
 
             $id = $record->id;
 
             $number_facture = $record->number_facture;
+            $assurance = $record->assurance == null ? "-" : $record->assurance->name;
             $type_prestation = $record->type_prestation;
             $amount = Controller::format_amount($record->amount) . ' FCFA';
 
@@ -109,7 +115,7 @@ class FactureController extends Controller
                     </button> ';
             }
 
-            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture') && Controller::isBefore($record->created_at)) {
+            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture') && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -126,6 +132,7 @@ class FactureController extends Controller
 
             $data_arr[] = array(
                 "id" => $id,
+                "assurance" => $assurance,
                 "number_facture" => $number_facture,
                 "type_prestation" => $type_prestation,
                 "amount" => $amount,
@@ -420,6 +427,7 @@ class FactureController extends Controller
             'type_prestation' => ['required', 'string'],
             'amount' => ['required', 'numeric'],
             'date_facture' => ['required', 'date'],
+            'assurance_id' => ['required', 'exists:assurances'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -447,18 +455,17 @@ class FactureController extends Controller
         $facture->status =  'unpaid';
         $facture->user_id = Auth::user()->id;
         $facture->entreprise_id = Auth::user()->entreprise_id;
+        $facture->assurance_id =  $request->assurance_id;
 
         if ($request->mandat_id != 0) {
             $facture->mandat_id =  $request->mandat_id;
         }
 
         if ($request->file('facture_physical')) {
-
             $picture = FileController::piece($request->file('facture_physical'));
             if ($picture['state'] == false) {
                 return back()->withErrors($picture['message']);
             }
-
             $url = $picture['url'];
             $facture->facture_physical =  $url;
         }

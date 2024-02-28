@@ -80,20 +80,27 @@
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
+                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                             <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                                <!--begin::Add user-->
-
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#securityModal">
-                                    <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
-
-                                <!--end::Add user-->
+                            <!--begin::Select2-->
+                            <div class="w-100 mw-150px">
+                                <!--begin::Select2-->
+                                <select class="form-select form-select-solid" data-control="select2" data-hide-search="true"
+                                    data-placeholder="Assurance" data-kt-filter="assurance">
+                                    <option value="all">Tout</option>
+                                    @foreach ($assurances as $assurance)
+                                        <option value="{{ $assurance->id }}">{{ $assurance->name }}</option>
+                                    @endforeach
+                                </select>
+                                <!--end::Select2-->
                             </div>
+                            <!--end::Select2-->
+                            <!--begin::Add user-->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#securityModal">
+                                <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
+                            <!--end::Add user-->
                             <!--end::Toolbar-->
-
-
                         </div>
                         <!--end::Card toolbar-->
                     </div>
@@ -105,6 +112,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Maison d'Assurance</th>
                                     <th>Numéro</th>
                                     <th>Type</th>
                                     <th>Montant</th>
@@ -319,6 +327,9 @@
                             data: 'id'
                         },
                         {
+                            data: 'assurance'
+                        },
+                        {
                             data: 'number_facture'
                         },
                         {
@@ -353,14 +364,16 @@
                     datatable.search(e.target.value).draw();
                 });
             }
+
             var filterDatatable = () => {
-                const t = document.querySelector('[data-kt-filter="status"]');
+                const t = document.querySelector('[data-kt-filter="assurance"]');
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(8).search(n).draw()
+                        datatable.column(1).search(n).draw()
                 }));
             }
+
 
             // Public methods
             return {

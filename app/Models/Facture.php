@@ -23,4 +23,9 @@ class Facture extends Model
     {
         return $this->belongsTo(Mandat::class);
     }
+
+    public function assurance()
+    {
+        return $this->belongsTo(Assurance::class);
+    }
 }
