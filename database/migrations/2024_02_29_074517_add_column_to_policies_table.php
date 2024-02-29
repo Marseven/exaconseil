@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('cashflows', function (Blueprint $table) {
+        Schema::table('policies', function (Blueprint $table) {
             //
-            $table->boolean('deleted')->nullable();
-            $table->dateTime('deleted_at')->nullable();
+            $table->enum('type', ['prospect', 'client'])->nullable();
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('cashflows', function (Blueprint $table) {
+        Schema::table('policies', function (Blueprint $table) {
             //
         });
     }

@@ -524,10 +524,8 @@
                 <!--end::Aside menu-->
                 <!--begin::Footer-->
                 <div class="aside-footer flex-column-auto pb-7 px-5" id="kt_aside_footer">
-                    <a href="{{ route('logout') }}" class="btn btn-custom btn-danger w-100" data-bs-toggle="tooltip"
-                        data-bs-trigger="hover" data-bs-dismiss-="click">
-                        <span class="btn-label">Déconnexion</span>
-                        <i class="ki-outline ki-document btn-icon fs-2"></i>
+                    <a href="{{ route('trash') }}" class="btn btn-danger w-100">
+                        <span class="btn-label"><i class="bi bi-trash fs-2"></i> Corbeille</span>
                     </a>
                 </div>
                 <!--end::Footer-->

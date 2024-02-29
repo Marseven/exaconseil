@@ -69,14 +69,14 @@ class CashflowController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Cashflow::whereIn('cashbox_id', $cashboxs)->select('count(*) as allcount')->count();
+        $totalRecords = Cashflow::whereIn('cashbox_id', $cashboxs)->select('count(*) as allcount')->where('deleted', NULL)->count();
         $totalRecordswithFilter = Cashflow::select('count(*) as allcount')
             ->where(function ($query) {
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
-            })->whereIn('cashbox_id', $cashboxs)->count();
+            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->count();
 
         // Fetch records
         $records = Cashflow::orderBy($columnName, $columnSortOrder)
@@ -85,7 +85,7 @@ class CashflowController extends Controller
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
-            })->whereIn('cashbox_id', $cashboxs)
+            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)
             ->select('cashflows.*')
             ->skip($start)
             ->take($rowperpage)
@@ -113,7 +113,7 @@ class CashflowController extends Controller
                 class="bi bi-eye"></i></button> ';
 
 
-            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Caisse') && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
+            if ($role->hasPermissionTo('edit cashflow') && $user->hasService('Caisse') && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -461,7 +461,9 @@ class CashflowController extends Controller
     public function update(Request $request, Cashflow $cashflow)
     {
         if (isset($_POST['delete'])) {
-            if ($cashflow->delete()) {
+            $cashflow->deleted = 1;
+            $cashflow->deleted_at = date('Y-m-d H:i:s');
+            if ($cashflow->save()) {
                 return back()->with('success', "La transaction a été supprimé.");
             } else {
                 return back()->with('error', "La police n'a pas été supprimé.");

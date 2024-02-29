@@ -54,7 +54,7 @@ class PolicyController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Policy::select('count(*) as allcount')->count();
+        $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
         $totalRecordswithFilter = Policy::select('count(*) as allcount')
             ->where('date_expired', $sign, $today)
             ->where(function ($query) {
@@ -63,7 +63,7 @@ class PolicyController extends Controller
                     ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.contact', 'like', '%' . $searchValue . '%');
-            })->count();
+            })->where('deleted', NULL)->count();
 
         // Fetch records
         $records = Policy::orderBy($columnName, $columnSortOrder)
@@ -74,7 +74,7 @@ class PolicyController extends Controller
                     ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.contact', 'like', '%' . $searchValue . '%');
-            })
+            })->where('deleted', NULL)
             ->select('policies.*')
             ->skip($start)
             ->take($rowperpage)
@@ -88,6 +88,7 @@ class PolicyController extends Controller
 
             $id = $record->id;
 
+            $type = $record->type;
             $name = $record->name;
             $brand = $record->brand;
             $matricule = $record->matricule;
@@ -103,9 +104,7 @@ class PolicyController extends Controller
                 class="bi bi-eye"></i></button> ';
 
 
-
-
-            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
+            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -126,6 +125,7 @@ class PolicyController extends Controller
 
             $data_arr[] = array(
                 "id" => $id,
+                "type" => $type,
                 "name" => $name,
                 "brand" => $brand,
                 "matricule" => $matricule,
@@ -271,6 +271,7 @@ class PolicyController extends Controller
     public function create(Request $request)
     {
         $rules = [
+            'type' => ['required', 'type'],
             'name' => ['required', 'string'],
             'brand' => ['required', 'string'],
             'matricule' => ['required', 'string'],
@@ -288,6 +289,7 @@ class PolicyController extends Controller
 
         $policy = new Policy();
 
+        $policy->type = $request->type;
         $policy->name = $request->name;
         $policy->brand = $request->brand;
         $policy->matricule = $request->matricule;
@@ -307,7 +309,9 @@ class PolicyController extends Controller
     public function update(Request $request, Policy $policy)
     {
         if (isset($_POST['delete'])) {
-            if ($policy->delete()) {
+            $policy->deleted = 1;
+            $policy->deleted_at = date('Y-m-d H:i:s');
+            if ($policy->save()) {
                 return back()->with('success', "La police a été supprimé.");
             } else {
                 return back()->with('error', "La police n'a pas été supprimé.");
@@ -315,6 +319,7 @@ class PolicyController extends Controller
         } else {
 
             $rules = [
+                'type' => ['required', 'type'],
                 'name' => ['required', 'string'],
                 'brand' => ['required', 'string'],
                 'matricule' => ['required', 'string'],
@@ -330,6 +335,7 @@ class PolicyController extends Controller
                 return back()->with('error', $errors->first());
             }
 
+            $policy->type = $request->type;
             $policy->name = $request->name;
             $policy->brand = $request->brand;
             $policy->matricule = $request->matricule;

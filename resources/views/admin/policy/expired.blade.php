@@ -81,10 +81,21 @@
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
+                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                            <div class="w-100 mw-150px">
+                                <!--begin::Select2-->
+                                <select class="form-select form-select-solid" data-control="select2" data-hide-search="true"
+                                    data-placeholder="Type" data-kt-filter="type">
+                                    <option value="all">Tout</option>
+                                    <option value="client">Client</option>
+                                    <option value="prospect">Prospect</option>
+                                </select>
+                                <!--end::Select2-->
+                            </div>
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
+
 
                                 <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
                                     data-bs-target="#export">
@@ -92,7 +103,7 @@
 
                                 <button type="button" class="btn btn-success m-5" data-bs-toggle="modal"
                                     data-bs-target="#import">
-                                    <i class="bi bi-upload fs-2"></i>Impoter</button>
+                                    <i class="bi bi-upload fs-2"></i>Importer</button>
                                 <!--end::Add user-->
                             </div>
                             <!--end::Toolbar-->
@@ -110,6 +121,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Type</th>
                                     <th>Nom & Prénoms</th>
                                     <th>Marque</th>
                                     <th>Matricule</th>
@@ -276,6 +288,9 @@
                             data: 'id'
                         },
                         {
+                            data: 'type'
+                        },
+                        {
                             data: 'name'
                         },
                         {
@@ -311,11 +326,11 @@
                 });
             }
             var filterDatatable = () => {
-                const t = document.querySelector('[data-kt-filter="status"]');
+                const t = document.querySelector('[data-kt-filter="type"]');
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(8).search(n).draw()
+                        datatable.column(1).search(n).draw()
                 }));
             }
 

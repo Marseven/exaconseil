@@ -86,6 +86,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/save/setting', [SettingController::class, 'save'])->name('admin-save-settings');
         Route::post('/save/notification', [SettingController::class, 'notification'])->name('admin-save-notification');
 
+        Route::get('/trash', [DashboardController::class, 'trash'])->name('trash');
+
+        Route::get('/delete/trash/{service}/{id}', [DashboardController::class, 'delete'])->name('delete');
+        Route::get('/restore/{service}/{id}', [DashboardController::class, 'restore'])->name('restore');
+
         //entreprise
         Route::get('/list/entreprises', [EntrepriseController::class, 'index'])->name('admin-list-entreprises');
         Route::post('/create/entreprise', [EntrepriseController::class, 'create'])->name('admin-create-entreprise');
@@ -163,6 +168,8 @@ Route::middleware('auth')->group(function () {
 
         //users
         Route::get('/profil', [UserController::class, 'profil'])->name('admin-profil');
+        Route::post('update/profil', [UserController::class, 'updateProfil']);
+        Route::post('resetPassword/profil', [UserController::class, 'resetPassword']);
         Route::get('/list/users', [UserController::class, 'index'])->name('admin-list-users');
         Route::get('/list/roles', [UserController::class, 'roles'])->name('admin-list-roles');
         Route::get('/list/permissions', [UserController::class, 'permissions'])->name('admin-list-permissions');

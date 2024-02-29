@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Entreprise;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -94,6 +97,41 @@ class UserController extends Controller
     public function profil()
     {
         return view('admin.user.profil');
+    }
+
+    public function updateProfil(Request $request)
+    {
+
+        $user = User::find(Auth::user()->id);
+
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+
+        if ($user->save()) {
+            return back()->with('success', 'Votre profil a été mis à jour avec succès.');
+        } else {
+            return back()->with('error', 'Un problème est survenu.');
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+
+        $user = User::find(Auth::user()->id);
+
+        if ($request->password_confirmation == $request->password) {
+            $user->forceFill([
+                'password' => Hash::make($request->password)
+            ])->setRememberToken(Str::random(60));
+
+            $user->save();
+
+            event(new PasswordReset($user));
+
+            return back()->with('success', 'Votre mot de passe a été mis à jour avec succès.');
+        } else {
+            return back()->withErrors("Une erreur s'est produite.");
+        }
     }
 
     public function create(Request $request)

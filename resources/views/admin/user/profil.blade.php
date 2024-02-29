@@ -143,8 +143,12 @@
                         </div>
                         <!--end::Card title-->
                         <!--begin::Action-->
-                        <a href="#" class="btn btn-sm btn-primary align-self-center" data-bs-toggle="modal"
-                            data-bs-target="#kt_modal_edit_user">Mettre à jour</a>
+                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                            <a href="#" class="btn btn-sm btn-primary align-self-center" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_edit_password">Modifier le mot de passe</a>
+                            <a href="#" class="btn btn-sm btn-primary align-self-center" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_edit_user">Mettre à jour</a>
+                        </div>
                         <!--end::Action-->
                     </div>
                     <!--begin::Card header-->
@@ -179,7 +183,7 @@
                             <div class="col-lg-8 d-flex align-items-center">
                                 <span class="fw-bold fs-6 text-gray-800 me-2">
                                     {{ $user->phone }}</span>
-                                <span class="badge badge-success">Verified</span>
+                                <span class="badge badge-success">Verifié</span>
                             </div>
                             <!--end::Col-->
                         </div>
@@ -193,7 +197,7 @@
                             <div class="col-lg-8">
                                 <a href="#"
                                     class="fw-bold fs-6 text-gray-800 text-hover-primary">{{ $user->email }}</a>
-                                <span class="badge badge-success">Verified</span>
+                                <span class="badge badge-success">Verifié</span>
                             </div>
                             <!--end::Col-->
                         </div>
@@ -208,4 +212,169 @@
         </div>
         <!--end::Post-->
     </div>
+
+    <!--begin::Modal - edit profil-->
+    <div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" id="kt_modal_add_user_header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bold">Mettre à jour Mon Profil</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body px-5 my-7">
+                    <!--begin::Form-->
+                    <form id="kt_modal_edit_user_form" class="form" action="{{ url('admin/update/profil') }}"
+                        method="POST">
+                        @csrf
+                        <!--begin::Scroll-->
+                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll"
+                            data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
+                            data-kt-scroll-dependencies="#kt_modal_add_user_header"
+                            data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
+
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Label-->
+                                <label class="fw-semibold fs-6 mb-2">Prénom</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" name="firstname" value="{{ $user->firstname }}"
+                                    class="form-control form-control-solid mb-3 mb-lg-0" disabled />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Label-->
+                                <label class="required fw-semibold fs-6 mb-2">Nom</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" name="lastname" value="{{ $user->lastname }}"
+                                    class="form-control form-control-solid mb-3 mb-lg-0" disabled />
+                                <!--end::Input-->
+                            </div>
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Label-->
+                                <label class="required fw-semibold fs-6 mb-2">Email</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="email" name="email" class="form-control form-control-solid mb-3 mb-lg-0"
+                                    value="{{ $user->email }}" required />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="fv-row mb-7">
+                                <!--begin::Label-->
+                                <label class="required fw-semibold fs-6 mb-2">Téléphone</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="tel" id="phone" name="phone" value="{{ $user->phone }}"
+                                    class="form-control form-control-solid mb-3 mb-lg-0" required />
+
+                                <!--end::Input-->
+                            </div>
+
+
+
+                        </div>
+                        <!--end::Scroll-->
+                        <!--begin::Actions-->
+                        <div class="text-center pt-10">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="indicator-label">Valider</span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - edit task-->
+
+    <!--begin::Modal - edit profil-->
+    <div class="modal fade" id="kt_modal_edit_password" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" id="kt_modal_add_user_header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bold">Mettre à jour le mot de passe</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body px-5 my-7">
+                    <!--begin::Form-->
+                    <form id="kt_modal_password_user_form" class="form"
+                        action="{{ url('admin/resetPassword/profil/') }}" method="POST">
+                        @csrf
+                        <!--begin::Scroll-->
+                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll"
+                            data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto"
+                            data-kt-scroll-dependencies="#kt_modal_add_user_header"
+                            data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
+
+                            <div class="fv-row mb-3">
+                                <!--begin::Password-->
+                                <input type="password" placeholder="Mot de passe" name="password" autocomplete="off"
+                                    class="form-control bg-transparent" />
+                                <!--end::Password-->
+                            </div>
+                            <!--end::Input group=-->
+
+                            <!--end::Input group=-->
+                            <div class="fv-row mb-3">
+                                <!--begin::Password-->
+                                <input type="password" id="password-confirm" placeholder="Confirmer le Mot de passe"
+                                    name="password_confirmation" autocomplete="off"
+                                    class="form-control bg-transparent" />
+                                <!--end::Password-->
+                            </div>
+                            <!--end::Input group=-->
+                        </div>
+                        <!--end::Scroll-->
+                        <!--begin::Actions-->
+                        <div class="text-center pt-10">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="indicator-label">Valider</span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - edit task-->
 @endsection

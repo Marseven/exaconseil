@@ -48,7 +48,7 @@ class FactureController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Facture::select('count(*) as allcount')->count();
+        $totalRecords = Facture::select('count(*) as allcount')->where('deleted', NULL)->count();
         $totalRecordswithFilter = Facture::select('count(*) as allcount')
             ->where('status', $status)
             ->where(function ($query) {
@@ -57,7 +57,7 @@ class FactureController extends Controller
                     ->orWhere('factures.type_prestation', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.amount', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.assurance_id', 'like', '%' . $searchValue . '%');
-            })->count();
+            })->where('deleted', NULL)->count();
 
         // Fetch records
         $records = Facture::orderBy($columnName, $columnSortOrder)
@@ -68,7 +68,7 @@ class FactureController extends Controller
                     ->orWhere('factures.type_prestation', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.amount', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.assurance_id', 'like', '%' . $searchValue . '%');
-            })
+            })->where('deleted', NULL)
             ->select('factures.*')
             ->skip($start)
             ->take($rowperpage)
@@ -107,15 +107,15 @@ class FactureController extends Controller
             data-id="' . $record->id . '"><i
                 class="bi bi-eye"></i></button>';
 
-            if ($record->status != 'paid') {
-                $actions .= '<button style="padding: 10px !important; margin-left:4px;" type="button"
-                        class="btn btn-info modal_status_action"
-                        data-id="' . $record->id . '">
-                        <i class="bi bi-currency-exchange"></i>
-                    </button> ';
-            }
+            // if ($record->status != 'paid') {
+            //     $actions .= '<button style="padding: 10px !important; margin-left:4px;" type="button"
+            //             class="btn btn-info modal_status_action"
+            //             data-id="' . $record->id . '">
+            //             <i class="bi bi-currency-exchange"></i>
+            //         </button> ';
+            // }
 
-            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture') && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
+            if ($role->hasPermissionTo('edit facture') && $user->hasService('Facture') && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -480,7 +480,9 @@ class FactureController extends Controller
     public function update(Request $request, Facture $facture)
     {
         if (isset($_POST['delete'])) {
-            if ($facture->delete()) {
+            $facture->deleted = 1;
+            $facture->deleted_at = date('Y-m-d H:i:s');
+            if ($facture->save()) {
                 return back()->with('success', "La transaction a été supprimé.");
             } else {
                 return back()->with('error', "La police n'a pas été supprimé.");

@@ -89,7 +89,7 @@
                                     data-placeholder="Assurance" data-kt-filter="assurance">
                                     <option value="all">Tout</option>
                                     @foreach ($assurances as $assurance)
-                                        <option value="{{ $assurance->id }}">{{ $assurance->name }}</option>
+                                        <option value="{{ $assurance->name }}">{{ $assurance->name }}</option>
                                     @endforeach
                                 </select>
                                 <!--end::Select2-->
@@ -254,6 +254,23 @@
         </div>
     </div>
 
+    <div class="modal fade" id="cardModalView" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelOne"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -367,10 +384,12 @@
 
             var filterDatatable = () => {
                 const t = document.querySelector('[data-kt-filter="assurance"]');
+
                 $(t).on("change", (t => {
                     let n = t.target.value;
+                    console.log(t.target.value);
                     "all" === n && (n = ""),
-                        datatable.column(1).search(n).draw()
+                        datatable.column(2).search(n).draw()
                 }));
             }
 
@@ -449,27 +468,27 @@
             });
         });
 
-        $(document).on("click", ".modal_status_action", function() {
-            var id = $(this).data('id');
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: "{{ route('admin-ajax-facture') }}",
-                dataType: 'json',
-                data: {
-                    "id": id,
-                    "action": "status",
-                },
-                success: function(data) {
-                    //get data value params
-                    var body = data.body;
-                    $('#cardModal .modal-content').html(body); //url to delete item
-                    $('#cardModal').modal('show');
-                }
-            });
-        });
+        // $(document).on("click", ".modal_status_action", function() {
+        //     var id = $(this).data('id');
+        //     $.ajax({
+        //         headers: {
+        //             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         type: "POST",
+        //         url: "{{ route('admin-ajax-facture') }}",
+        //         dataType: 'json',
+        //         data: {
+        //             "id": id,
+        //             "action": "status",
+        //         },
+        //         success: function(data) {
+        //             //get data value params
+        //             var body = data.body;
+        //             $('#cardModal .modal-content').html(body); //url to delete item
+        //             $('#cardModal').modal('show');
+        //         }
+        //     });
+        // });
 
         $(document).on("click", ".modal_delete_action", function() {
             var id = $(this).data('id');

@@ -81,11 +81,23 @@
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
+                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+
+                            <div class="w-100 mw-150px">
+                                <!--begin::Select2-->
+                                <select class="form-select form-select-solid" data-control="select2" data-hide-search="true"
+                                    data-placeholder="Type" data-kt-filter="type">
+                                    <option value="all">Tout</option>
+                                    <option value="client">Client</option>
+                                    <option value="prospect">Prospect</option>
+
+                                </select>
+                                <!--end::Select2-->
+                            </div>
+
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                 <!--begin::Add user-->
-
                                 <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
                                     data-bs-target="#securityModal">
                                     <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
@@ -102,7 +114,6 @@
                             </div>
                             <!--end::Toolbar-->
 
-
                         </div>
                         <!--end::Card toolbar-->
                     </div>
@@ -114,6 +125,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Type</th>
                                     <th>Nom & Prénoms</th>
                                     <th>Marque</th>
                                     <th>Matricule</th>
@@ -155,6 +167,16 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
+                                <label>Type</label>
+                                <select class="form-control" name="type" required>
+                                    <option value="client">Client</option>
+                                    <option value="prospect">Prospect</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
                                 <label>Nom Complet</label>
                                 <input class="form-control" name="name" type="text" placeholder="Nom Complet"
                                     required />
@@ -164,7 +186,8 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Marque</label>
-                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
+                                <input class="form-control" name="brand" type="text" placeholder="Marque"
+                                    required />
                             </div>
                         </div>
 
@@ -345,6 +368,9 @@
                             data: 'id'
                         },
                         {
+                            data: 'type'
+                        },
+                        {
                             data: 'name'
                         },
                         {
@@ -380,11 +406,11 @@
                 });
             }
             var filterDatatable = () => {
-                const t = document.querySelector('[data-kt-filter="status"]');
+                const t = document.querySelector('[data-kt-filter="type"]');
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(8).search(n).draw()
+                        datatable.column(1).search(n).draw()
                 }));
             }
 

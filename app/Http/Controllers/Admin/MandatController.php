@@ -41,14 +41,14 @@ class MandatController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Mandat::select('count(*) as allcount')->count();
+        $totalRecords = Mandat::select('count(*) as allcount')->where('deleted', NULL)->count();
         $totalRecordswithFilter = Mandat::select('count(*) as allcount')
             ->where(function ($query) {
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('mandats.number_mandat', 'like', '%' . $searchValue . '%')
                     ->orWhere('mandats.number_police', 'like', '%' . $searchValue . '%')
                     ->orWhere('mandats.assure', 'like', '%' . $searchValue . '%');
-            })->count();
+            })->where('deleted', NULL)->count();
 
         // Fetch records
         $records = Mandat::orderBy($columnName, $columnSortOrder)
@@ -57,7 +57,7 @@ class MandatController extends Controller
                 $query->where('mandats.number_mandat', 'like', '%' . $searchValue . '%')
                     ->orWhere('mandats.number_police', 'like', '%' . $searchValue . '%')
                     ->orWhere('mandats.assure', 'like', '%' . $searchValue . '%');
-            })
+            })->where('deleted', NULL)
             ->select('mandats.*')
             ->skip($start)
             ->take($rowperpage)
@@ -95,7 +95,7 @@ class MandatController extends Controller
             data-bs-target="#cardModalView' . $record->id . '"><i
                 class="bi bi-eye"></i></button>';
 
-            if ($role->hasPermissionTo('edit mandat') && $user->hasService('Mandat') && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
+            if ($role->hasPermissionTo('edit mandat') && $user->hasService('Mandat') && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -440,7 +440,9 @@ class MandatController extends Controller
     public function update(Request $request, Mandat $mandat)
     {
         if (isset($_POST['delete'])) {
-            if ($mandat->delete()) {
+            $mandat->deleted = 1;
+            $mandat->deleted_at = date('Y-m-d H:i:s');
+            if ($mandat->save()) {
                 return back()->with('success', "La transaction a été supprimé.");
             } else {
                 return back()->with('error', "La police n'a pas été supprimé.");

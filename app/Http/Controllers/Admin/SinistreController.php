@@ -44,7 +44,7 @@ class SinistreController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Sinistre::select('count(*) as allcount')->count();
+        $totalRecords = Sinistre::select('count(*) as allcount')->where('deleted', NULL)->count();
         $totalRecordswithFilter = Sinistre::select('count(*) as allcount')
             ->where(function ($query) {
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
@@ -54,7 +54,7 @@ class SinistreController extends Controller
                     ->orWhere('sinistres.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.matricule', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.contact', 'like', '%' . $searchValue . '%');
-            })->count();
+            })->where('deleted', NULL)->count();
 
         // Fetch records
         $records = Sinistre::orderBy($columnName, $columnSortOrder)
@@ -66,7 +66,7 @@ class SinistreController extends Controller
                     ->orWhere('sinistres.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.matricule', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.contact', 'like', '%' . $searchValue . '%');
-            })
+            })->where('deleted', NULL)
             ->select('sinistres.*')
             ->skip($start)
             ->take($rowperpage)
@@ -95,7 +95,7 @@ class SinistreController extends Controller
             data-bs-target="#cardModalView' . $record->id . '"><i
                 class="bi bi-eye"></i></button> ';
 
-            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre") && Controller::isBefore($record->created_at) && $record->user_id == Auth::user()->id) {
+            if ($role->hasPermissionTo('edit sinistre') && $user->hasService("Sinistre") && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
                 $actions .= '
                         <button style="padding: 10px !important" type="button"
                             class="btn btn-secondary modal_edit_action"
@@ -328,7 +328,9 @@ class SinistreController extends Controller
     public function update(Request $request, Sinistre $sinistre)
     {
         if (isset($_POST['delete'])) {
-            if ($sinistre->delete()) {
+            $sinistre->deleted = 1;
+            $sinistre->deleted_at = date('Y-m-d H:i:s');
+            if ($sinistre->save()) {
                 return back()->with('success', "Le sinistre a été supprimé.");
             } else {
                 return back()->with('error', "Le sinistre n'a pas été supprimé.");

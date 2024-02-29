@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Cashbox;
 use App\Models\Cashflow;
+use App\Models\Devis;
 use App\Models\Facture;
+use App\Models\Mandat;
 use App\Models\Policy;
+use App\Models\Sinistre;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,5 +48,103 @@ class DashboardController extends Controller
         }
 
         return view('admin.dashboard.index', compact('cashflows', 'cashflows_credit', 'factures', 'factures_paid', 'policies', 'policies_exp'));
+    }
+
+    public function trash()
+    {
+        if (Auth::user()->roles->first()->name == "Gerant") {
+            $cashflows = Cashflow::where('deleted', 1)->get();
+            $factures = Facture::where('deleted', 1)->get();
+            $devis = Devis::where('deleted', 1)->get();
+            $policies = Policy::where('deleted', 1)->get();
+            $mandats = Mandat::where('deleted', 1)->get();
+            $sinistres = Sinistre::where('deleted', 1)->get();
+        } else {
+            $cashflows = Cashflow::where('user_id', Auth::user()->id)->where('deleted', 1)->get();
+            $factures = Facture::where('user_id', Auth::user()->id)->where('deleted', 1)->get();
+            $devis = Devis::where('user_id', Auth::user()->id)->where('deleted', 1)->get();
+            $policies = Policy::where('user_id', Auth::user()->id)->where('deleted', 1)->get();
+            $mandats = Mandat::where('user_id', Auth::user()->id)->where('deleted', 1)->get();
+            $sinistres = Sinistre::where('user_id', Auth::user()->id)->where('deleted', 1)->get();
+        }
+
+
+        return view('admin.dashboard.trash', compact('cashflows', 'factures', 'devis', 'policies', 'mandats', 'sinistres'));
+    }
+
+    public function delete($service, $id)
+    {
+        switch ($service) {
+            case "Police":
+                $entities = Policy::find($id);
+                $entities->delete();
+                break;
+            case "Facture":
+                $entities = Sinistre::find($id);
+                $entities->delete();
+                break;
+            case "Devis":
+                $entities = Devis::find($id);
+                $entities->delete();
+                break;
+            case "Sinistre":
+                $entities = Sinistre::find($id);
+                $entities->delete();
+                break;
+            case "Mandat":
+                $entities = Mandat::find($id);
+                $entities->delete();
+                break;
+            case "Caisse":
+                $entities = Cashflow::find($id);
+                $entities->delete();
+                break;
+            default:
+                return back()->with('error', "Aucun élément a été traité.");
+                break;
+        }
+
+        return back()->with('success', "L'élément a été définitivement supprimé.");
+    }
+
+    public function restore($service, $id)
+    {
+        switch ($service) {
+            case "Police":
+                $entities = Policy::find($id);
+                $entities->deleted = null;
+                $entities->save();
+                break;
+            case "Facture":
+                $entities = Sinistre::find($id);
+                $entities->deleted = null;
+                $entities->save();
+                break;
+            case "Devis":
+                $entities = Devis::find($id);
+                $entities->deleted = null;
+                $entities->save();
+                break;
+            case "Sinistre":
+                $entities = Sinistre::find($id);
+                $entities->deleted = null;
+                $entities->save();
+                break;
+            case "Mandat":
+                $entities = Mandat::find($id);
+                $entities->deleted = null;
+                $entities->save();
+                break;
+            case "Caisse":
+                $entities = Cashflow::find($id);
+                $entities->deleted = null;
+                $entities->save();
+                break;
+            default:
+                return back()->with('error', "Aucun élément a été traité.");
+                break;
+        }
+
+        return back()->with('success', "L'élément a été restauré avec succès.");
     }
 }
