@@ -98,7 +98,7 @@
 
                             <!--begin::Links-->
                             <div class="d-flex fw-semibold text-black mb-10 fs-base ">
-                                <p>{{ date('Y') }} © Exa Conseil</p>
+                                <p>{{ date('Y') }} © EKAMA</p>
                             </div>
                             <!--end::Links-->
                         </div>

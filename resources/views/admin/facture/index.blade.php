@@ -89,7 +89,7 @@
                                     data-placeholder="Assurance" data-kt-filter="assurance">
                                     <option value="all">Tout</option>
                                     @foreach ($assurances as $assurance)
-                                        <option value="{{ $assurance->id }}">{{ $assurance->name }}</option>
+                                        <option value="{{ $assurance->name }}">{{ $assurance->name }}</option>
                                     @endforeach
                                 </select>
                                 <!--end::Select2-->
@@ -157,7 +157,7 @@
                                 <select class="form-control" name="assurance_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($assurances as $assurance)
-                                        <option value="{{ $assurance->id }}">{{ $assurance->name }}</option>
+                                        <option value="{{ $assurance->name }}">{{ $assurance->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -406,7 +406,7 @@
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(1).search(n).draw()
+                        datatable.search(n).draw()
                 }));
             }
 

@@ -56,7 +56,7 @@ class FactureController extends Controller
                 $query->where('factures.number_facture', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.type_prestation', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.amount', 'like', '%' . $searchValue . '%')
-                    ->orWhere('factures.assurance_id', 'like', '%' . $searchValue . '%');
+                    ->orWhere('factures.assurance_id', $searchValue);
             })->where('deleted', NULL)->count();
 
         // Fetch records
@@ -67,7 +67,7 @@ class FactureController extends Controller
                 $query->where('factures.number_facture', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.type_prestation', 'like', '%' . $searchValue . '%')
                     ->orWhere('factures.amount', 'like', '%' . $searchValue . '%')
-                    ->orWhere('factures.assurance_id', 'like', '%' . $searchValue . '%');
+                    ->orWhere('factures.assurance_id',  $searchValue);
             })->where('deleted', NULL)
             ->select('factures.*')
             ->skip($start)
@@ -82,12 +82,12 @@ class FactureController extends Controller
             $user->load(['entreprise']);
             $role = $user->roles->first();
 
-            $record->load(['user', 'assurance']);
+            $record->load(['user']);
 
             $id = $record->id;
 
             $number_facture = $record->number_facture;
-            $assurance = $record->assurance == null ? "-" : $record->assurance->name;
+            $assurance = $record->assurance_id == null ? "-" : $record->assurance_id;
             $type_prestation = $record->type_prestation;
             $amount = Controller::format_amount($record->amount) . ' FCFA';
 
@@ -427,7 +427,7 @@ class FactureController extends Controller
             'type_prestation' => ['required', 'string'],
             'amount' => ['required', 'numeric'],
             'date_facture' => ['required', 'date'],
-            'assurance_id' => ['required', 'exists:assurances'],
+            'assurance_id' => ['required', 'exists:assurances,name'],
         ];
 
         $validator = Validator::make($request->all(), $rules);

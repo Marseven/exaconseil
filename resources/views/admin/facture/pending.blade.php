@@ -153,6 +153,31 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
+                                <label>Maison d'assurance</label>
+                                <select class="form-control" name="assurance_id">
+                                    <option value="0">Choisir</option>
+                                    @foreach ($assurances as $assurance)
+                                        <option value="{{ $assurance->name }}">{{ $assurance->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label>Mandat</label>
+                                <select class="form-control" name="mandat_id">
+                                    <option value="0">Choisir</option>
+                                    @foreach ($mandats as $mandat)
+                                        @if ($mandat->facture->count() == 0)
+                                            <option value="{{ $mandat->id }}">Mandat N°{{ $mandat->number_mandat }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
                                 <label>Numéro de facture</label>
                                 <input class="form-control" name="number_facture" type="text"
                                     placeholder="N° de facture" />
@@ -389,7 +414,7 @@
                     let n = t.target.value;
                     console.log(t.target.value);
                     "all" === n && (n = ""),
-                        datatable.column(2).search(n).draw()
+                        datatable.search(n).draw()
                 }));
             }
 

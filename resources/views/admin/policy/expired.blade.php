@@ -325,12 +325,13 @@
                     datatable.search(e.target.value).draw();
                 });
             }
+
             var filterDatatable = () => {
                 const t = document.querySelector('[data-kt-filter="type"]');
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(1).search(n).draw()
+                        datatable.search(n).draw()
                 }));
             }
 

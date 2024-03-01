@@ -410,7 +410,7 @@
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(1).search(n).draw()
+                        datatable.search(n).draw()
                 }));
             }
 

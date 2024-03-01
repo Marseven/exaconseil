@@ -62,7 +62,8 @@ class PolicyController extends Controller
                 $query->where('policies.name', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
-                    ->orWhere('policies.contact', 'like', '%' . $searchValue . '%');
+                    ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
+                    ->orWhere('policies.type', 'like', '%' . $searchValue . '%');
             })->where('deleted', NULL)->count();
 
         // Fetch records
@@ -73,7 +74,8 @@ class PolicyController extends Controller
                 $query->where('policies.name', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
-                    ->orWhere('policies.contact', 'like', '%' . $searchValue . '%');
+                    ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
+                    ->orWhere('policies.type',  $searchValue);
             })->where('deleted', NULL)
             ->select('policies.*')
             ->skip($start)
