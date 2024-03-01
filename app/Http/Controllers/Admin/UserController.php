@@ -174,7 +174,11 @@ class UserController extends Controller
             $user->poste = $request->poste;
             $user->responsable =  $request->responsable_id;
 
+
+
             if ($user->save()) {
+                $role = Role::find($request->role_id);
+                $user->assignRole($role);
                 return back()->with('success', 'Utilisateur mis à jour avec succès.');
             } else {
                 return back()->with('error', 'Un problème est survenu.');
