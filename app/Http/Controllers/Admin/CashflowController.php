@@ -414,7 +414,6 @@ class CashflowController extends Controller
                 $cashflow->entity_id =  $request->entity_id[0];
                 $facture = Facture::find($cashflow->entity_id);
                 $amount = $facture->amount;
-                dd($cashflow->entity_id);
                 if ($amount != floatval($request->amount)) {
                     return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
                 }
@@ -448,14 +447,21 @@ class CashflowController extends Controller
         $cashflow->user_id = Auth::user()->id;
 
         if ($cashflow->save()) {
-            if ($cashflow->service_id == 5 && $cashflow->entity_id == null) {
-                foreach ($request->entity_id as $entity) {
-                    if ($request->service_id == 5) {
-                        $facture = Facture::find($entity);
-                        $facture->cashflow_id = $cashflow->id;
-                        $facture->status = "paid";
-                        $facture->save();
+            if ($cashflow->service_id == 5) {
+                if ($cashflow->entity_id == null) {
+                    foreach ($request->entity_id as $entity) {
+                        if ($request->service_id == 5) {
+                            $facture = Facture::find($entity);
+                            $facture->cashflow_id = $cashflow->id;
+                            $facture->status = "paid";
+                            $facture->save();
+                        }
                     }
+                } else {
+                    $facture = Facture::find($cashflow->entity_id);
+                    $facture->cashflow_id = $cashflow->id;
+                    $facture->status = "paid";
+                    $facture->save();
                 }
             }
 
