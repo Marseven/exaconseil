@@ -337,26 +337,6 @@ class SinistreController extends Controller
             }
         } else {
 
-            $rules = [
-                'lastname' => ['required', 'string'],
-                'firstname' => ['required', 'string'],
-                'brand' => ['required', 'string'],
-                'matricule' => ['required', 'string'],
-                'contact' => ['required', 'string'],
-                'date_open' => ['required', 'date'],
-                'lastname' => ['required', 'string'],
-                'firstname' => ['required', 'string'],
-                'assurance' => ['required', 'string'],
-                'tiers' => ['required', 'string'],
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return back()->with('error', $errors->first());
-            }
-
             $sinistre->lastname = $request->lastname;
             $sinistre->firstname = $request->firstname;
             $sinistre->brand = $request->brand;

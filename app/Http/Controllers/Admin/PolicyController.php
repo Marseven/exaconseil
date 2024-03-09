@@ -285,7 +285,7 @@ class PolicyController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'type' => ['required', 'type'],
+            'type' => ['required'],
             'name' => ['required', 'string'],
             'brand' => ['required', 'string'],
             'matricule' => ['required', 'string'],
@@ -331,23 +331,6 @@ class PolicyController extends Controller
                 return back()->with('error', "La police n'a pas été supprimé.");
             }
         } else {
-
-            $rules = [
-                'type' => ['required', 'type'],
-                'name' => ['required', 'string'],
-                'brand' => ['required', 'string'],
-                'matricule' => ['required', 'string'],
-                'contact' => ['required', 'string'],
-                'date_begin' => ['required', 'date'],
-                'date_expired' => ['required', 'date'],
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return back()->with('error', $errors->first());
-            }
 
             $policy->type = $request->type;
             $policy->name = $request->name;

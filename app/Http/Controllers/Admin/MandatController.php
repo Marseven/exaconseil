@@ -449,25 +449,6 @@ class MandatController extends Controller
             }
         } else {
 
-            $rules = [
-                'number_mandat' => ['required', 'string'],
-                'number_police' => ['required', 'string'],
-                'number_sinistre' => ['required', 'string'],
-                'assure' => ['required', 'string'],
-                'tiers' => ['required', 'string'],
-                'vehicule' => ['required', 'string'],
-                'immatriculation' => ['required', 'string'],
-                'date_sinistre' => ['required', 'date'],
-                'place' => ['required', 'string'],
-                'date_mandat' => ['required', 'date'],
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return back()->with('error', $errors->first());
-            }
 
             $mandat->number_mandat = $request->number_mandat;
             $mandat->number_police = $request->number_police;
