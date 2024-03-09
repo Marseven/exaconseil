@@ -114,6 +114,7 @@
                                     <th>#</th>
                                     <th>Maison d'Assurance</th>
                                     <th>Numéro</th>
+                                    <th>Courtier d'Assurance</th>
                                     <th>Type</th>
                                     <th>Montant</th>
                                     <th>Date</th>
@@ -373,6 +374,9 @@
                         },
                         {
                             data: 'number_facture'
+                        },
+                        {
+                            data: 'courtier'
                         },
                         {
                             data: 'type_prestation'

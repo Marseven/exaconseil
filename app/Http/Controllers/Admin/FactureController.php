@@ -88,6 +88,7 @@ class FactureController extends Controller
 
             $number_facture = $record->number_facture;
             $assurance = $record->assurance_id == null ? "-" : $record->assurance_id;
+            $courtier = $record->company_assurance;
             $type_prestation = $record->type_prestation;
             $amount = Controller::format_amount($record->amount) . ' FCFA';
 
@@ -134,6 +135,7 @@ class FactureController extends Controller
                 "id" => $id,
                 "assurance" => $assurance,
                 "number_facture" => $number_facture,
+                "courtier" => $courtier,
                 "type_prestation" => $type_prestation,
                 "amount" => $amount,
                 "user" => $_user,
