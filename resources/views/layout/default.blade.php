@@ -481,7 +481,7 @@
                                                 <!--end:Menu link-->
                                             </div>
                                             <!--end:Menu item-->
-                                        @endforeach
+                                        @endif
 
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
