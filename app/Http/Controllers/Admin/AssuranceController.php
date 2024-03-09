@@ -19,7 +19,7 @@ class AssuranceController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'name' => ['required', 'string', 'unique'],
+            'name' => ['required', 'string', 'unique:name'],
             'description' => ['required', 'string'],
         ];
 
