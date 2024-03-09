@@ -409,7 +409,7 @@ class CashflowController extends Controller
         $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
 
         if (!empty($request->entity_id)) {
-            dd(count($request->entity_id));
+
             if (count($request->entity_id) == 1) {
                 $cashflow->entity_id =  $request->entity_id[0];
                 $facture = Facture::find($cashflow->entity_id);
@@ -417,6 +417,7 @@ class CashflowController extends Controller
                 if ($amount != $request->amount) {
                     return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
                 }
+                dd(count($cashflow->entity_id));
             } else {
                 $amount = 0;
                 foreach ($request->entity_id as $entity) {
