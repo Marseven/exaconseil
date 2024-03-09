@@ -531,7 +531,7 @@ class CashflowController extends Controller
                     $entities = Devis::where('entreprise_id', $entrepriseId)->get();
                     break;
                 case 5:
-                    $entities = Facture::where('entreprise_id', $entrepriseId)->get();
+                    $entities = Facture::where('entreprise_id', $entrepriseId)->where('status', 'unpaid')->get();
                     break;
                 default:
                     $entities = [];
