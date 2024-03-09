@@ -80,7 +80,7 @@ class DashboardController extends Controller
                 $entities->delete();
                 break;
             case "Facture":
-                $entities = Sinistre::find($id);
+                $entities = Facture::find($id);
                 $entities->delete();
                 break;
             case "Devis":
