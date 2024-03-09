@@ -105,24 +105,44 @@ class PolicyController extends Controller
             data-bs-target="#cardModalView' . $record->id . '"><i
                 class="bi bi-eye"></i></button> ';
 
-
-            if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
-                $actions .= '
-                        <button style="padding: 10px !important" type="button"
-                            class="btn btn-secondary modal_edit_action"
-                            data-bs-toggle="modal"
-                            data-id="' . $record->id . '"
-                            data-bs-target="#cardModal' . $record->id . '">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button style="padding: 10px !important" type="button"
-                            class="btn btn-danger modal_delete_action"
-                            data-bs-toggle="modal"
-                            data-id="' . $record->id . '"
-                            data-bs-target="#cardModalCenter' . $record->id . '">
-                            <i class="bi bi-trash"></i>
-                        </button>';
+            if ($type != 'valided') {
+                if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
+                    $actions .= '
+                                <button style="padding: 10px !important" type="button"
+                                    class="btn btn-secondary modal_edit_action"
+                                    data-bs-toggle="modal"
+                                    data-id="' . $record->id . '"
+                                    data-bs-target="#cardModal' . $record->id . '">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button style="padding: 10px !important" type="button"
+                                    class="btn btn-danger modal_delete_action"
+                                    data-bs-toggle="modal"
+                                    data-id="' . $record->id . '"
+                                    data-bs-target="#cardModalCenter' . $record->id . '">
+                                    <i class="bi bi-trash"></i>
+                                </button>';
+                }
+            } else {
+                if ($role->hasPermissionTo('edit policy') && $user->hasService("Police d'assurance") && (Controller::isBefore($record->created_at)  || Auth::user()->roles->first()->name == "Gerant") && ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == "Gerant")) {
+                    $actions .= '
+                                <button style="padding: 10px !important" type="button"
+                                    class="btn btn-secondary modal_edit_action"
+                                    data-bs-toggle="modal"
+                                    data-id="' . $record->id . '"
+                                    data-bs-target="#cardModal' . $record->id . '">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button style="padding: 10px !important" type="button"
+                                    class="btn btn-danger modal_delete_action"
+                                    data-bs-toggle="modal"
+                                    data-id="' . $record->id . '"
+                                    data-bs-target="#cardModalCenter' . $record->id . '">
+                                    <i class="bi bi-trash"></i>
+                                </button>';
+                }
             }
+
 
 
             $data_arr[] = array(
