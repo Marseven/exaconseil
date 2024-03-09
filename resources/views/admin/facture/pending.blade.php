@@ -185,7 +185,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Compagnie d'assurance</label>
+                                <label>Courtier d'assurance</label>
                                 <input class="form-control" name="company_assurance" type="text"
                                     placeholder="Assurance" />
                             </div>

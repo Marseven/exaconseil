@@ -102,7 +102,7 @@ class CashflowController extends Controller
             $reason = $record->reason;
             $amount = Controller::format_amount($record->amount) . " FCFA";
             $caisse = $record->cashbox->name;
-            $_user = $record->user->firstname . ' ' . $record->user->lastname;
+            $_user = $record->user != null ? $record->user->firstname . ' ' . $record->user->lastname : "-";
             $date = date_format(date_create($record->date_cash), 'd-m-Y');
 
             $actions = '<button style="padding: 10px !important" type="button"
@@ -506,25 +506,27 @@ class CashflowController extends Controller
 
         $entrepriseId = Auth::user()->entreprise_id == 0 ? 1 : Auth::user()->entreprise_id;
 
-        switch ($service->id) {
-            case 1:
-                $entities = Policy::where('entreprise_id', $entrepriseId)->get();
-                break;
-            case 2:
-                $entities = Sinistre::where('entreprise_id', $entrepriseId)->get();
-                break;
-            case 3:
-                $entities = Devis::where('entreprise_id', $entrepriseId)->get();
-                break;
-            case 5:
-                $entities = Facture::where('entreprise_id', $entrepriseId)->get();
-                break;
-            default:
-                $entities = [];
-                break;
+        if ($service) {
+            switch ($service->id) {
+                case 1:
+                    $entities = Policy::where('entreprise_id', $entrepriseId)->get();
+                    break;
+                case 2:
+                    $entities = Sinistre::where('entreprise_id', $entrepriseId)->get();
+                    break;
+                case 3:
+                    $entities = Devis::where('entreprise_id', $entrepriseId)->get();
+                    break;
+                case 5:
+                    $entities = Facture::where('entreprise_id', $entrepriseId)->get();
+                    break;
+                default:
+                    $entities = [];
+                    break;
+            }
+        } else {
+            $entities = [];
         }
-
-
 
         $response = json_encode($entities);
 

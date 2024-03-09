@@ -165,7 +165,7 @@ class FactureController extends Controller
                 <p class="text-uppercase mb-0">' . $facture->number_facture . '</p>
             </div>
             <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Compagnie Assurance </h6>
+                <h6 class="text-uppercase fs-5 ls-2">Courtier d\'assurance</h6>
                 <p class="mb-0">' . $facture->company_assurance . '</p>
             </div>
             <div class="col-6 mb-5">
