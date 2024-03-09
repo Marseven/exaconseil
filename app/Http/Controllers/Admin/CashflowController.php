@@ -414,7 +414,7 @@ class CashflowController extends Controller
                 $cashflow->entity_id =  $request->entity_id[0];
                 $facture = Facture::find($cashflow->entity_id);
                 $amount = $facture->amount;
-                dd($amount != floatval($request->amount));
+                dd($cashflow->entity_id);
                 if ($amount != floatval($request->amount)) {
                     return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
                 }
