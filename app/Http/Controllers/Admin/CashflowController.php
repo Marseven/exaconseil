@@ -32,7 +32,7 @@ class CashflowController extends Controller
             $entrepriseId = Auth::user()->entreprise_id;
             $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
             $entreprise = Entreprise::with('services')->find($entrepriseId);
-            $services = $entreprise->services()->whereNot('name', "Caisse")->get();
+            $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
         }
 
         return view('admin.cashflow.index', compact('cashboxes', 'services'));
