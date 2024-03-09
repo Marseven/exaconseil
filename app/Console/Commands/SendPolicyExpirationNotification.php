@@ -46,12 +46,13 @@ class SendPolicyExpirationNotification extends Command
         $policiesTwoDays = Policy::where('date_expired', '<=', $expirationDateLimitTwoDays)->get();
 
         $admins = User::where('entreprise_id', 2)->get();
-
-        foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesTwoWeeks));
-            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesOneMonth));
-            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesOneWeek));
-            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesTwoDays));
+        if ($policiesOneMonth || $policiesTwoWeeks || $policiesTwoDays || $policiesOneWeek) {
+            foreach ($admins as $admin) {
+                if ($policiesTwoWeeks) Mail::to($admin->email)->send(new PolicyExpirationMail($policiesTwoWeeks));
+                if ($policiesOneMonth) Mail::to($admin->email)->send(new PolicyExpirationMail($policiesOneMonth));
+                if ($policiesOneWeek) Mail::to($admin->email)->send(new PolicyExpirationMail($policiesOneWeek));
+                if ($policiesTwoDays) Mail::to($admin->email)->send(new PolicyExpirationMail($policiesTwoDays));
+            }
         }
     }
 }
