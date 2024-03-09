@@ -127,20 +127,22 @@
                                                 <td>{{ $policy->date_begin }}</td>
                                                 <td>{{ $policy->date_expired }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/restore/Police/' . $policy->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-secondary">
-                                                            <i class="bi bi-arrow-bar-left"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ url('admin/delete/trash/Police/' . $policy->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </a>
+                                                    @if ($policy->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant')
+                                                        <a href="{{ url('admin/restore/Police/' . $policy->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-secondary">
+                                                                <i class="bi bi-arrow-bar-left"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="{{ url('admin/delete/trash/Police/' . $policy->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -176,20 +178,22 @@
                                                 <td>{{ $sinistre->tiers }}</td>
                                                 <td>{{ $sinistre->date_open }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/restore/Sinistre/' . $sinistre->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-secondary">
-                                                            <i class="bi bi-arrow-bar-left"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ url('admin/delete/trash/Sinistre/' . $sinistre->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </a>
+                                                    @if ($sinistre->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant')
+                                                        <a href="{{ url('admin/restore/Sinistre/' . $sinistre->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-secondary">
+                                                                <i class="bi bi-arrow-bar-left"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="{{ url('admin/delete/trash/Sinistre/' . $sinistre->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -221,20 +225,22 @@
                                                 <td>{{ $devi->number_chassis }}</td>
                                                 <td>{{ $devi->contact }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/restore/Devis/' . $devi->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-secondary">
-                                                            <i class="bi bi-arrow-bar-left"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ url('admin/delete/trash/Devis/' . $devi->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </a>
+                                                    @if ($devi->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant')
+                                                        <a href="{{ url('admin/restore/Devis/' . $devi->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-secondary">
+                                                                <i class="bi bi-arrow-bar-left"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="{{ url('admin/delete/trash/Devis/' . $devi->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -266,20 +272,22 @@
                                                 <td>{{ $mandat->vehicule }}</td>
                                                 <td>{{ $mandat->immatricualtion }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/restore/Mandat/' . $mandat->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-secondary">
-                                                            <i class="bi bi-arrow-bar-left"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ url('admin/delete/trash/Mandat/' . $mandat->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </a>
+                                                    @if ($mandat->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant')
+                                                        <a href="{{ url('admin/restore/Mandat/' . $mandat->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-secondary">
+                                                                <i class="bi bi-arrow-bar-left"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="{{ url('admin/delete/trash/Mandat/' . $mandat->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -313,20 +321,22 @@
                                                 <td>{{ $facture->date_facture }}</td>
                                                 <td>{{ $facture->status }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/restore/Facture/' . $facture->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-secondary">
-                                                            <i class="bi bi-arrow-bar-left"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ url('admin/delete/trash/Facture/' . $facture->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </a>
+                                                    @if ($facture->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant')
+                                                        <a href="{{ url('admin/restore/Facture/' . $facture->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-secondary">
+                                                                <i class="bi bi-arrow-bar-left"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="{{ url('admin/delete/trash/Facture/' . $facture->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -361,20 +371,22 @@
                                                 <td>{{ $cashflow->date_cash }}</td>
                                                 <td>{{ $cashflow->cashbox->name }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/restore/Caisse/' . $cashflow->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-secondary">
-                                                            <i class="bi bi-arrow-bar-left"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ url('admin/delete/trash/Caisse/' . $cashflow->id) }}"
-                                                        onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
-                                                        <button style="padding: 10px !important" type="button"
-                                                            class="btn btn-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </a>
+                                                    @if ($cashflow->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant')
+                                                        <a href="{{ url('admin/restore/Caisse/' . $cashflow->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-secondary">
+                                                                <i class="bi bi-arrow-bar-left"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="{{ url('admin/delete/trash/Caisse/' . $cashflow->id) }}"
+                                                            onclick="confirm('Êtes-vous sûr de vouloir effectuer cette action ?')">
+                                                            <button style="padding: 10px !important" type="button"
+                                                                class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
