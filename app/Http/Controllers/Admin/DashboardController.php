@@ -116,7 +116,7 @@ class DashboardController extends Controller
                 $entities->save();
                 break;
             case "Facture":
-                $entities = Sinistre::find($id);
+                $entities = Facture::find($id);
                 $entities->deleted = null;
                 $entities->save();
                 break;
