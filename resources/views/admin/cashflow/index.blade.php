@@ -333,10 +333,13 @@
                     result = JSON.parse(result);
                     var option_html = "<option value='-1'>Choisir</option>";
                     let j = 0;
+                    let el_id = "";
                     for (j = 0; j < result.length; j++) {
+                        el_id = result[j].id;
+                        if (name == "Facture") el_id = result[j].number_facture;
                         var is_selected = $("#" + target).data('val') == result[j].id ? 'selected' : '';
                         option_html += "<option " + is_selected + "  value='" + result[j].id +
-                            "'>  " + name + " N°" + result[j].id + "</option>";
+                            "'>  " + name + " N°" + el_id + "</option>";
                     }
 
                     $("#" + target).html(option_html);
