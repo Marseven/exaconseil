@@ -368,6 +368,7 @@
                                                 <td>{{ $cashflow->id }}</td>
                                                 <td>{{ $cashflow->type }}</td>
                                                 <td>{{ $cashflow->reason }}</td>
+                                                <td>{{ $cashflow->amount }} FCFA</td>
                                                 <td>{{ $cashflow->date_cash }}</td>
                                                 <td>{{ $cashflow->cashbox->name }}</td>
                                                 <td>
