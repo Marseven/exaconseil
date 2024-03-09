@@ -31,7 +31,7 @@ class PolicyExpirationMail extends Mailable
      */
     public function build()
     {
-        return $this->from("contact@mebodorichard.com", env('APP_NAME'))
+        return $this->from("contact@ekama-go.com", env('APP_NAME'))
             ->subject('Notification de date d\'expiration de la police')
             ->markdown('emails.policy-expiration')
             ->with('policies', $this->policies);
