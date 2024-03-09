@@ -90,7 +90,7 @@ class PolicyController extends Controller
 
             $id = $record->id;
 
-            $type = $record->type;
+            $type = $record->type != NULL ? strtoupper($record->type)  : "-";
             $name = $record->name;
             $brand = $record->brand;
             $matricule = $record->matricule;
@@ -156,7 +156,10 @@ class PolicyController extends Controller
             $policy->load(['user']);
 
             $title = "Police d'assurance N°" . $policy->id;
-            $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Nom Complet</h6>
+            $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Type</h6>
+                <p class="text-uppercase mb-0">' . strtoupper($policy->type) . '</p>
+            </div>
+            <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Nom Complet</h6>
                 <p class="text-uppercase mb-0">' . $policy->name . '</p>
             </div>
             <div class="col-6 mb-5">
@@ -202,6 +205,15 @@ class PolicyController extends Controller
             <form action="' . url('admin/policy/' . $request->id) . '" method="POST">
                 <div class="modal-body">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
+                <div class="mb-3">
+                    <div class="input-style-1">
+                        <label>Type</label>
+                        <select class="form-control" name="type" required>
+                            <option ' . ($policy->type == 'client' ? "selected" : "") . ' value="client">Client</option>
+                            <option ' . ($policy->type == 'prospect' ? "selected" : "") . ' value="prospect">Prospect</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <div class="input-style-1">
                         <label>Nom Complet</label>
