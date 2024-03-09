@@ -4,14 +4,14 @@
     Ceci est une notification pour vous informer que les polices suivante expireront bientôt :
 
     @foreach ($policies as $policy)
-        <ul>
-            <li>{{ $policy->name }}</li>
-        </ul>
+        - {{ $policy->name }}
     @endforeach
+
     @if ($policies->count() > 0)
         Nombre de jour restant : {{ App\Http\Controllers\Controller::daysBeforeDate($policies->first()->date_expired) }}
         Date d'expiration : {{ $policies->first()->date_expired }}
     @endif
+
     Cordialment,
     Entreprise d'Intermédiation en Assurance
 @endcomponent

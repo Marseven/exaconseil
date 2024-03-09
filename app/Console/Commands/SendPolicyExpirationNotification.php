@@ -48,10 +48,10 @@ class SendPolicyExpirationNotification extends Command
         $admins = User::where('entreprise_id', 2)->get();
 
         foreach ($admins as $admin) {
-            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesTwoWeeks));
-            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesOneMonth));
-            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesOneWeek));
-            Mail::to('mebodoaristide@gmail.com')->send(new PolicyExpirationMail($policiesTwoDays));
+            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesTwoWeeks));
+            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesOneMonth));
+            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesOneWeek));
+            Mail::to($admin->email)->send(new PolicyExpirationMail($policiesTwoDays));
         }
     }
 }
