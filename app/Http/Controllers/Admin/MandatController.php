@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\MandatExport;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileController;
+use App\Models\Assurance;
 use App\Models\Mandat;
 use App\Models\User;
 use Carbon\Carbon;
@@ -18,8 +19,8 @@ class MandatController extends Controller
     //
     public function index()
     {
-
-        return view('admin.mandat.index');
+        $assurances = Assurance::all();
+        return view('admin.mandat.index', compact('assurances'));
     }
 
     public function ajaxList(Request $request)
@@ -138,13 +139,17 @@ class MandatController extends Controller
 
     public function ajaxItem(Request $request)
     {
-        $mandat = Mandat::find($request->id);
+        $mandat = Mandat::with('assurance')->find($request->id);
         $title = "";
         if ($request->action == "view") {
             $mandat->load(['user']);
 
             $title = "Mandat N°" . $mandat->id;
-            $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">N° de Mandat</h6>
+            $body = '
+            <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Maison d\'Assurance</h6>
+                <p class="text-uppercase mb-0">' . $mandat->assurance->name . '</p>
+            </div>
+            <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">N° de Mandat</h6>
                 <p class="text-uppercase mb-0">' . $mandat->number_mandat . '</p>
             </div>
             <div class="col-6 mb-5">
@@ -238,86 +243,86 @@ class MandatController extends Controller
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de Mandat</label>
+                                <label class="form-label required">Numéro de Mandat</label>
                                 <input class="form-control" name="number_mandat" type="text"
-                                    placeholder="N° de Mandat" value="' . $mandat->number_mandat . '" />
+                                    placeholder="N° de Mandat" value="' . $mandat->number_mandat . '" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de Police</label>
+                                <label class="form-label required">Numéro de Police</label>
                                 <input class="form-control" name="number_police" type="text"
-                                    placeholder="N° de Police" value="' . $mandat->number_police . '" />
+                                    placeholder="N° de Police" value="' . $mandat->number_police . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de Sinistre</label>
+                                <label class="form-label required">Numéro de Sinistre</label>
                                 <input class="form-control" name="number_sinistre" type="text"
-                                    placeholder="N° de Sinistre" value="' . $mandat->number_sinistre . '" />
+                                    placeholder="N° de Sinistre" value="' . $mandat->number_sinistre . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Nom de l\'assuré</label>
+                                <label class="form-label required">Nom de l\'assuré</label>
                                 <input class="form-control" name="assure" type="text"
-                                    placeholder="Assurance" value="' . $mandat->assure . '" />
+                                    placeholder="Assurance" value="' . $mandat->assure . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Tiers</label>
-                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" value="' . $mandat->tiers . '" />
+                                <label class="form-label required">Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" value="' . $mandat->tiers . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Véhicule</label>
-                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" value="' . $mandat->vehicule . '" />
+                                <label class="form-label required">Véhicule</label>
+                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" value="' . $mandat->vehicule . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Immatriculation</label>
+                                <label class="form-label required">Immatriculation</label>
                                 <input class="form-control" name="immatriculation" type="text"
-                                    placeholder="Immatriculation" value="' . $mandat->immatriculation . '" />
+                                    placeholder="Immatriculation" value="' . $mandat->immatriculation . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de sinistre</label>
+                                <label class="form-label required">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
-                                    placeholder="Date de sinistre" value="' . $mandat->date_sinistre . '" />
+                                    placeholder="Date de sinistre" value="' . $mandat->date_sinistre . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Ville</label>
-                                <input class="form-control" name="place" type="text" placeholder="Ville" value="' . $mandat->place . '" />
+                                <label class="form-label required">Ville</label>
+                                <input class="form-control" name="place" type="text" placeholder="Ville" value="' . $mandat->place . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Circonsances</label>
+                                <label class="form-label">Circonsances</label>
                                 <textarea class="form-control" name="circonstances" placeholder="Circonstances et point de choc">' . $mandat->circonstances . '</textarea>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Observations</label>
+                                <label class="form-label">Observations</label>
                                 <textarea class="form-control" name="observations" placeholder="Observations">v' . $mandat->observations . '</textarea>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date du mandat</label>
+                                <label class="form-label required">Date du mandat</label>
                                 <input class="form-control" name="date_mandat" type="date"
-                                    placeholder="Date du mandat" value="' . $mandat->date_mandat . '" />
+                                    placeholder="Date du mandat" value="' . $mandat->date_mandat . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Pièce Jointe</label>
+                                <label class="form-label">Pièce Jointe</label>
                                 <input class="form-control" name="mandat_physical" type="file" value="' . $mandat->mandat_physical . '" />
                             </div>
                         </div>
@@ -416,6 +421,7 @@ class MandatController extends Controller
         $mandat->date_mandat =  $request->date_mandat;
         $mandat->circonstances = $request->circonstances;
         $mandat->observations = $request->observations;
+        $mandat->assurance_id = $request->assurance_id;
         $mandat->user_id = Auth::user()->id;
         $mandat->entreprise_id = Auth::user()->entreprise_id;
 
@@ -462,6 +468,7 @@ class MandatController extends Controller
             $mandat->date_mandat =  $request->date_mandat;
             $mandat->circonstances = $request->circonstances;
             $mandat->observations = $request->observations;
+            $mandat->assurance_id = $request->assurance_id;
 
             if ($request->file('mandat_physical')) {
 

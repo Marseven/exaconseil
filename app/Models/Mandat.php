@@ -18,4 +18,9 @@ class Mandat extends Model
     {
         return $this->hasMany(Facture::class);
     }
+
+    public function assurance()
+    {
+        return $this->belongsTo(Assurance::class);
+    }
 }

@@ -228,7 +228,7 @@ class CashflowController extends Controller
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Type</label>
+                                <labelclass="form-label required">Type</label>
                                 <select class="form-control" name="type">
                                     <option>' . $cashflow->type . '</option>
                                     <option value="debit">DEBIT</option>
@@ -239,21 +239,21 @@ class CashflowController extends Controller
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Raison / Motif</label>
+                                <label class="form-label required">Raison / Motif</label>
                                 <textarea class="form-control" name="reason" type="text" required>' . $cashflow->reason . '</textarea>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Montant</label>
+                                <label class="form-label required">Montant</label>
                                 <input class="form-control" name="amount" type="number" placeholder="Montant" value="' . $cashflow->amount . '" required />
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de la transaction</label>
+                                <label class="form-label required">Date de la transaction</label>
                                 <input class="form-control" name="date_cash" type="date" placeholder="Date de transaction"
                                     required value="' . $cashflow->date_cash . '" />
                             </div>
@@ -266,7 +266,7 @@ class CashflowController extends Controller
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Caisse</label>
+                                <label class="form-label required">Caisse</label>
                             </div>
                             <select id="selectOne" class="form-control" name="cashbox_id" required>';
             foreach ($cashboxes as $cashbox) {

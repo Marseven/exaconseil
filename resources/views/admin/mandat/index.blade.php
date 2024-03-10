@@ -149,66 +149,77 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de Mandat</label>
+                                <label class="form-label required">Maison d'assurance</label>
+                                <select class="form-control" name="assurance_id">
+                                    <option value="0">Choisir</option>
+                                    @foreach ($assurances as $assurance)
+                                        <option value="{{ $assurance->name }}">{{ $assurance->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label class="form-label required">Numéro de Mandat</label>
                                 <input class="form-control" name="number_mandat" type="text"
                                     placeholder="N° de Mandat" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de Police</label>
+                                <label class="form-label required">Numéro de Police</label>
                                 <input class="form-control" name="number_police" type="text"
                                     placeholder="N° de Police" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de Sinistre</label>
+                                <label class="form-label required">Numéro de Sinistre</label>
                                 <input class="form-control" name="number_sinistre" type="text"
                                     placeholder="N° de Sinistre" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Nom de l'assuré</label>
+                                <label class="form-label required">Nom de l'assuré</label>
                                 <input class="form-control" name="assure" type="text" placeholder="Assurance" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Tiers</label>
+                                <label class="form-label required">Tiers</label>
                                 <input class="form-control" name="tiers" type="text" placeholder="Tiers" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Véhicule</label>
+                                <label class="form-label required">Véhicule</label>
                                 <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Immatriculation</label>
+                                <label class="form-label required">Immatriculation</label>
                                 <input class="form-control" name="immatriculation" type="text"
                                     placeholder="Immatriculation" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de sinistre</label>
+                                <label class="form-label required">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
                                     placeholder="Date de sinistre" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Ville</label>
+                                <label class="form-label required">Ville</label>
                                 <input class="form-control" name="place" type="text" placeholder="Ville" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Circonsances</label>
+                                <label class="form-label required">Circonsances</label>
                                 <textarea class="form-control" name="circonstances" placeholder="Circonstances et point de choc"></textarea>
                             </div>
                         </div>
@@ -220,7 +231,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date du mandat</label>
+                                <label class="form-label required">Date du mandat</label>
                                 <input class="form-control" name="date_mandat" type="date"
                                     placeholder="Date du mandat" />
                             </div>

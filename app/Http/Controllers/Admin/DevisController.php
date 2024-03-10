@@ -192,7 +192,7 @@ class DevisController extends Controller
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <div class="mb-3">
                     <div class="input-style-1">
-                        <label>Nom Complet</label>
+                        <label class="form-label required">Nom Complet</label>
                         <input class="form-control" name="name" type="text" placeholder="Nom Complet"
                             value="' . $devis->name . '" required />
                     </div>
@@ -200,15 +200,15 @@ class DevisController extends Controller
 
                 <div class="mb-3">
                     <div class="input-style-1">
-                        <label>Marque</label>
+                        <label class="form-label required">Marque</label>
                         <input class="form-control" name="brand" type="text" placeholder="Marque"
-                            value="' . $devis->brand . '" />
+                            value="' . $devis->brand . '" required/>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="input-style-1">
-                        <label>Matricule</label>
+                        <label class="form-label required">Matricule</label>
                         <input class="form-control" name="matricule" type="text" placeholder="Matricule"
                             value="' . $devis->matricule . '" required />
                     </div>
@@ -216,7 +216,7 @@ class DevisController extends Controller
 
                 <div class="mb-3">
                     <div class="input-style-1">
-                        <label>N° de Châssis</label>
+                        <label class="form-label required">N° de Châssis</label>
                         <input class="form-control" name="number_chassis" type="text"
                             placeholder="N° de Chassis" value="' . $devis->number_chassis . '" required />
                     </div>
@@ -225,7 +225,7 @@ class DevisController extends Controller
 
                 <div class="mb-3">
                     <div class="input-style-1">
-                        <label>Contact</label>
+                        <label class="form-label required">Contact</label>
                         <input class="form-control" name="contact" type="tel" placeholder="Contact"
                             value="' . $devis->contact . '" required />
                     </div>

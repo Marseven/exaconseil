@@ -153,7 +153,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Nom de la société / particulier</label>
+                                <label class="form-label required">Nom de la société / particulier</label>
                                 <input class="form-control" name="name" type="text" placeholder="Nom Complet"
                                     required />
                             </div>
@@ -161,14 +161,14 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Marque / Type</label>
+                                <label class="form-label required">Marque / Type</label>
                                 <input class="form-control" name="brand" type="text" placeholder="Marque" required />
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Immatriculation</label>
+                                <label class="form-label required">Immatriculation</label>
                                 <input class="form-control" name="matricule" type="text" placeholder="Matricule"
                                     required />
                             </div>
@@ -176,7 +176,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>N° de Châssis</label>
+                                <label class="form-label required">N° de Châssis</label>
                                 <input class="form-control" name="number_chassis" type="text"
                                     placeholder="N° de Chassis" required />
                             </div>
@@ -184,7 +184,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Contact</label>
+                                <label class="form-label required">Contact</label>
                                 <input class="form-control" name="contact" type="tel" placeholder="Contact"
                                     required />
                             </div>

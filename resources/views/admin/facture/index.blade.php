@@ -154,7 +154,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Maison d'assurance</label>
+                                <label class="form-label required">Maison d'assurance</label>
                                 <select class="form-control" name="assurance_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($assurances as $assurance)
@@ -165,7 +165,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Mandat</label>
+                                <label class="form-label required">Mandat</label>
                                 <select class="form-control" name="mandat_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($mandats as $mandat)
@@ -179,73 +179,77 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de facture</label>
-                                <input class="form-control" name="number_facture" type="text"
-                                    placeholder="N° de facture" />
+                                <label class="form-label required">Numéro de facture</label>
+                                <input class="form-control" name="number_facture" type="text" placeholder="N° de facture"
+                                    required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Courtier d'assurance</label>
+                                <label class="form-label required">Courtier d'assurance</label>
                                 <input class="form-control" name="company_assurance" type="text"
-                                    placeholder="Assurance" />
+                                    placeholder="Assurance" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Assuré</label>
-                                <input class="form-control" name="assure" type="text" placeholder="Assuré" />
+                                <label class="form-label required">Assuré</label>
+                                <input class="form-control" name="assure" type="text" placeholder="Assuré"
+                                    required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Tiers</label>
-                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" />
+                                <label class="form-label required">Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers"
+                                    required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Véhicule</label>
-                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" />
+                                <label class="form-label required">Véhicule</label>
+                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule"
+                                    required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Immatriculation</label>
+                                <label class="form-label required">Immatriculation</label>
                                 <input class="form-control" name="immatriculation" type="text"
-                                    placeholder="Immatriculation" />
+                                    placeholder="Immatriculation" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Référence sinistre</label>
-                                <input class="form-control" name="ref_sinistre" type="text"
-                                    placeholder="Référence" />
+                                <label class="form-label required">Référence sinistre</label>
+                                <input class="form-control" name="ref_sinistre" type="text" placeholder="Référence"
+                                    required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de sinistre</label>
+                                <label class="form-label required">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
-                                    placeholder="Date de sinistre" />
+                                    placeholder="Date de sinistre" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de mission</label>
+                                <label class="form-label required">Date de mission</label>
                                 <input class="form-control" name="date_mission" type="date"
-                                    placeholder="Date de mission" />
+                                    placeholder="Date de mission" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Ville</label>
-                                <input class="form-control" name="place" type="text" placeholder="Ville" />
+                                <label class="form-label required">Ville</label>
+                                <input class="form-control" name="place" type="text" placeholder="Ville"
+                                    required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Type de prestation</label>
+                                <label class="form-label required">Type de prestation</label>
                                 <select class="form-control" name="type_prestation" required>
                                     <option value="Standard">Standard</option>
                                     <option value="Particulier">Particulier</option>
@@ -257,7 +261,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Montant</label>
+                                <label class="form-label required">Montant</label>
                                 <input class="form-control" name="amount" type="number" placeholder="Montant"
                                     required />
                             </div>
@@ -265,7 +269,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de la facture</label>
+                                <label class="form-label required">Date de la facture</label>
                                 <input class="form-control" name="date_facture" type="date"
                                     placeholder="Date de début" required />
                             </div>

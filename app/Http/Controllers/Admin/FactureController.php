@@ -157,13 +157,17 @@ class FactureController extends Controller
 
     public function ajaxItem(Request $request)
     {
-        $facture = Facture::find($request->id);
+        $facture = Facture::with('assurance')->find($request->id);
         $title = "";
         if ($request->action == "view") {
             $facture->load(['user', 'mandat']);
 
             $title = "Facture N°" . $facture->id;
-            $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Numéro de facture</h6>
+            $body = '
+            <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Maison d\'Assurance</h6>
+                <p class="text-uppercase mb-0">' . $facture->assurance->name . '</p>
+            </div>
+            <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Numéro de facture</h6>
                 <p class="text-uppercase mb-0">' . $facture->number_facture . '</p>
             </div>
             <div class="col-6 mb-5">
@@ -264,67 +268,67 @@ class FactureController extends Controller
                 <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Numéro de facture</label>
+                                <label class="form-label required">Numéro de facture</label>
                                 <input class="form-control" name="number_facture" type="text"
-                                    placeholder="N° de facture" value="' . $facture->number_facture . '" />
+                                    placeholder="N° de facture" value="' . $facture->number_facture . '" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Compagnie d\'assurance</label>
+                                <label class="form-label required">Courtier d\'assurance</label>
                                 <input class="form-control" name="company_assurance" type="text"
-                                    placeholder="Assurance" value="' . $facture->company_assurance . '" />
+                                    placeholder="Assurance" value="' . $facture->company_assurance . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Assuré</label>
-                                <input class="form-control" name="assure" type="text" placeholder="Assuré" value="' . $facture->assure . '" />
+                                <label class="form-label required">Assuré</label>
+                                <input class="form-control" name="assure" type="text" placeholder="Assuré" value="' . $facture->assure . '" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Tiers</label>
-                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" value="' . $facture->tiers . '" />
+                                <label class="form-label required">Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" value="' . $facture->tiers . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Véhicule</label>
-                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" value="' . $facture->vehicule . '" />
+                                <label class="form-label required">Véhicule</label>
+                                <input class="form-control" name="vehicule" type="text" placeholder="Véhicule" value="' . $facture->vehicule . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Immatriculation</label>
+                                <label class="form-label required">Immatriculation</label>
                                 <input class="form-control" name="immatriculation" type="text"
-                                    placeholder="Immatriculation" value="' . $facture->immatriculation . '" />
+                                    placeholder="Immatriculation" value="' . $facture->immatriculation . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Référence sinistre</label>
-                                <input class="form-control" value="' . $facture->ref_sinistre . '" name="ref_sinistre" type="text" placeholder="Référence" />
+                                <label class="form-label required">Référence sinistre</label>
+                                <input class="form-control" value="' . $facture->ref_sinistre . '" name="ref_sinistre" type="text" placeholder="Référence" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de sinistre</label>
+                                <label class="form-label required">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
-                                    placeholder="Date de facture" value="' . $facture->date_sinistre . '" />
+                                    placeholder="Date de facture" value="' . $facture->date_sinistre . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de mission</label>
+                                <label class="form-label required">Date de mission</label>
                                 <input class="form-control" name="date_mission" type="date"
-                                    placeholder="Date de mission" value="' . $facture->date_mission . '" />
+                                    placeholder="Date de mission" value="' . $facture->date_mission . '" required/>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Ville</label>
-                                <input class="form-control" name="place" value="' . $facture->place . '" type="text" placeholder="Ville" />
+                                <label class="form-label required">Ville</label>
+                                <input class="form-control" name="place" value="' . $facture->place . '" type="text" placeholder="Ville" required/>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -341,7 +345,7 @@ class FactureController extends Controller
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Montant</label>
+                                <label class="form-label required">Montant</label>
                                 <input class="form-control" value="' . $facture->amount . '" name="amount" type="number" placeholder="Montant"
                                     required />
                             </div>
@@ -349,7 +353,7 @@ class FactureController extends Controller
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de la facture</label>
+                                <label class="form-label required">Date de la facture</label>
                                 <input class="form-control" name="date_facture" type="date"
                                     placeholder="Date de facture" value="' . $facture->date_facture . '" required />
                             </div>

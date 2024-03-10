@@ -203,22 +203,22 @@ class SinistreController extends Controller
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Nom</label>
+                                    <label class="form-label required">Nom</label>
                                     <input class="form-control" name="lastname" type="text" placeholder="Nom"
                                         value="' . $sinistre->lastname . '" required />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Prénom</label>
+                                    <label class="form-label">Prénom</label>
                                     <input class="form-control" name="firstname" type="text" placeholder="Prénom"
-                                        value="' . $sinistre->firstname . '" required />
+                                        value="' . $sinistre->firstname . '" />
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Marque / Type</label>
+                                    <label class="form-label required">Marque / Type</label>
                                     <input class="form-control" name="brand" type="text" placeholder="Marque"
                                         value="' . $sinistre->brand . '" required />
                                 </div>
@@ -226,35 +226,35 @@ class SinistreController extends Controller
 
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Immatriculation</label>
+                                    <label class="form-label required">Immatriculation</label>
                                     <input class="form-control" name="matricule" type="text" placeholder="Matricule"
                                         value="' . $sinistre->matricule . '" required />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Contact</label>
+                                    <label class="form-label required">Contact</label>
                                     <input class="form-control" name="contact" type="tel" placeholder="Contact"
                                         value="' . $sinistre->contact . '" required />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Assurance</label>
+                                    <label class="form-label required">Assurance</label>
                                     <input class="form-control" name="assurance" type="text" placeholder="Assurance"
                                         value="' . $sinistre->assurance . '" required />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Tiers</label>
+                                    <label class="form-label required">Tiers</label>
                                     <input class="form-control" name="tiers" type="text" placeholder="Tiers"
                                         value="' . $sinistre->tiers . '" required />
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
-                                    <label>Date d\'ouverture</label>
+                                    <label class="form-label required">Date d\'ouverture</label>
                                     <input class="form-control" name="date_open" type="date"
                                         placeholder="Date d\'ouverture" value="' . $sinistre->date_open . '" required />
                                 </div>

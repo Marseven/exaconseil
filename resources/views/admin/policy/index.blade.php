@@ -167,7 +167,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Type</label>
+                                <label class="form-label required">Type</label>
                                 <select class="form-control" name="type" required>
                                     <option value="client">Client</option>
                                     <option value="prospect">Prospect</option>
@@ -177,7 +177,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Nom Complet</label>
+                                <label class="form-label required">Nom Complet</label>
                                 <input class="form-control" name="name" type="text" placeholder="Nom Complet"
                                     required />
                             </div>
@@ -185,7 +185,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Marque</label>
+                                <label class="form-label required">Marque</label>
                                 <input class="form-control" name="brand" type="text" placeholder="Marque"
                                     required />
                             </div>
@@ -193,28 +193,28 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Matricule</label>
+                                <label class="form-label required">Matricule</label>
                                 <input class="form-control" name="matricule" type="text" placeholder="Matricule"
                                     required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Contact</label>
+                                <label class="form-label required">Contact</label>
                                 <input class="form-control" name="contact" type="tel" placeholder="Contact"
                                     required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date de Début</label>
+                                <label class="form-label required">Date de Début</label>
                                 <input class="form-control" name="date_begin" type="date" placeholder="Date de début"
                                     required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label>Date d'Expiration</label>
+                                <label class="form-label required">Date d'Expiration</label>
                                 <input class="form-control" name="date_expired" type="date"
                                     placeholder="Date d'expiration" required />
                             </div>
