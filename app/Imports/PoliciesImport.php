@@ -29,6 +29,7 @@ class PoliciesImport implements ToModel, WithHeadingRow
             'date_expired' => $row['date_expiration'] ? Date::excelToDateTimeObject($row['date_expiration'])  : $day->format('Y-m-d'),
             'user_id' => Auth::user()->id,
             'entreprise_id' => Auth::user()->entreprise_id == 0 ? 2 : Auth::user()->entreprise_id,
+            'type'     => $row['type'] ?? "client",
         ]);
     }
 }

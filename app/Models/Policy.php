@@ -16,6 +16,7 @@ class Policy extends Model
         'contact',
         'date_begin',
         'date_expired',
+        'type',
         'user_id',
         'entreprise_id',
     ];
