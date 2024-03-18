@@ -365,7 +365,7 @@
                         targets: [1]
                     }],
                     order: [
-                        [7, 'desc']
+                        [7, 'asc']
                     ],
                     columns: [{
                             data: 'id'
