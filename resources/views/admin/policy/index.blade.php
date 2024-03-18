@@ -364,6 +364,9 @@
                         className: "upper",
                         targets: [1]
                     }],
+                    order: [
+                        [7, 'desc']
+                    ],
                     columns: [{
                             data: 'id'
                         },
