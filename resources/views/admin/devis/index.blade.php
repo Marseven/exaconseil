@@ -176,9 +176,9 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">N° de Châssis</label>
+                                <label class="form-label">N° de Châssis</label>
                                 <input class="form-control" name="number_chassis" type="text"
-                                    placeholder="N° de Chassis" required />
+                                    placeholder="N° de Chassis" />
                             </div>
                         </div>
 

@@ -159,7 +159,7 @@ class DevisController extends Controller
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">N° de Châssis
                 </h6>
-                <p class="mb-0">' . $devis->number_chassis . ' XAF</p>
+                <p class="mb-0">' . $devis->number_chassis ?? "-" . ' XAF</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Contact
@@ -216,9 +216,9 @@ class DevisController extends Controller
 
                 <div class="mb-3">
                     <div class="input-style-1">
-                        <label class="form-label required">N° de Châssis</label>
+                        <label class="form-label">N° de Châssis</label>
                         <input class="form-control" name="number_chassis" type="text"
-                            placeholder="N° de Chassis" value="' . $devis->number_chassis . '" required />
+                            placeholder="N° de Chassis" value="' . $devis->number_chassis . '" />
                     </div>
                 </div>
 
@@ -262,7 +262,6 @@ class DevisController extends Controller
             'brand' => ['required', 'string'],
             'matricule' => ['required', 'string'],
             'contact' => ['required', 'string'],
-            'number_chassis' => ['required', 'string'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
