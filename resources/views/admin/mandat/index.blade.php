@@ -153,7 +153,7 @@
                                 <select class="form-control" name="assurance_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($assurances as $assurance)
-                                        <option value="{{ $assurance->name }}">{{ $assurance->name }}</option>
+                                        <option value="{{ $assurance->id }}">{{ $assurance->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -219,7 +219,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Circonsances</label>
+                                <label class="form-label">Circonsances</label>
                                 <textarea class="form-control" name="circonstances" placeholder="Circonstances et point de choc"></textarea>
                             </div>
                         </div>
