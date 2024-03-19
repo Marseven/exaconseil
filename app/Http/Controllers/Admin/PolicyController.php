@@ -189,7 +189,7 @@ class PolicyController extends Controller
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Matricule
                 </h6>
-                <p class="mb-0">' . $policy->matricule . ' XAF</p>
+                <p class="mb-0">' . $policy->matricule ?? '-' . ' XAF</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Contact
@@ -199,12 +199,12 @@ class PolicyController extends Controller
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Date de début
                 </h6>
-                <p class="mb-0">' . date_format(date_create($policy->date_begin), 'd-m-Y') . '</p>
+                <p class="mb-0">' . ($policy->date_expired ? date_format(date_create($policy->date_begin), 'd-m-Y') : "-") . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Date d\'expiration
                 </h6>
-                <p class="mb-0">' . date_format(date_create($policy->date_expired), 'd-m-Y') . '</p>
+                <p class="mb-0">' . $policy->date_expired ?  date_format(date_create($policy->date_expired), 'd-m-Y')  : "-" . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ajouté par
@@ -254,7 +254,7 @@ class PolicyController extends Controller
                     <div class="input-style-1">
                         <label class="form-label required">Matricule</label>
                         <input class="form-control" name="matricule" type="text" placeholder="Matricule"
-                            value="' . $policy->matricule . '" required />
+                            value="' . $policy->matricule . '" />
                     </div>
                 </div>
                 <div class="mb-3">
@@ -268,14 +268,14 @@ class PolicyController extends Controller
                     <div class="input-style-1">
                         <label class="form-label required">Date de Début</label>
                         <input class="form-control" name="date_begin" type="date"
-                            placeholder="Date de début" value="' . $policy->date_begin . '" required />
+                            placeholder="Date de début" value="' . $policy->date_begin . '" />
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="input-style-1">
                         <label class="form-label required">Date d\'Expiration</label>
                         <input class="form-control" name="date_expired" type="date"
-                            placeholder="Date d\'expiration" value="' . $policy->date_expired . '" required />
+                            placeholder="Date d\'expiration" value="' . $policy->date_expired . '" />
                     </div>
                 </div>
                     </div>
@@ -308,10 +308,7 @@ class PolicyController extends Controller
             'type' => ['required'],
             'name' => ['required', 'string'],
             'brand' => ['required', 'string'],
-            'matricule' => ['required', 'string'],
             'contact' => ['required', 'string'],
-            'date_begin' => ['required', 'date'],
-            'date_expired' => ['required', 'date'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -326,8 +323,9 @@ class PolicyController extends Controller
         $policy->type = $request->type;
         $policy->name = $request->name;
         $policy->brand = $request->brand;
-        $policy->matricule = $request->matricule;
         $policy->contact = $request->contact;
+        $policy->matricule = $request->matricule;
+
         $policy->date_begin =  $request->date_begin;
         $policy->date_expired = $request->date_expired;
         $policy->entreprise_id = Auth::user()->entreprise_id;
@@ -355,8 +353,9 @@ class PolicyController extends Controller
             $policy->type = $request->type;
             $policy->name = $request->name;
             $policy->brand = $request->brand;
-            $policy->matricule = $request->matricule;
             $policy->contact = $request->contact;
+
+            $policy->matricule = $request->matricule;
             $policy->date_begin =  $request->date_begin;
             $policy->date_expired = $request->date_expired;
 
