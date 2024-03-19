@@ -284,6 +284,9 @@
                         className: "upper",
                         targets: [1]
                     }],
+                    order: [
+                        [7, 'asc']
+                    ],
                     columns: [{
                             data: 'id'
                         },
