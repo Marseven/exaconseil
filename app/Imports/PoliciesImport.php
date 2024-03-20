@@ -19,6 +19,10 @@ class PoliciesImport implements ToModel, WithHeadingRow
     {
         $day = new \DateTime();
 
+        if (!isset($row['immatriculation'])) {
+            return back()->with('error', "Votre fichier n'est pas correct.");
+        }
+
         return new Policy([
             //
             'name'     => $row['noms'] ?? "-",
