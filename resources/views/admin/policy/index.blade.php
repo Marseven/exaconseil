@@ -193,7 +193,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Matricule</label>
+                                <label class="form-label">Matricule</label>
                                 <input class="form-control" name="matricule" type="text" placeholder="Matricule" />
                             </div>
                         </div>
@@ -206,14 +206,14 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Date de Début</label>
+                                <label class="form-label">Date de Début</label>
                                 <input class="form-control" name="date_begin" type="date"
                                     placeholder="Date de début" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Date d'Expiration</label>
+                                <label class="form-label">Date d'Expiration</label>
                                 <input class="form-control" name="date_expired" type="date"
                                     placeholder="Date d'expiration" />
                             </div>
