@@ -54,43 +54,68 @@ class PolicyController extends Controller
         $_GET['search'] = $search_arr['value'];
 
         // Total records
-        $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
-        $totalRecordswithFilter = Policy::select('count(*) as allcount');
-        if ($type == 'valided') {
-            $totalRecordswithFilter->where(function ($query) {
-                $today = new \DateTime(date('Y-m-d'));
-                $today = $today->format('Y-m-d');
-                $sign = '>=';
-                $query->where('date_expired', $sign, $today)
-                    ->orWhere('date_expired', null);
-            });
+        if ($type != 'valided') {
+            $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
+            $totalRecordswithFilter = Policy::select('count(*) as allcount')
+                ->where('date_expired', $sign, $today)
+                ->where(function ($query) {
+                    $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
+                    $query->where('policies.name', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.type', 'like', '%' . $searchValue . '%');
+                })->where('deleted', NULL)->count();
+
+            // Fetch records
+            $records = Policy::orderBy($columnName, $columnSortOrder)
+                ->where('date_expired', $sign, $today)
+                ->where(function ($query) {
+                    $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
+                    $query->where('policies.name', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.type',  $searchValue);
+                })->where('deleted', NULL)
+                ->select('policies.*')
+                ->skip($start)
+                ->take($rowperpage)
+                ->get();
         } else {
-            $totalRecordswithFilter->where('date_expired', '<', $today);
+            $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
+            $totalRecordswithFilter = Policy::select('count(*) as allcount')
+                ->where('date_expired', $sign, $today)
+                ->where(function ($query) {
+                    $query->where('date_expired', "<", now())
+                        ->orWhere('date_expired',  null);
+                })
+                ->where(function ($query) {
+                    $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
+                    $query->where('policies.name', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.type', 'like', '%' . $searchValue . '%');
+                })->where('deleted', NULL)->count();
+
+            // Fetch records
+            $records = Policy::orderBy($columnName, $columnSortOrder)
+                ->where('date_expired', $sign, $today)
+                ->where(function ($query) {
+                    $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
+                    $query->where('policies.name', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
+                        ->orWhere('policies.type',  $searchValue);
+                })->where('deleted', NULL)
+                ->select('policies.*')
+                ->skip($start)
+                ->take($rowperpage)
+                ->get();
         }
-        $totalRecordswithFilter->where(function ($query) {
-            $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
-            $query->where('policies.name', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.type', 'like', '%' . $searchValue . '%');
-        })->where('deleted', NULL)->count();
 
-        // Fetch records
-        $records = Policy::orderBy($columnName, $columnSortOrder);
-
-        $records->where(function ($query) {
-            $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
-            $query->where('policies.name', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.brand', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.matricule', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.contact', 'like', '%' . $searchValue . '%')
-                ->orWhere('policies.type',  $searchValue);
-        })->where('deleted', NULL)
-            ->select('policies.*')
-            ->skip($start)
-            ->take($rowperpage)
-            ->get();
 
         $data_arr = array();
 
