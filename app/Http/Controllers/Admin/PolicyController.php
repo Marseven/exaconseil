@@ -130,10 +130,10 @@ class PolicyController extends Controller
             $type = $record->type != NULL ? strtoupper($record->type)  : "-";
             $name = $record->name;
             $brand = $record->brand;
-            $matricule = $record->matricule;
+            $matricule = $record->matricule ?? "-";
             $contact = $record->contact;
-            $date_begin = date_format(date_create($record->date_begin), 'd-m-Y');
-            $date_expired = date_format(date_create($record->date_expired), 'd-m-Y');
+            $date_begin = $record->date_begin ? date_format(date_create($record->date_begin), 'd-m-Y') : "-";
+            $date_expired = $record->date_expired ? date_format(date_create($record->date_expired), 'd-m-Y')  : "-";
 
             $actions = '<button style="padding: 10px !important" type="button"
             class="btn btn-primary modal_view_action"
