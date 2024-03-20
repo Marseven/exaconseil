@@ -85,7 +85,6 @@ class PolicyController extends Controller
         } else {
             $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
             $totalRecordswithFilter = Policy::select('count(*) as allcount')
-                ->where('date_expired', $sign, $today)
                 ->where(function ($query) {
                     $query->where('date_expired', "<", now())
                         ->orWhere('date_expired',  null);
@@ -101,7 +100,10 @@ class PolicyController extends Controller
 
             // Fetch records
             $records = Policy::orderBy($columnName, $columnSortOrder)
-                ->where('date_expired', $sign, $today)
+                ->where(function ($query) {
+                    $query->where('date_expired', "<", now())
+                        ->orWhere('date_expired',  null);
+                })
                 ->where(function ($query) {
                     $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                     $query->where('policies.name', 'like', '%' . $searchValue . '%')
