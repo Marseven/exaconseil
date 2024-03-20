@@ -57,12 +57,15 @@ class PolicyController extends Controller
         $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
         $totalRecordswithFilter = Policy::select('count(*) as allcount');
         if ($type == 'valided') {
-            $totalRecordswithFilter->where(function ($query,  $sign, $today) {
+            $totalRecordswithFilter->where(function ($query) {
+                $today = new \DateTime(date('Y-m-d'));
+                $today = $today->format('Y-m-d');
+                $sign = '>=';
                 $query->where('date_expired', $sign, $today)
                     ->orWhere('date_expired', null);
             });
         } else {
-            $totalRecordswithFilter->where('date_expired', $sign, $today);
+            $totalRecordswithFilter->where('date_expired', '<', $today);
         }
         $totalRecordswithFilter->where(function ($query) {
             $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
