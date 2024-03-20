@@ -23,10 +23,10 @@ class PoliciesImport implements ToModel, WithHeadingRow
                 //
                 'name'     => $row['noms'] ?? "-",
                 'brand'    => $row['marque'] ?? "-",
-                'matricule' => $row['immatriculation'] ?? "-",
+                'matricule' => $row['immatriculation'] ?? Null,
                 'contact' => $row['contact'] ?? "-",
-                'date_begin' => isset($row['date_effet']) && is_numeric($row['date_effet']) ? Date::excelToDateTimeObject($row['date_effet']) : $day->format('Y-m-d'),
-                'date_expired' => isset($row['date_expiration']) && is_numeric($row['date_expiration']) ? Date::excelToDateTimeObject($row['date_expiration'])  : $day->format('Y-m-d'),
+                'date_begin' => isset($row['date_effet']) && is_numeric($row['date_effet']) ? Date::excelToDateTimeObject($row['date_effet']) : Null,
+                'date_expired' => isset($row['date_expiration']) && is_numeric($row['date_expiration']) ? Date::excelToDateTimeObject($row['date_expiration'])  : Null,
                 'user_id' => Auth::user()->id,
                 'entreprise_id' => Auth::user()->entreprise_id == 0 ? 2 : Auth::user()->entreprise_id,
                 'type'     => $row['type'] ?? "client",

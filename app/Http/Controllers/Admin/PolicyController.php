@@ -79,12 +79,15 @@ class PolicyController extends Controller
         // Fetch records
         $records = Policy::orderBy($columnName, $columnSortOrder);
         if ($type == 'valided') {
-            $records->where(function ($query,  $sign, $today) {
+            $records->where(function ($query) {
+                $today = new \DateTime(date('Y-m-d'));
+                $today = $today->format('Y-m-d');
+                $sign = '>=';
                 $query->where('date_expired', $sign, $today)
                     ->orWhere('date_expired', null);
             });
         } else {
-            $records->where('date_expired', $sign, $today);
+            $records->where('date_expired', "<", $today);
         }
         $records->where(function ($query) {
             $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
