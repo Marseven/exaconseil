@@ -18,7 +18,7 @@ class PoliciesImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $day = new \DateTime();
-        if ($row['noms'] && $row['marque'] && $row['contact']) {
+        if (isset($row['noms']) && isset($row['marque']) && isset($row['contact'])) {
             return new Policy([
                 //
                 'name'     => $row['noms'] ?? "-",
