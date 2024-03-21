@@ -68,7 +68,7 @@
                         <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
                             @if ($user->hasService("Police d'assurance"))
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_1">Police</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_pane_1">Police</a>
                                 </li>
                             @endif
                             @if ($user->hasService('Sinistre'))
@@ -99,7 +99,7 @@
                         </ul>
 
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+                            <div class="tab-pane fade" id="kt_tab_pane_1" role="tabpanel">
                                 <!--begin::Table-->
                                 <table class="table" id="kt_datatable">
                                     <thead>
