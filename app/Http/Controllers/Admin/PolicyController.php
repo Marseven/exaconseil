@@ -101,7 +101,7 @@ class PolicyController extends Controller
             // Fetch records
             $records = Policy::orderBy($columnName, $columnSortOrder)
                 ->where(function ($query) {
-                    $query->where('date_expired', "<", now())
+                    $query->where('date_expired', ">", now())
                         ->orWhere('date_expired',  null);
                 })
                 ->where(function ($query) {
