@@ -86,7 +86,7 @@ class PolicyController extends Controller
             $totalRecords = Policy::select('count(*) as allcount')->where('deleted', NULL)->count();
             $totalRecordswithFilter = Policy::select('count(*) as allcount')
                 ->where(function ($query) {
-                    $query->where('date_expired', "<", now())
+                    $query->where('date_expired', ">", now())
                         ->orWhere('date_expired',  null);
                 })
                 ->where(function ($query) {
