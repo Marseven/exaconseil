@@ -301,7 +301,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Maison d'Assurance</th>
+                                            <th>Courtier d'Assurance</th>
                                             <th>Numéro</th>
                                             <th>Type</th>
                                             <th>Montant</th>
@@ -314,7 +314,7 @@
                                         @foreach ($factures as $facture)
                                             <tr>
                                                 <td>{{ $facture->id }}</td>
-                                                <td>{{ $facture->company_assurance }}</td>
+                                                <td>{{ $facture->company_assurance ?? '-' }}</td>
                                                 <td>{{ $facture->number_facture }}</td>
                                                 <td>{{ $facture->type_prestation }}</td>
                                                 <td>{{ $facture->amount }}</td>
