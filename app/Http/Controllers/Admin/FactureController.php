@@ -275,9 +275,9 @@ class FactureController extends Controller
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Courtier d\'assurance</label>
+                                <label class="form-label">Courtier d\'assurance</label>
                                 <input class="form-control" name="company_assurance" type="text"
-                                    placeholder="Assurance" value="' . $facture->company_assurance . '" required/>
+                                    placeholder="Assurance" value="' . $facture->company_assurance . '" />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -421,7 +421,6 @@ class FactureController extends Controller
     {
         $rules = [
             'number_facture' => ['required', 'string'],
-            'company_assurance' => ['required', 'string'],
             'ref_sinistre' => ['required', 'string'],
             'assure' => ['required', 'string'],
             'tiers' => ['required', 'string'],
