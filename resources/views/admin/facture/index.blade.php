@@ -165,7 +165,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Mandat</label>
+                                <label class="form-label">Mandat</label>
                                 <select class="form-control" name="mandat_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($mandats as $mandat)
