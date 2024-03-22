@@ -409,7 +409,9 @@ class CashflowController extends Controller
         $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
 
         if (!empty($request->entity_id)) {
-
+            $cashbox = Cashbox::find($request->cashbox_id);
+            $cashbox->solde = $cashbox->solde + $request->amount;
+            $cashbox->save();
             if (count($request->entity_id) == 1) {
                 $cashflow->entity_id =  $request->entity_id[0];
                 $facture = Facture::find($cashflow->entity_id);
@@ -482,7 +484,7 @@ class CashflowController extends Controller
                 return back()->with('error', "La police n'a pas été supprimé.");
             }
         } else {
-
+            $old_amount = $cashflow->amount;
             $cashflow->type = $request->type;
             $cashflow->reason = $request->reason;
             $cashflow->amount = $request->amount;
@@ -500,6 +502,9 @@ class CashflowController extends Controller
             }
 
             if ($cashflow->save()) {
+                $cashbox = Cashbox::find($request->cashbox_id);
+                $cashbox->solde = ($cashbox->solde - $old_amount) + $request->amount;
+                $cashbox->save();
                 return back()->with('success', 'La transaction mis à jour avec succès.');
             } else {
                 return back()->with('error', 'Un problème est survenu.');
