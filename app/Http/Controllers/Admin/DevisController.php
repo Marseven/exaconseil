@@ -323,6 +323,6 @@ class DevisController extends Controller
     public function export(Request $request)
     {
         $day = Carbon::now();
-        return Excel::download(new DevisExport($request->begin, $request->end), 'Devis - ' . $day . '.xlsx');
+        return Excel::download(new DevisExport($request->date_begin, $request->date_end), 'Devis - ' . $day . '.xlsx');
     }
 }
