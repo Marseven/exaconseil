@@ -22,7 +22,7 @@ class DevisExport implements FromView
     public function view(): View
     {
         $devis = Devis::where('created_at', '>=', $this->begin->format('Y-m-d h:i:s'))->where('created_at', '<=', $this->end->format('Y-m-d  h:i:s'))->get();
-        dd($devis);
+        dd($this->begin);
         return view('admin.devis.export', [
             'devis' => $devis,
         ]);
