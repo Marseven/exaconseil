@@ -394,7 +394,7 @@
                         targets: [1]
                     }],
                     order: [
-                        [4, 'desc']
+                        [0, 'desc']
                     ],
                     columns: [{
                             data: 'id'
