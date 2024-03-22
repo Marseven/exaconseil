@@ -17,7 +17,7 @@
                 <td>{{ $devi->name }}</td>
                 <td>{{ $devi->brand }}</td>
                 <td>{{ $devi->matricule }}</td>
-                <td>{{ $devi->number_chassis }}</td>
+                <td>{{ $devi->number_chassis ?? '-' }}</td>
                 <td>{{ $devi->contact }}</td>
                 <td>{{ $devi->created_at }}</td>
             </tr>

@@ -363,6 +363,6 @@ class SinistreController extends Controller
     public function export(Request $request)
     {
         $day = Carbon::now();
-        return Excel::download(new SinistresExport($request->begin, $request->end), 'Sinistres - ' . $day . '.xlsx');
+        return Excel::download(new SinistresExport($request->date_begin, $request->date_end), 'Sinistres - ' . $day . '.xlsx');
     }
 }
