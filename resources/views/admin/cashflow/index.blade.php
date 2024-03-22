@@ -66,6 +66,25 @@
             <div id="kt_content_container" class="container-xxl">
                 @include('layout.alert')
 
+                @if ($role->name == 'Gerant')
+                    <div class="card">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0 pt-6">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    @foreach ($cashboxes as $cashbox)
+                                        <button type="button" class="btn btn-secondary m-5">
+                                            Solde {{ $cashbox->name }} : {{ $cashbox->solde }} FCFA
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+
                 <!--begin::Card-->
                 <div class="card">
                     <!--begin::Card header-->
@@ -164,7 +183,8 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Montant</label>
-                                <input class="form-control" name="amount" type="number" placeholder="Montant" required />
+                                <input class="form-control" name="amount" type="number" placeholder="Montant"
+                                    required />
                             </div>
                         </div>
 
