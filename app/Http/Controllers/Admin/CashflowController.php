@@ -467,6 +467,18 @@ class CashflowController extends Controller
                 }
             }
 
+            if ($cashflow->service_id == 2) {
+                $sinistre = Sinistre::find($cashflow->entity_id);
+                $sinistre->status = "paid";
+                $sinistre->save();
+            }
+
+            if ($cashflow->service_id == 3) {
+                $devis = Devis::find($cashflow->entity_id);
+                $devis->status = "paid";
+                $devis->save();
+            }
+
             return back()->with('success', 'Transaction créé avec succès.');
         } else {
             return back()->with('error', 'Un problème est survenu.');

@@ -88,6 +88,9 @@ class SinistreController extends Controller
             $contact = $record->contact;
             $date_open = date_format(date_create($record->date_open), 'd-m-Y');
 
+            $_status = Controller::status($record->status);
+            $_status = '<span class="badge py-3 px-4 fs-7 badge-light-' . $_status['type'] . '">' . $_status['message'] . '</span>';
+
             $actions = '<button style="padding: 10px !important" type="button"
             class="btn btn-primary modal_view_action"
             data-bs-toggle="modal"
@@ -123,6 +126,7 @@ class SinistreController extends Controller
                 "date_open" => $date_open,
                 "assurance" => $assurance,
                 "tiers" => $tiers,
+                "status" => $_status,
                 "actions" => $actions,
             );
         }
@@ -315,6 +319,7 @@ class SinistreController extends Controller
         $sinistre->assurance = $request->assurance;
         $sinistre->tiers = $request->tiers;
         $sinistre->date_open =  $request->date_open;
+        $sinistre->status =  'unpaid';
         $sinistre->entreprise_id = Auth::user()->entreprise_id;
         $sinistre->user_id = Auth::user()->id;
 

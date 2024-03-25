@@ -85,6 +85,9 @@ class DevisController extends Controller
             $contact = $record->contact;
             $created_at = date_format(date_create($record->created_at), 'd-m-Y');
 
+            $_status = Controller::status($record->status);
+            $_status = '<span class="badge py-3 px-4 fs-7 badge-light-' . $_status['type'] . '">' . $_status['message'] . '</span>';
+
             $actions = '<button style="padding: 10px !important" type="button"
             class="btn btn-primary modal_view_action"
             data-bs-toggle="modal"
@@ -122,6 +125,7 @@ class DevisController extends Controller
                 "contact" => $contact,
                 "number_chassis" => $chassis,
                 "created_at" => $created_at,
+                "status" => $_status,
                 "actions" => $actions,
             );
         }
@@ -277,6 +281,7 @@ class DevisController extends Controller
         $devis->brand = $request->brand;
         $devis->matricule = $request->matricule;
         $devis->contact = $request->contact;
+        $devis->status =  'unpaid';
         $devis->number_chassis =  $request->number_chassis;
         $devis->entreprise_id = Auth::user()->entreprise_id;
         $devis->user_id = Auth::user()->id;

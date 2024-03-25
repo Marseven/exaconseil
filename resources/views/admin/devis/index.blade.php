@@ -84,6 +84,18 @@
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+
+                                <div class="w-100 mw-150px">
+                                    <!--begin::Select2-->
+                                    <select class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-placeholder="Statut" data-kt-filter="status">
+                                        <option value="all">Tout</option>
+                                        <option value="paid">Payé</option>
+                                        <option value="unpaid">Impayé</option>
+                                    </select>
+                                    <!--end::Select2-->
+                                </div>
+
                                 <!--begin::Add user-->
 
                                 <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
@@ -118,6 +130,7 @@
                                     <th>N° de châssis</th>
                                     <th>Contact</th>
                                     <th>Date de création</th>
+                                    <th>Statut</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -162,7 +175,8 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Marque / Type</label>
-                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
+                                <input class="form-control" name="brand" type="text" placeholder="Marque"
+                                    required />
                             </div>
                         </div>
 
@@ -357,6 +371,9 @@
                             data: 'created_at'
                         },
                         {
+                            data: 'status'
+                        },
+                        {
                             data: 'actions'
                         },
                     ]
@@ -378,7 +395,7 @@
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(8).search(n).draw()
+                        datatable.column(7).search(n).draw()
                 }));
             }
 

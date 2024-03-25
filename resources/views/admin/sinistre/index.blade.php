@@ -83,6 +83,18 @@
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+
+                                <div class="w-100 mw-150px">
+                                    <!--begin::Select2-->
+                                    <select class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-placeholder="Statut" data-kt-filter="status">
+                                        <option value="all">Tout</option>
+                                        <option value="paid">Payé</option>
+                                        <option value="unpaid">Impayé</option>
+                                    </select>
+                                    <!--end::Select2-->
+                                </div>
+                                <!--end::Select2-->
                                 <!--begin::Add user-->
 
                                 <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
@@ -118,6 +130,7 @@
                                     <th>Assurance</th>
                                     <th>Tiers</th>
                                     <th>Date d'ouverture</th>
+                                    <th>Statut</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -160,14 +173,16 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Prénom</label>
-                                <input class="form-control" name="firstname" type="text" placeholder="Prénom" required />
+                                <input class="form-control" name="firstname" type="text" placeholder="Prénom"
+                                    required />
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label>Marque / Type</label>
-                                <input class="form-control" name="brand" type="text" placeholder="Marque" required />
+                                <input class="form-control" name="brand" type="text" placeholder="Marque"
+                                    required />
                             </div>
                         </div>
 
@@ -374,6 +389,9 @@
                         },
                         {
                             data: 'date_open'
+                        },
+                        {
+                            data: 'status'
                         },
                         {
                             data: 'actions'
