@@ -410,7 +410,11 @@ class CashflowController extends Controller
 
         if (!empty($request->entity_id)) {
             $cashbox = Cashbox::find($request->cashbox_id);
-            $cashbox->solde = $cashbox->solde + $request->amount;
+            if ($cashflow->type == 'credit') {
+                $cashbox->solde = $cashbox->solde + $request->amount;
+            } else {
+                $cashbox->solde = $cashbox->solde - $request->amount;
+            }
             $cashbox->save();
             if (count($request->entity_id) == 1) {
                 $cashflow->entity_id =  $request->entity_id[0];
@@ -515,7 +519,12 @@ class CashflowController extends Controller
 
             if ($cashflow->save()) {
                 $cashbox = Cashbox::find($request->cashbox_id);
-                $cashbox->solde = ($cashbox->solde - $old_amount) + $request->amount;
+                if ($cashflow->type == 'credit') {
+                    $cashbox->solde = ($cashbox->solde - $old_amount) + $request->amount;
+                } else {
+                    $cashbox->solde = ($cashbox->solde + $old_amount) - $request->amount;
+                }
+
                 $cashbox->save();
                 return back()->with('success', 'La transaction mis à jour avec succès.');
             } else {
