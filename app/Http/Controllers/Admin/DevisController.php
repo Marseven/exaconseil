@@ -148,7 +148,7 @@ class DevisController extends Controller
         $title = "";
         if ($request->action == "view") {
             $devis->load(['user']);
-
+            $status = Controller::status($devis->status);
             $title = "Police d'assurance N°" . $devis->id;
             $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Nom Complet</h6>
                 <p class="text-uppercase mb-0">' . $devis->name . '</p>
@@ -176,6 +176,13 @@ class DevisController extends Controller
                 <h6 class="text-uppercase fs-5 ls-2">Date de création
                 </h6>
                 <p class="mb-0">' . date_format(date_create($devis->created_at), 'd-m-Y') . '</p>
+            </div>
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Statut
+                </h6>
+                <p class="mb-0">
+                    <span class="badge badge-' . $status['type'] . '">' . $status['message'] . '</span>
+                </p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ajouté par

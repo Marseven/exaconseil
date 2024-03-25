@@ -149,7 +149,7 @@ class SinistreController extends Controller
         $title = "";
         if ($request->action == "view") {
             $sinistre->load(['user']);
-
+            $status = Controller::status($sinistre->status);
             $title = "Police d'assurance N°" . $sinistre->id;
             $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Nom Complet</h6>
                 <p class="text-uppercase mb-0">' . $sinistre->lastname . ' ' . $sinistre->firstname . '</p>
@@ -187,6 +187,13 @@ class SinistreController extends Controller
                 <h6 class="text-uppercase fs-5 ls-2">Date d\'ouverture
                 </h6>
                 <p class="mb-0">' . date_format(date_create($sinistre->date_open), 'd-m-Y') . '</p>
+            </div>
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Statut
+                </h6>
+                <p class="mb-0">
+                    <span class="badge badge-' . $status['type'] . '">' . $status['message'] . '</span>
+                </p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Ajouté par

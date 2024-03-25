@@ -161,6 +161,7 @@ class FactureController extends Controller
         $title = "";
         if ($request->action == "view") {
             $facture->load(['user', 'mandat']);
+            $status = Controller::status($facture->status);
 
             $title = "Facture N°" . $facture->id;
             $body = '
@@ -223,6 +224,13 @@ class FactureController extends Controller
                 <h6 class="text-uppercase fs-5 ls-2">Date de facture
                 </h6>
                 <p class="mb-0">' . date_format(date_create($facture->date_facture), 'd-m-Y') . '</p>
+            </div>
+            <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Statut
+                </h6>
+                <p class="mb-0">
+                    <span class="badge badge-' . $status['type'] . '">' . $status['message'] . '</span>
+                </p>
             </div>';
 
             if ($facture->facture_physical) {
