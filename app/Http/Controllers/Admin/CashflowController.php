@@ -481,7 +481,7 @@ class CashflowController extends Controller
             }
 
             if ($cashflow->service_id == 3) {
-                dd($cashflow);
+
                 $devis = Devis::find($cashflow->entity_id);
                 $devis->status = "paid";
                 $devis->save();
