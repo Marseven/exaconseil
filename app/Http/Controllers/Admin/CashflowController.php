@@ -454,7 +454,6 @@ class CashflowController extends Controller
                 $cashbox->solde = $cashbox->solde - $request->amount;
             }
             $cashbox->save();
-            dd($cashbox);
             if ($cashflow->service_id == 5) {
                 if ($cashflow->entity_id == null) {
                     foreach ($request->entity_id as $entity) {
