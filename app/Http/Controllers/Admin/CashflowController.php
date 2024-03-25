@@ -409,13 +409,7 @@ class CashflowController extends Controller
         $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
 
         if (!empty($request->entity_id)) {
-            $cashbox = Cashbox::find($request->cashbox_id);
-            if ($cashflow->type == 'credit') {
-                $cashbox->solde = $cashbox->solde + $request->amount;
-            } else {
-                $cashbox->solde = $cashbox->solde - $request->amount;
-            }
-            $cashbox->save();
+
             if (count($request->entity_id) == 1) {
                 $cashflow->entity_id =  $request->entity_id[0];
                 $facture = Facture::find($cashflow->entity_id);
@@ -453,6 +447,14 @@ class CashflowController extends Controller
         $cashflow->user_id = Auth::user()->id;
 
         if ($cashflow->save()) {
+            $cashbox = Cashbox::find($request->cashbox_id);
+            if ($cashflow->type == 'credit') {
+                $cashbox->solde = $cashbox->solde + $request->amount;
+            } else {
+                $cashbox->solde = $cashbox->solde - $request->amount;
+            }
+            $cashbox->save();
+            dd($cashbox);
             if ($cashflow->service_id == 5) {
                 if ($cashflow->entity_id == null) {
                     foreach ($request->entity_id as $entity) {
