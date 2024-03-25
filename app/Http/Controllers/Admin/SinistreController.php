@@ -53,7 +53,8 @@ class SinistreController extends Controller
                     ->orWhere('sinistres.assurance', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.matricule', 'like', '%' . $searchValue . '%')
-                    ->orWhere('sinistres.contact', 'like', '%' . $searchValue . '%');
+                    ->orWhere('sinistres.contact', 'like', '%' . $searchValue . '%')
+                    ->orWhere('sinistres.status',  $searchValue);
             })->where('deleted', NULL)->count();
 
         // Fetch records
@@ -65,7 +66,8 @@ class SinistreController extends Controller
                     ->orWhere('sinistres.assurance', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('sinistres.matricule', 'like', '%' . $searchValue . '%')
-                    ->orWhere('sinistres.contact', 'like', '%' . $searchValue . '%');
+                    ->orWhere('sinistres.contact', 'like', '%' . $searchValue . '%')
+                    ->orWhere('sinistre.status',  $searchValue);
             })->where('deleted', NULL)
             ->select('sinistres.*')
             ->skip($start)

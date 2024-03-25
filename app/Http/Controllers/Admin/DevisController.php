@@ -52,7 +52,8 @@ class DevisController extends Controller
                     ->orWhere('devis.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('devis.matricule', 'like', '%' . $searchValue . '%')
                     ->orWhere('devis.number_chassis', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.contact', 'like', '%' . $searchValue . '%');
+                    ->orWhere('devis.contact', 'like', '%' . $searchValue . '%')
+                    ->orWhere('devis.status',  $searchValue);
             })->where('deleted', NULL)->count();
 
         // Fetch records
@@ -63,7 +64,8 @@ class DevisController extends Controller
                     ->orWhere('devis.brand', 'like', '%' . $searchValue . '%')
                     ->orWhere('devis.matricule', 'like', '%' . $searchValue . '%')
                     ->orWhere('devis.number_chassis', 'like', '%' . $searchValue . '%')
-                    ->orWhere('devis.contact', 'like', '%' . $searchValue . '%');
+                    ->orWhere('devis.contact', 'like', '%' . $searchValue . '%')
+                    ->orWhere('devis.status',  $searchValue);
             })->where('deleted', NULL)
             ->select('devis.*')
             ->skip($start)
