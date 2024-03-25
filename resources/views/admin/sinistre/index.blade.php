@@ -87,7 +87,7 @@
                                 <div class="w-100 mw-150px">
                                     <!--begin::Select2-->
                                     <select class="form-select form-select-solid" data-control="select2"
-                                        data-hide-search="true" data-placeholder="Statut" data-kt-filter="status">
+                                        data-hide-search="true" data-placeholder="status" data-kt-filter="status">
                                         <option value="all">Tout</option>
                                         <option value="paid">Payé</option>
                                         <option value="unpaid">Impayé</option>
