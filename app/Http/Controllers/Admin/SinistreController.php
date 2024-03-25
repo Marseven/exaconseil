@@ -90,7 +90,7 @@ class SinistreController extends Controller
             $contact = $record->contact;
             $date_open = date_format(date_create($record->date_open), 'd-m-Y');
 
-            $_status = Controller::status($record->status);
+            $_status = Controller::status($record->status ?? '-');
             $_status = '<span class="badge py-3 px-4 fs-7 badge-light-' . $_status['type'] . '">' . $_status['message'] . '</span>';
 
             $actions = '<button style="padding: 10px !important" type="button"

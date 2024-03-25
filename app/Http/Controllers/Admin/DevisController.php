@@ -87,7 +87,7 @@ class DevisController extends Controller
             $contact = $record->contact;
             $created_at = date_format(date_create($record->created_at), 'd-m-Y');
 
-            $_status = Controller::status($record->status);
+            $_status = Controller::status($record->status ?? '-');
             $_status = '<span class="badge py-3 px-4 fs-7 badge-light-' . $_status['type'] . '">' . $_status['message'] . '</span>';
 
             $actions = '<button style="padding: 10px !important" type="button"
