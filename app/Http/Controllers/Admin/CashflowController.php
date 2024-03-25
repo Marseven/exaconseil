@@ -432,6 +432,8 @@ class CashflowController extends Controller
                     $cashflow->entity_id = null;
                 }
             }
+        } else {
+            $cashflow->entity_id =  $request->entity_id[0];
         }
 
         if ($request->file('piece')) {
