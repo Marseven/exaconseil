@@ -558,7 +558,10 @@ class CashflowController extends Controller
                     $entities = Sinistre::where('entreprise_id', $entrepriseId)->get();
                     break;
                 case 3:
-                    $entities = Devis::where('entreprise_id', $entrepriseId)->get();
+                    $entities = Devis::where('entreprise_id', $entrepriseId)->leftJoin('factures', function ($join) {
+                        $join->on('devis.id', '=', 'factures.entity_id')
+                            ->where('factures.service_id', '=', 3);
+                    })->whereNull('factures.id')->get();
                     break;
                 case 5:
                     $entities = Facture::where('entreprise_id', $entrepriseId)->where('status', 'unpaid')->get();
