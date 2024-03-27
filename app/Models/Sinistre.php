@@ -26,4 +26,9 @@ class Sinistre extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function cashflow()
+    {
+        return $this->belongsTo(Cashflow::class);
+    }
 }
