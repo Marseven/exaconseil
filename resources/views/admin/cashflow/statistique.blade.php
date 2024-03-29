@@ -145,10 +145,10 @@
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                     <!--begin::Add user-->
+                                    <button type="button" class="btn btn-secondary m-5">
+                                        Total : {{ $totalAmount }} FCFA
+                                    </button>
 
-                                    <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
-                                        data-bs-target="#securityModal">
-                                        <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
                                     <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
                                         data-bs-target="#export">
                                         <i class="bi bi-download fs-2"></i>Exporter</button>
