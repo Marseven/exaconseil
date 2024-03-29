@@ -616,7 +616,7 @@ class CashflowController extends Controller
             $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
         }
 
-        $cashflows = Cashflow::with('rubrique', 'cashbox');
+        $cashflows = Cashflow::with('rubrique', 'cashbox', 'user');
 
         if ($request->type && $request->type != null) {
             $cashflows->where('type', $request->type);

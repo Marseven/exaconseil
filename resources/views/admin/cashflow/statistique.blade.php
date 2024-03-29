@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-
+                <br>
                 <div class="card">
                     <!--begin::Card header-->
                     <div class="card-header border-0 pt-6">
@@ -123,66 +123,108 @@
 
 
                 <br>
-                <!--begin::Card-->
-                <div class="card">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 pt-6">
-                        <!--begin::Card title-->
-                        <div class="card-title">
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <span class="svg-icon fs-1 position-absolute ms-4"><i class="bi bi-search fs-2"></i></span>
-                                <input type="text" data-kt-filter="search"
-                                    class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher" />
+                @if ($cashflows)
+                    <!--begin::Card-->
+                    <div class="card">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0 pt-6">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <span class="svg-icon fs-1 position-absolute ms-4"><i
+                                            class="bi bi-search fs-2"></i></span>
+                                    <input type="text" data-kt-filter="search"
+                                        class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher" />
+                                </div>
                             </div>
-                        </div>
-                        <!--begin::Card title-->
-                        <!--begin::Card toolbar-->
-                        <div class="card-toolbar">
-                            <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                                <!--begin::Add user-->
+                            <!--begin::Card title-->
+                            <!--begin::Card toolbar-->
+                            <div class="card-toolbar">
+                                <!--begin::Toolbar-->
+                                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                                    <!--begin::Add user-->
 
-                                <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
-                                    data-bs-target="#securityModal">
-                                    <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
-                                <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
-                                    data-bs-target="#export">
-                                    <i class="bi bi-download fs-2"></i>Exporter</button>
-                                <!--end::Add user-->
+                                    <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
+                                        data-bs-target="#securityModal">
+                                        <i class="ki-duotone ki-plus fs-2"></i>Ajouter</button>
+                                    <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
+                                        data-bs-target="#export">
+                                        <i class="bi bi-download fs-2"></i>Exporter</button>
+                                    <!--end::Add user-->
+                                </div>
+                                <!--end::Toolbar-->
+
+
                             </div>
-                            <!--end::Toolbar-->
-
-
+                            <!--end::Card toolbar-->
                         </div>
-                        <!--end::Card toolbar-->
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body py-4">
+                            <!--begin::Table-->
+                            <table class="table" id="kt_datatable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Type</th>
+                                        <th>Rubrique</th>
+                                        <th>Raison / Motif</th>
+                                        <th>Montant</th>
+                                        <th>Date</th>
+                                        <th>Caisse</th>
+                                        <th>Agent</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($cahsflows as $cashflow)
+                                        <tr>
+                                            <td>{{ $cashflow->id }}</td>
+                                            <td>{{ $cashflow->type == 'debit' ? 'DEBIT' : 'CREDIT' }}</td>
+                                            <td>{{ $cashflow->rubrique->name }}</td>
+                                            <td>{{ $cashflow->reason }}</td>
+                                            <td>{{ $cashflow->amount }} FCFA</td>
+                                            <td>{{ $cashflow->date_cash }}</td>
+                                            <td>{{ $cashflow->user != null ? $cashflow->user->firstname . ' ' . $cashflow->user->lastname : '-' }}
+                                            </td>
+                                            <td>{{ $cashflow->id }}</td>
+                                            <td>
+                                                <button style="padding: 10px !important" type="button"
+                                                    class="btn btn-primary modal_view_action" data-bs-toggle="modal"
+                                                    data-id=" {{ $record->id }}"
+                                                    data-bs-target="#cardModalView{{ $record->id }}"><i
+                                                        class="bi bi-eye"></i></button>
+                                                @if (
+                                                    $role->hasPermissionTo('edit cashflow') &&
+                                                        $user->hasService('Caisse') &&
+                                                        (App\Http\Controllers\Controller::isBefore($record->created_at) ||
+                                                            Auth::user()->roles->first()->name == 'Gerant') &&
+                                                        ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant'))
+                                                    <button style="padding: 10px !important" type="button"
+                                                        class="btn btn-secondary modal_edit_action" data-bs-toggle="modal"
+                                                        data-id="{{ $record->id }}"
+                                                        data-bs-target="#cardModal{{ $record->id }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button style="padding: 10px !important" type="button"
+                                                        class="btn btn-danger modal_delete_action" data-bs-toggle="modal"
+                                                        data-id="{{ $record->id }}"
+                                                        data-bs-target="#cardModalCenter{{ $record->id }}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Card body-->
                     </div>
-                    <!--end::Card header-->
-                    <!--begin::Card body-->
-                    <div class="card-body py-4">
-                        <!--begin::Table-->
-                        <table class="table" id="kt_datatable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Type</th>
-                                    <th>Rubrique</th>
-                                    <th>Raison / Motif</th>
-                                    <th>Montant</th>
-                                    <th>Date</th>
-                                    <th>Caisse</th>
-                                    <th>Agent</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <!--end::Card-->
+                @endif
 
-                            </tbody>
-                        </table>
-                        <!--end::Table-->
-                    </div>
-                    <!--end::Card body-->
-                </div>
-                <!--end::Card-->
             </div>
             <!--end::Container-->
         </div>
@@ -330,10 +372,6 @@
                     language: {
                         'url': "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
                     },
-                    processing: true,
-                    serverSide: true,
-                    searching: true,
-                    ajax: "{{ url('admin/ajax/cashflows/' . $type) }}",
                     columnDefs: [{
                         className: "upper",
                         targets: [1]
@@ -341,35 +379,6 @@
                     order: [
                         [5, 'desc']
                     ],
-                    columns: [{
-                            data: 'id'
-                        },
-                        {
-                            data: 'type'
-                        },
-                        {
-                            data: 'rubrique'
-                        },
-                        {
-                            data: 'reason'
-                        },
-                        {
-                            data: 'amount'
-                        },
-                        {
-                            data: 'date_cash'
-                        },
-                        {
-                            data: 'cashbox'
-                        },
-                        {
-                            data: 'agent'
-                        },
-                        {
-                            data: 'actions'
-                        },
-                    ]
-
                 });
             }
 
