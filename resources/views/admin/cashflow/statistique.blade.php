@@ -91,7 +91,7 @@
 
                             <form class="d-flex justify-content-end" method="post"
                                 action="{{ route('admin-do-statistique-cashflow') }}">
-                                <div class="mb-3">
+                                <div class="m-5">
                                     <div class="input-style-1">
                                         <label class="form-label required">Type</label>
                                         <select class="form-control" name="type">
@@ -100,7 +100,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="mb-3">
+                                <div class="m-5">
                                     <div class="input-style-1">
                                         <label class="form-label required">Rubrique</label>
                                     </div>
@@ -113,6 +113,7 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
+                                    <br>
                                     <button type="submit" style="background-color: #2b9753 !important;"
                                         class="btn btn-success">Valider</button>
                                 </div>
