@@ -21,8 +21,7 @@
                     data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
                     class="page-title d-flex align-items-center me-3 flex-wrap lh-1">
                     <!--begin::Title-->
-                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">
-                        {{ $type == 'debit' ? 'Sortie de caisse' : 'Entrée de caisse' }}</h1>
+                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">Statistique</h1>
                     <!--end::Title-->
                     <!--begin::Separator-->
                     <span class="h-20px border-gray-200 border-start mx-4"></span>
