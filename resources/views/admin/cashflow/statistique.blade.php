@@ -146,7 +146,7 @@
                                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                     <!--begin::Add user-->
                                     <button type="button" class="btn btn-info m-5">
-                                        Total : {{ $totalAmount }} FCFA
+                                        Total : <strong>{{ $totalAmount }} FCFA</strong>
                                     </button>
 
                                     <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
