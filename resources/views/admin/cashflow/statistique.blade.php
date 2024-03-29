@@ -179,7 +179,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cahsflows as $cashflow)
+                                    @foreach ($cashflows as $cashflow)
                                         <tr>
                                             <td>{{ $cashflow->id }}</td>
                                             <td>{{ $cashflow->type == 'debit' ? 'DEBIT' : 'CREDIT' }}</td>
