@@ -87,7 +87,7 @@
                     <!--begin::Card header-->
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
-                        <div class="card-title">
+                        <div class="card-body">
                             <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
                                 <div class="d-flex justify-content-end">
 
