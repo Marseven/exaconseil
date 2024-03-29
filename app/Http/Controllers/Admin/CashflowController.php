@@ -600,7 +600,7 @@ class CashflowController extends Controller
             $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
         }
 
-        return view('admin.cashflow.statistique', compact('cashboxes', 'services', 'type', 'rubriques'));
+        return view('admin.cashflow.statistique', compact('cashboxes', 'services', 'rubriques'));
     }
 
     public function doStatistique(Request $request)
@@ -628,7 +628,7 @@ class CashflowController extends Controller
         $totalAmount = $cashflows->sum('amount');
         $cashflows = $cashflows->get();
 
-        return view('admin.cashflow.statistique', compact('cashboxes', 'services', 'type', 'rubriques', 'cashflows', 'totalAmount'));
+        return view('admin.cashflow.statistique', compact('cashboxes', 'services', 'rubriques', 'cashflows', 'totalAmount'));
     }
 
     public function rubrique()
