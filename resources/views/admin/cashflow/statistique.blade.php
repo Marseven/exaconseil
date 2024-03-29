@@ -88,34 +88,36 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
-                                    <div class="mb-3">
-                                        <div class="input-style-1">
-                                            <label class="form-label required">Type</label>
-                                            <select class="form-control" name="type">
-                                                <option value="debit">DEBIT</option>
-                                                <option value="credit">CREDIT</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="input-style-1">
-                                            <label class="form-label">Rubrique</label>
-                                        </div>
-                                        <select id="selectOne" class="form-control" name="rubrique" data-control="select2"
-                                            required>
-                                            @foreach ($rubriques as $rubrique)
-                                                <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
-                                            @endforeach
+
+                            <form class="d-flex justify-content-end" method="post"
+                                action="{{ route('admin-do-statistique-cashflow') }}">
+                                <div class="mb-3">
+                                    <div class="input-style-1">
+                                        <label class="form-label required">Type</label>
+                                        <select class="form-control" name="type">
+                                            <option value="debit">DEBIT</option>
+                                            <option value="credit">CREDIT</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <button type="submit" style="background-color: #2b9753 !important;"
-                                            class="btn btn-success">Valider</button>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-style-1">
+                                        <label class="form-label required">Rubrique</label>
                                     </div>
-                                </form>
-                            </div>
+                                    <select class="form-control" name="rubrique" data-control="select2"
+                                        data-close-on-select="false" data-placeholder="Choisir" data-allow-clear="true"
+                                        required>
+                                        @foreach ($rubriques as $rubrique)
+                                            <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" style="background-color: #2b9753 !important;"
+                                        class="btn btn-success">Valider</button>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
