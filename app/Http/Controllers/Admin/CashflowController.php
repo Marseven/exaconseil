@@ -104,7 +104,7 @@ class CashflowController extends Controller
             $reason = $record->reason;
             $amount = Controller::format_amount($record->amount) . " FCFA";
             $caisse = $record->cashbox->name;
-            $rubrique = $record->rubrique->name;
+            $rubrique = $record->rubrique->name ?? "-";
             $_user = $record->user != null ? $record->user->firstname . ' ' . $record->user->lastname : "-";
             $date = date_format(date_create($record->date_cash), 'd-m-Y');
 
