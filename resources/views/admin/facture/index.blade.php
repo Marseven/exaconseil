@@ -156,7 +156,8 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Type de prestation</label>
-                                <select class="form-control" name="type_prestation" required>
+                                <select class="form-control" name="type_prestation" id="type_prestation"
+                                    onchange="viewParticulier()" required>
                                     <option value="Standard">Standard</option>
                                     <option value="Particulier">Particulier</option>
                                     <option value="Intérieur">Intérieur</option>
@@ -348,6 +349,26 @@
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script>
         "use strict";
+
+        function viewParticulier() {
+            var type_prestation = document.getElementById("type_prestation");
+            var assasurance = document.getElementById("maison-assasurance");
+            var mission = document.getElementById("date-mission");
+            var date = document.getElementById("date-sinistre");
+            var ref = document.getElementById("ref-sinistre");
+
+            if (type_prestation.value == "Particulier") {
+                assurance.style.display = "none";
+                mission.style.display = "none";
+                date.style.display = "none";
+                ref.style.display = "none";
+            } else {
+                assurance.style.display = "block";
+                mission.style.display = "block";
+                date.style.display = "block";
+                ref.style.display = "block";
+            }
+        }
 
         // Class definition
         var KTDatatablesExample = function() {
