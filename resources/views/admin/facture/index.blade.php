@@ -152,6 +152,7 @@
                 <form action="{{ url('admin/create/facture/') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Type de prestation</label>
@@ -163,7 +164,8 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-3">
+
+                        <div class="mb-3" id="maison-assasurance">
                             <div class="input-style-1">
                                 <label class="form-label required">Maison d'assurance</label>
                                 <select class="form-control" name="assurance_id">
@@ -174,6 +176,7 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label">Mandat</label>
@@ -188,6 +191,9 @@
                                 </select>
                             </div>
                         </div>
+
+
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Numéro de facture</label>
@@ -223,6 +229,7 @@
                                     required />
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Immatriculation</label>
@@ -230,21 +237,22 @@
                                     placeholder="Immatriculation" required />
                             </div>
                         </div>
-                        <div class="mb-3">
+
+                        <div class="mb-3" id="ref-sinistre">
                             <div class="input-style-1">
                                 <label class="form-label required">Référence sinistre</label>
                                 <input class="form-control" name="ref_sinistre" type="text" placeholder="Référence"
                                     required />
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="date-sinistre">
                             <div class="input-style-1">
                                 <label class="form-label required">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
                                     placeholder="Date de sinistre" required />
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="date-mission">
                             <div class="input-style-1">
                                 <label class="form-label required">Date de mission</label>
                                 <input class="form-control" name="date_mission" type="date"

@@ -589,10 +589,46 @@ class CashflowController extends Controller
 
     public function statistique()
     {
+        if (Auth::user()->entreprise_id == 0) {
+            $cashboxes = Cashbox::all();
+            $services = Service::all();
+        } else {
+            $entrepriseId = Auth::user()->entreprise_id;
+            $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
+            $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->get();
+            $entreprise = Entreprise::with('services')->find($entrepriseId);
+            $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
+        }
+
+        return view('admin.cashflow.statistique', compact('cashboxes', 'services', 'type', 'rubriques'));
     }
 
-    public function doStatistique()
+    public function doStatistique(Request $request)
     {
+        if (Auth::user()->entreprise_id == 0) {
+            $cashboxes = Cashbox::all();
+            $services = Service::all();
+        } else {
+            $entrepriseId = Auth::user()->entreprise_id;
+            $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
+            $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->get();
+            $entreprise = Entreprise::with('services')->find($entrepriseId);
+            $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
+        }
+
+        $cashflows = Cashflow::with('rubrique', 'cashbox');
+
+        if ($request->type && $request->type != null) {
+            $cashflows->where('type', $request->type);
+        }
+        if ($request->rubrique && $request->rubrique != null) {
+            $cashflows->where('rubrique_id', $request->rubrique);
+        }
+
+        $totalAmount = $cashflows->sum('amount');
+        $cashflows = $cashflows->get();
+
+        return view('admin.cashflow.statistique', compact('cashboxes', 'services', 'type', 'rubriques', 'cashflows', 'totalAmount'));
     }
 
     public function rubrique()
