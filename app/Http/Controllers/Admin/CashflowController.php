@@ -166,19 +166,23 @@ class CashflowController extends Controller
         } else {
             $entrepriseId = Auth::user()->entreprise_id;
             $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
+            $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->get();
             $entreprise = Entreprise::with('services')->find($entrepriseId);
             $services = $entreprise->services;
         }
         $title = "";
         if ($request->action == "view") {
-            $cashflow->load(['user', 'service', 'cashbox']);
+            $cashflow->load(['user', 'service', 'cashbox', 'rubrique']);
 
             $title = "Transaction N°" . $cashflow->id;
             $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Type</h6>
                 <p class="text-uppercase mb-0">' . $cashflow->type . '</p>
             </div>
+            <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Rubrique</h6>
+                <p class="text-uppercase mb-0">' . $cashflow->rubrique->name . '</p>
+            </div>
             <div class="col-6 mb-5">
-                <h6 class="text-uppercase fs-5 ls-2">Raison </h6>
+                <h6 class="text-uppercase fs-5 ls-2">Description </h6>
                 <p class="mb-0">' . $cashflow->reason . '</p>
             </div>
             <div class="col-6 mb-5">
@@ -242,6 +246,21 @@ class CashflowController extends Controller
                         </div>
 
                         <div class="mb-3">
+                        <div class="input-style-1">
+                            <label class="form-label required">Caisse</label>
+                        </div>
+                        <select id="selectOne" class="form-control" name="cashbox_id" required>';
+            foreach ($cashboxes as $cashbox) {
+                if ($cashbox->id == $cashflow->cashbox_id) {
+                    $body .= '<option selected value="' . $cashbox->id . '">' . $cashbox->name . '</option>';
+                } else {
+                    $body .= '<option value="' . $cashbox->id . '">' . $cashbox->name . '</option>';
+                }
+            }
+            $body .= '</select>
+                    </div>
+
+                        <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Raison / Motif</label>
                                 <textarea class="form-control" name="reason" type="text" required>' . $cashflow->reason . '</textarea>
@@ -272,12 +291,12 @@ class CashflowController extends Controller
                             <div class="input-style-1">
                                 <label class="form-label required">Caisse</label>
                             </div>
-                            <select id="selectOne" class="form-control" name="cashbox_id" required>';
-            foreach ($cashboxes as $cashbox) {
-                if ($cashbox->id == $cashflow->cashbox_id) {
-                    $body .= '<option selected value="' . $cashbox->id . '">' . $cashbox->name . '</option>';
+                            <select id="selectOne" class="form-control" name="rubrique_id" required>';
+            foreach ($rubriques as $rubrique) {
+                if ($rubrique->id == $cashflow->rubrique_id) {
+                    $body .= '<option selected value="' . $rubrique->id . '">' . $rubrique->name . '</option>';
                 } else {
-                    $body .= '<option value="' . $cashbox->id . '">' . $cashbox->name . '</option>';
+                    $body .= '<option value="' . $rubrique->id . '">' . $rubrique->name . '</option>';
                 }
             }
             $body .= '</select>
@@ -522,6 +541,7 @@ class CashflowController extends Controller
             $cashflow->amount = $request->amount;
             $cashflow->date_cash = $request->date_cash;
             $cashflow->service_id =  $request->service_id;
+            $cashflow->rubrique_id =  $request->rubrique_id;
             $cashflow->entity_id =  $request->entity_id;
             if ($request->file('piece')) {
                 $picture = FileController::piece($request->file('piece'));
