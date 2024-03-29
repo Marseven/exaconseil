@@ -89,7 +89,7 @@
                         <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
                             <div class="d-flex justify-content-center">
                                 @csrf
-                                <div class="m-5">
+                                <div class="m-5 col-lg-4">
                                     <div class="input-style-1">
                                         <label class="form-label required">Type</label>
                                         <select class="form-control" name="type">
@@ -98,7 +98,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="m-5">
+                                <div class="m-5 col-lg-4">
                                     <div class="input-style-1">
                                         <label class="form-label required">Rubrique</label>
                                     </div>
@@ -110,7 +110,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="mb-3 mt-5">
+                                <div class="mb-3 mt-5 col-lg-4">
                                     <br>
                                     <button type="submit" style="background-color: #2b9753 !important;"
                                         class="btn btn-success">Valider</button>
@@ -144,6 +144,7 @@
                             <div class="card-toolbar">
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+
                                     <!--begin::Add user-->
                                     <button type="button" class="btn btn-info m-5">
                                         Total : <strong>{{ $totalAmount }} FCFA</strong>
