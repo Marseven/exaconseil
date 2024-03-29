@@ -88,36 +88,37 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-
-                            <form class="d-flex justify-content-end" method="post"
-                                action="{{ route('admin-do-statistique-cashflow') }}">
-                                <div class="m-5">
-                                    <div class="input-style-1">
-                                        <label class="form-label required">Type</label>
-                                        <select class="form-control" name="type">
-                                            <option value="debit">DEBIT</option>
-                                            <option value="credit">CREDIT</option>
+                            <div class="d-flex justify-content-end">
+                                <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
+                                    <div class="m-5">
+                                        <div class="input-style-1">
+                                            <label class="form-label required">Type</label>
+                                            <select class="form-control" name="type">
+                                                <option value="debit">DEBIT</option>
+                                                <option value="credit">CREDIT</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="m-5">
+                                        <div class="input-style-1">
+                                            <label class="form-label required">Rubrique</label>
+                                        </div>
+                                        <select class="form-control" name="rubrique" data-control="select2"
+                                            data-close-on-select="false" data-placeholder="Choisir" data-allow-clear="true"
+                                            required>
+                                            @foreach ($rubriques as $rubrique)
+                                                <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
-                                </div>
-                                <div class="m-5">
-                                    <div class="input-style-1">
-                                        <label class="form-label required">Rubrique</label>
+                                    <div class="mb-3 mt-5">
+                                        <br>
+                                        <button type="submit" style="background-color: #2b9753 !important;"
+                                            class="btn btn-success">Valider</button>
                                     </div>
-                                    <select class="form-control" name="rubrique" data-control="select2"
-                                        data-close-on-select="false" data-placeholder="Choisir" data-allow-clear="true"
-                                        required>
-                                        @foreach ($rubriques as $rubrique)
-                                            <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3 mt-5">
-                                    <br>
-                                    <button type="submit" style="background-color: #2b9753 !important;"
-                                        class="btn btn-success">Valider</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+
 
                         </div>
                     </div>
