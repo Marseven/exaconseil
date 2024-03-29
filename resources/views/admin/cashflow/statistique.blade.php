@@ -88,6 +88,7 @@
                     <div class="card-body">
                         <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
                             <div class="d-flex justify-content-center">
+                                @csrf
                                 <div class="m-5">
                                     <div class="input-style-1">
                                         <label class="form-label required">Type</label>
