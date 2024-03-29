@@ -162,7 +162,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/export/cashflow', [CashflowController::class, 'export'])->name('admin-export-cashflow');
 
         Route::get('/statistique/cashflows/', [CashflowController::class, 'statistique'])->name('admin-statistique-cashflows');
-        Route::post('cashflow/statistique/', [CashflowController::class, 'doStatistique'])->name('admin-do-statistique-cashflow');
+        Route::post('/cashflow/statistique/', [CashflowController::class, 'doStatistique'])->name('admin-do-statistique-cashflow');
 
         //cashbox
         Route::get('/list/cashboxs', [CashflowController::class, 'cashbox'])->name('admin-list-cashboxs');
