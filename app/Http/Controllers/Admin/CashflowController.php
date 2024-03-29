@@ -389,9 +389,9 @@ class CashflowController extends Controller
     {
         if (isset($_POST['delete'])) {
             if ($cashbox->delete()) {
-                return back()->with('success', "Le rôle a été supprimé.");
+                return back()->with('success', "La caisse a été supprimé.");
             } else {
-                return back()->with('error', "Le rôle n'a pas été supprimé.");
+                return back()->with('error', "La caisse n'a pas été supprimé.");
             }
         } else {
 
@@ -681,7 +681,7 @@ class CashflowController extends Controller
         $rubrique->entreprise_id = $user->entreprise_id;
 
         if ($rubrique->save()) {
-            return back()->with('success', 'Caisse créé avec succès.');
+            return back()->with('success', 'Rubrique créé avec succès.');
         } else {
             return back()->with('error', 'Un problème est survenu.');
         }
@@ -691,16 +691,16 @@ class CashflowController extends Controller
     {
         if (isset($_POST['delete'])) {
             if ($rubrique->delete()) {
-                return back()->with('success', "Le rôle a été supprimé.");
+                return back()->with('success', "La Rubrique a été supprimé.");
             } else {
-                return back()->with('error', "Le rôle n'a pas été supprimé.");
+                return back()->with('error', "La Rubrique n'a pas été supprimé.");
             }
         } else {
 
             $rubrique->name = $request->name;
 
             if ($rubrique->save()) {
-                return back()->with('success', 'Caisse mis à jour avec succès.');
+                return back()->with('success', 'Rubrique mis à jour avec succès.');
             } else {
                 return back()->with('error', 'Un problème est survenu.');
             }
