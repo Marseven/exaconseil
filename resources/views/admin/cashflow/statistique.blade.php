@@ -88,8 +88,9 @@
                     <div class="card-header border-0 pt-6">
                         <!--begin::Card title-->
                         <div class="card-title">
-                            <div class="d-flex justify-content-end">
-                                <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
+                            <form method="post" action="{{ route('admin-do-statistique-cashflow') }}">
+                                <div class="d-flex justify-content-end">
+
                                     <div class="m-5">
                                         <div class="input-style-1">
                                             <label class="form-label required">Type</label>
@@ -116,9 +117,9 @@
                                         <button type="submit" style="background-color: #2b9753 !important;"
                                             class="btn btn-success">Valider</button>
                                     </div>
-                                </form>
-                            </div>
 
+                                </div>
+                            </form>
 
                         </div>
                     </div>
