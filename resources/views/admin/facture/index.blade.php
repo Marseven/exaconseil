@@ -352,7 +352,7 @@
 
         function viewParticulier() {
             var type_prestation = document.getElementById("type_prestation");
-            var assasurance = document.getElementById("maison-assasurance");
+            var assurance = document.getElementById("maison-assasurance");
             var mission = document.getElementById("date-mission");
             var date = document.getElementById("date-sinistre");
             var ref = document.getElementById("ref-sinistre");
