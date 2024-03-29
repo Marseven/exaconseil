@@ -122,7 +122,7 @@
 
 
                 <br>
-                @if ($cashflows)
+                @if (isset($cashflows))
                     <!--begin::Card-->
                     <div class="card">
                         <!--begin::Card header-->
