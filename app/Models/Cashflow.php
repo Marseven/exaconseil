@@ -26,6 +26,11 @@ class Cashflow extends Model
         return $this->belongsTo(Cashbox::class);
     }
 
+    public function rubrique()
+    {
+        return $this->belongsTo(Rubrique::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

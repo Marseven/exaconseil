@@ -97,13 +97,14 @@ class CashflowController extends Controller
 
         foreach ($records as $record) {
 
-            $record->load(['user', 'cashbox']);
+            $record->load(['user', 'cashbox', 'rubrique']);
 
             $id = $record->id;
             $type = $record->type == 'credit' ? 'CREDIT' : 'DEBIT';
             $reason = $record->reason;
             $amount = Controller::format_amount($record->amount) . " FCFA";
             $caisse = $record->cashbox->name;
+            $rubrique = $record->rubrique->name;
             $_user = $record->user != null ? $record->user->firstname . ' ' . $record->user->lastname : "-";
             $date = date_format(date_create($record->date_cash), 'd-m-Y');
 
@@ -137,6 +138,7 @@ class CashflowController extends Controller
                 "id" => $id,
                 "type" => $type,
                 "reason" => $reason,
+                "rubrique" => $rubrique,
                 "amount" => $amount,
                 "date_cash" => $date,
                 "cashbox" => $caisse,

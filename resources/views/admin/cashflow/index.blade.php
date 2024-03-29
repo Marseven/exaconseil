@@ -129,6 +129,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Type</th>
+                                    <th>Rubrique</th>
                                     <th>Raison / Motif</th>
                                     <th>Montant</th>
                                     <th>Date</th>
@@ -408,13 +409,16 @@
                         targets: [1]
                     }],
                     order: [
-                        [4, 'desc']
+                        [5, 'desc']
                     ],
                     columns: [{
                             data: 'id'
                         },
                         {
                             data: 'type'
+                        },
+                        {
+                            data: 'rubrique'
                         },
                         {
                             data: 'reason'
