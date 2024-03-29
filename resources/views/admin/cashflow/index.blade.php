@@ -21,7 +21,8 @@
                     data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
                     class="page-title d-flex align-items-center me-3 flex-wrap lh-1">
                     <!--begin::Title-->
-                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">CashFlow</h1>
+                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">
+                        {{ $type == 'debit' ? 'Sortie de caisse' : 'Entrée de caisse' }}</h1>
                     <!--end::Title-->
                     <!--begin::Separator-->
                     <span class="h-20px border-gray-200 border-start mx-4"></span>
@@ -48,7 +49,8 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-dark">Liste des transactions</li>
+                        <li class="breadcrumb-item text-dark">Liste des
+                            {{ $type == 'debit' ? 'sorties de caisse' : 'entrées de caisse' }}</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -163,6 +165,7 @@
                 <form action="{{ url('admin/create/cashflow/') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Type</label>
@@ -175,8 +178,19 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Raison / Motif</label>
-                                <textarea class="form-control" name="reason" type="text" required></textarea>
+                                <label class="form-label">Rubrique</label>
+                            </div>
+                            <select id="selectOne" class="form-control" name="rubrique_id" required>
+                                @foreach ($rubriques as $rubrique)
+                                    <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-style-1">
+                                <label class="form-label required">Description</label>
+                                <textarea class="form-control" name="reason" type="text"></textarea>
                             </div>
                         </div>
 
@@ -388,7 +402,7 @@
                     processing: true,
                     serverSide: true,
                     searching: true,
-                    ajax: "{{ url('admin/ajax/cashflows') }}",
+                    ajax: "{{ url('admin/ajax/cashflows/' . $type) }}",
                     columnDefs: [{
                         className: "upper",
                         targets: [1]

@@ -152,19 +152,27 @@ Route::middleware('auth')->group(function () {
         Route::post('/facture/status/{facture}', [FactureController::class, 'statusFacture'])->name('admin-status-facture');
 
         //cashflows
-        Route::get('/list/cashflows', [CashflowController::class, 'index'])->name('admin-list-cashflows');
+        Route::get('/list/cashflows/{type}', [CashflowController::class, 'index'])->name('admin-list-cashflows');
         Route::get('/add/cashflow', [CashflowController::class, 'add'])->name('admin-add-cashflow');
         Route::get('/edit/cashflow/{cashflow}', [CashflowController::class, 'edit'])->name('admin-edit-cashflow');
         Route::post('/create/cashflow', [CashflowController::class, 'create'])->name('admin-create-cashflow');
         Route::post('/cashflow/{cashflow}', [CashflowController::class, 'update'])->name('admin-update-cashflow');
-        Route::get('/ajax/cashflows', [CashflowController::class, 'ajaxList'])->name('admin-ajax-cashflows');
+        Route::get('/ajax/cashflows/{type}', [CashflowController::class, 'ajaxList'])->name('admin-ajax-cashflows');
         Route::post('/ajax/cashflow', [CashflowController::class, 'ajaxItem'])->name('admin-ajax-cashflow');
         Route::post('/export/cashflow', [CashflowController::class, 'export'])->name('admin-export-cashflow');
+
+        Route::get('/statistique/cashflows/', [CashflowController::class, 'statistique'])->name('admin-statistique-cashflows');
+        Route::post('cashflow/statistique/', [CashflowController::class, 'doStatistique'])->name('admin-do-statistique-cashflow');
 
         //cashbox
         Route::get('/list/cashboxs', [CashflowController::class, 'cashbox'])->name('admin-list-cashboxs');
         Route::post('/create/cashbox', [CashflowController::class, 'createCashbox'])->name('admin-create-cashbox');
         Route::post('/cashbox/{cashbox}', [CashflowController::class, 'updateCashbox'])->name('admin-update-cashbox');
+
+        //rubriques
+        Route::get('/list/rubriques', [CashflowController::class, 'rubrique'])->name('admin-list-rubriques');
+        Route::post('/create/rubrique', [CashflowController::class, 'createRubrique'])->name('admin-create-rubrique');
+        Route::post('/rubrique/{rubrique}', [CashflowController::class, 'updateRubrique'])->name('admin-update-rubrique');
 
         //users
         Route::get('/profil', [UserController::class, 'profil'])->name('admin-profil');

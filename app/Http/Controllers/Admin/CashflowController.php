@@ -11,6 +11,7 @@ use App\Models\Devis;
 use App\Models\Entreprise;
 use App\Models\Facture;
 use App\Models\Policy;
+use App\Models\Rubrique;
 use App\Models\Service;
 use App\Models\Sinistre;
 use App\Models\User;
@@ -23,7 +24,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class CashflowController extends Controller
 {
     //
-    public function index()
+    public function index($type)
     {
         if (Auth::user()->entreprise_id == 0) {
             $cashboxes = Cashbox::all();
@@ -31,14 +32,15 @@ class CashflowController extends Controller
         } else {
             $entrepriseId = Auth::user()->entreprise_id;
             $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
+            $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->get();
             $entreprise = Entreprise::with('services')->find($entrepriseId);
             $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
         }
 
-        return view('admin.cashflow.index', compact('cashboxes', 'services'));
+        return view('admin.cashflow.index', compact('cashboxes', 'services', 'type', 'rubriques'));
     }
 
-    public function ajaxList(Request $request)
+    public function ajaxList(Request $request, $type)
     {
         $user = User::find(Auth::user()->id);
         $user->load(['entreprise']);
@@ -76,7 +78,7 @@ class CashflowController extends Controller
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
-            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->count();
+            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)->count();
 
         // Fetch records
         $records = Cashflow::orderBy($columnName, $columnSortOrder)
@@ -85,7 +87,7 @@ class CashflowController extends Controller
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
-            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)
+            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)
             ->select('cashflows.*')
             ->skip($start)
             ->take($rowperpage)
@@ -450,11 +452,13 @@ class CashflowController extends Controller
 
         if ($cashflow->save()) {
             $cashbox = Cashbox::find($request->cashbox_id);
+
             if ($cashflow->type == 'credit') {
                 $cashbox->solde = $cashbox->solde + $request->amount;
             } else {
                 $cashbox->solde = $cashbox->solde - $request->amount;
             }
+
             $cashbox->save();
             if ($cashflow->service_id == 5) {
                 if ($cashflow->entity_id == null) {
@@ -468,23 +472,28 @@ class CashflowController extends Controller
                     }
                 } else {
                     $facture = Facture::find($cashflow->entity_id);
-                    $facture->cashflow_id = $cashflow->id;
-                    $facture->status = "paid";
-                    $facture->save();
+                    if ($facture) {
+                        $facture->cashflow_id = $cashflow->id;
+                        $facture->status = "paid";
+                        $facture->save();
+                    }
                 }
             }
 
             if ($cashflow->service_id == 2) {
                 $sinistre = Sinistre::find($cashflow->entity_id);
-                $sinistre->status = "paid";
-                $sinistre->save();
+                if ($sinistre) {
+                    $sinistre->status = "paid";
+                    $sinistre->save();
+                }
             }
 
             if ($cashflow->service_id == 3) {
-
                 $devis = Devis::find($cashflow->entity_id);
-                $devis->status = "paid";
-                $devis->save();
+                if ($devis) {
+                    $devis->status = "paid";
+                    $devis->save();
+                }
             }
 
             return back()->with('success', 'Transaction créé avec succès.');
@@ -555,10 +564,10 @@ class CashflowController extends Controller
                     $entities = Policy::where('entreprise_id', $entrepriseId)->get();
                     break;
                 case 2:
-                    $entities = Sinistre::where('entreprise_id', $entrepriseId)->get();
+                    $entities = Sinistre::where('entreprise_id', $entrepriseId)->where('status', "unpaid")->get();
                     break;
                 case 3:
-                    $entities = Devis::where('entreprise_id', $entrepriseId)->get();
+                    $entities = Devis::where('entreprise_id', $entrepriseId)->where('status', "unpaid")->get();
                     break;
                 case 5:
                     $entities = Facture::where('entreprise_id', $entrepriseId)->where('status', 'unpaid')->get();
@@ -574,5 +583,68 @@ class CashflowController extends Controller
         $response = json_encode($entities);
 
         return response()->json($response);
+    }
+
+    public function statistique()
+    {
+    }
+
+    public function doStatistique()
+    {
+    }
+
+    public function rubrique()
+    {
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+        $role = $user->roles->first();
+
+        if ($user->entreprise_id == 0) {
+            $entreprises = Entreprise::all();
+            $rubriques = Rubrique::all();
+        } else {
+            $entreprises = Entreprise::where('id', $user->entreprise_id)->get();
+            $rubriques = Rubrique::where('entreprise_id', $user->entreprise_id)->get();
+        }
+
+        $rubriques->load(['entreprise']);
+        return view('admin.cashflow.rubrique', compact('rubriques', 'entreprises'));
+    }
+
+    public function createRubrique(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        $user->load(['entreprise']);
+
+        $rubrique = new Rubrique();
+
+        $rubrique->name = $request->name;
+        $rubrique->entreprise_id = $user->entreprise_id;
+
+        if ($rubrique->save()) {
+            return back()->with('success', 'Caisse créé avec succès.');
+        } else {
+            return back()->with('error', 'Un problème est survenu.');
+        }
+    }
+
+    public function updateRubrique(Request $request, Rubrique $rubrique)
+    {
+        if (isset($_POST['delete'])) {
+            if ($rubrique->delete()) {
+                return back()->with('success', "Le rôle a été supprimé.");
+            } else {
+                return back()->with('error', "Le rôle n'a pas été supprimé.");
+            }
+        } else {
+
+            $rubrique->name = $request->name;
+
+            if ($rubrique->save()) {
+                return back()->with('success', 'Caisse mis à jour avec succès.');
+            } else {
+                return back()->with('error', 'Un problème est survenu.');
+            }
+        }
     }
 }

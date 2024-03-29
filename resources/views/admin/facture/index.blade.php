@@ -154,6 +154,17 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
+                                <label class="form-label required">Type de prestation</label>
+                                <select class="form-control" name="type_prestation" required>
+                                    <option value="Standard">Standard</option>
+                                    <option value="Particulier">Particulier</option>
+                                    <option value="Intérieur">Intérieur</option>
+                                    <option value="Flotte">Flotte</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
                                 <label class="form-label required">Maison d'assurance</label>
                                 <select class="form-control" name="assurance_id">
                                     <option value="0">Choisir</option>
@@ -180,8 +191,8 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Numéro de facture</label>
-                                <input class="form-control" name="number_facture" type="text" placeholder="N° de facture"
-                                    required />
+                                <input class="form-control" name="number_facture" type="text"
+                                    placeholder="N° de facture" required />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -247,18 +258,6 @@
                                     required />
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label class="form-label required">Type de prestation</label>
-                                <select class="form-control" name="type_prestation" required>
-                                    <option value="Standard">Standard</option>
-                                    <option value="Particulier">Particulier</option>
-                                    <option value="Intérieur">Intérieur</option>
-                                    <option value="Flotte">Flotte</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Montant</label>
