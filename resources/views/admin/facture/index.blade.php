@@ -157,7 +157,7 @@
                             <div class="input-style-1">
                                 <label class="form-label required">Type de prestation</label>
                                 <select class="form-control" name="type_prestation" id="type_prestation"
-                                    onchange="viewParticulier()" required>
+                                    onChange="viewParticulier()" required>
                                     <option value="Standard">Standard</option>
                                     <option value="Particulier">Particulier</option>
                                     <option value="Intérieur">Intérieur</option>
