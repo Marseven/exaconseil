@@ -190,7 +190,7 @@
 
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Description</label>
+                                <label class="form-label">Description</label>
                                 <textarea class="form-control" name="reason" type="text"></textarea>
                             </div>
                         </div>
