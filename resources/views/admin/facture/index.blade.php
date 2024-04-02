@@ -168,7 +168,7 @@
 
                         <div class="mb-3" id="maison-assasurance">
                             <div class="input-style-1">
-                                <label class="form-label required">Maison d'assurance</label>
+                                <label class="form-label">Maison d'assurance</label>
                                 <select class="form-control" name="assurance_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($assurances as $assurance)
@@ -211,16 +211,15 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Assuré</label>
+                                <label class="form-label required" id=label-assuré>Assuré</label>
                                 <input class="form-control" name="assure" type="text" placeholder="Assuré"
                                     required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Tiers</label>
-                                <input class="form-control" name="tiers" type="text" placeholder="Tiers"
-                                    required />
+                                <label class="form-label">Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -241,23 +240,23 @@
 
                         <div class="mb-3" id="ref-sinistre">
                             <div class="input-style-1">
-                                <label class="form-label required">Référence sinistre</label>
-                                <input class="form-control" name="ref_sinistre" type="text" placeholder="Référence"
-                                    required />
+                                <label class="form-label">Référence sinistre</label>
+                                <input class="form-control" name="ref_sinistre" type="text"
+                                    placeholder="Référence" />
                             </div>
                         </div>
                         <div class="mb-3" id="date-sinistre">
                             <div class="input-style-1">
-                                <label class="form-label required">Date de sinistre</label>
+                                <label class="form-label">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
-                                    placeholder="Date de sinistre" required />
+                                    placeholder="Date de sinistre" />
                             </div>
                         </div>
                         <div class="mb-3" id="date-mission">
                             <div class="input-style-1">
-                                <label class="form-label required">Date de mission</label>
+                                <label class="form-label">Date de mission</label>
                                 <input class="form-control" name="date_mission" type="date"
-                                    placeholder="Date de mission" required />
+                                    placeholder="Date de mission" />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -356,17 +355,20 @@
             var mission = document.getElementById("date-mission");
             var date = document.getElementById("date-sinistre");
             var ref = document.getElementById("ref-sinistre");
+            var label = document.getElementById("label-assure");
 
             if (type_prestation.value == "Particulier") {
                 assurance.style.display = "none";
                 mission.style.display = "none";
                 date.style.display = "none";
                 ref.style.display = "none";
+                label.innerHTML = "Mandant";
             } else {
                 assurance.style.display = "block";
                 mission.style.display = "block";
                 date.style.display = "block";
                 ref.style.display = "block";
+                label.innerHTML = "Assuré";
             }
         }
 

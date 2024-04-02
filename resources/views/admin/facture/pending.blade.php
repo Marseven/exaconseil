@@ -152,9 +152,23 @@
                 <form action="{{ url('admin/create/facture/') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Maison d'assurance</label>
+                                <label class="form-label required">Type de prestation</label>
+                                <select class="form-control" name="type_prestation" id="type_prestation"
+                                    onChange="viewParticulier()" required>
+                                    <option value="Standard">Standard</option>
+                                    <option value="Particulier">Particulier</option>
+                                    <option value="Intérieur">Intérieur</option>
+                                    <option value="Flotte">Flotte</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="maison-assasurance">
+                            <div class="input-style-1">
+                                <label class="form-label">Maison d'assurance</label>
                                 <select class="form-control" name="assurance_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($assurances as $assurance)
@@ -163,9 +177,10 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Mandat</label>
+                                <label class="form-label">Mandat</label>
                                 <select class="form-control" name="mandat_id">
                                     <option value="0">Choisir</option>
                                     @foreach ($mandats as $mandat)
@@ -177,32 +192,34 @@
                                 </select>
                             </div>
                         </div>
+
+
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Numéro de facture</label>
-                                <input class="form-control" name="number_facture" type="text" placeholder="N° de facture"
-                                    required />
+                                <input class="form-control" name="number_facture" type="text"
+                                    placeholder="N° de facture" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Courtier d'assurance</label>
+                                <label class="form-label">Courtier d'assurance</label>
                                 <input class="form-control" name="company_assurance" type="text"
-                                    placeholder="Assurance" required />
+                                    placeholder="Assurance" />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Assuré</label>
+                                <label class="form-label required" id=label-assuré>Assuré</label>
                                 <input class="form-control" name="assure" type="text" placeholder="Assuré"
                                     required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required">Tiers</label>
-                                <input class="form-control" name="tiers" type="text" placeholder="Tiers"
-                                    required />
+                                <label class="form-label">Tiers</label>
+                                <input class="form-control" name="tiers" type="text" placeholder="Tiers" />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -212,6 +229,7 @@
                                     required />
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Immatriculation</label>
@@ -219,25 +237,26 @@
                                     placeholder="Immatriculation" required />
                             </div>
                         </div>
-                        <div class="mb-3">
+
+                        <div class="mb-3" id="ref-sinistre">
                             <div class="input-style-1">
-                                <label class="form-label required">Référence sinistre</label>
-                                <input class="form-control" name="ref_sinistre" type="text" placeholder="Référence"
-                                    required />
+                                <label class="form-label">Référence sinistre</label>
+                                <input class="form-control" name="ref_sinistre" type="text"
+                                    placeholder="Référence" />
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="date-sinistre">
                             <div class="input-style-1">
-                                <label class="form-label required">Date de sinistre</label>
+                                <label class="form-label">Date de sinistre</label>
                                 <input class="form-control" name="date_sinistre" type="date"
-                                    placeholder="Date de sinistre" required />
+                                    placeholder="Date de sinistre" />
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="date-mission">
                             <div class="input-style-1">
-                                <label class="form-label required">Date de mission</label>
+                                <label class="form-label">Date de mission</label>
                                 <input class="form-control" name="date_mission" type="date"
-                                    placeholder="Date de mission" required />
+                                    placeholder="Date de mission" />
                             </div>
                         </div>
                         <div class="mb-3">
@@ -247,18 +266,6 @@
                                     required />
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="input-style-1">
-                                <label class="form-label required">Type de prestation</label>
-                                <select class="form-control" name="type_prestation" required>
-                                    <option value="Standard">Standard</option>
-                                    <option value="Particulier">Particulier</option>
-                                    <option value="Intérieur">Intérieur</option>
-                                    <option value="Flotte">Flotte</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Montant</label>
@@ -341,6 +348,29 @@
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script>
         "use strict";
+
+        function viewParticulier() {
+            var type_prestation = document.getElementById("type_prestation");
+            var assurance = document.getElementById("maison-assasurance");
+            var mission = document.getElementById("date-mission");
+            var date = document.getElementById("date-sinistre");
+            var ref = document.getElementById("ref-sinistre");
+            var label = document.getElementById("label-assure");
+
+            if (type_prestation.value == "Particulier") {
+                assurance.style.display = "none";
+                mission.style.display = "none";
+                date.style.display = "none";
+                ref.style.display = "none";
+                label.innerHTML = "Mandant";
+            } else {
+                assurance.style.display = "block";
+                mission.style.display = "block";
+                date.style.display = "block";
+                ref.style.display = "block";
+                label.innerHTML = "Assuré";
+            }
+        }
 
         function paid_partial() {
             var _status = document.getElementById("_status");

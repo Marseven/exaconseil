@@ -429,19 +429,18 @@ class FactureController extends Controller
     {
         $rules = [
             'number_facture' => ['required', 'string'],
-            'ref_sinistre' => ['required', 'string'],
             'assure' => ['required', 'string'],
-            'tiers' => ['required', 'string'],
             'vehicule' => ['required', 'string'],
             'immatriculation' => ['required', 'string'],
-            'date_sinistre' => ['required', 'date'],
-            'date_mission' => ['required', 'date'],
             'place' => ['required', 'string'],
             'type_prestation' => ['required', 'string'],
             'amount' => ['required', 'numeric'],
             'date_facture' => ['required', 'date'],
-            'assurance_id' => ['required', 'exists:assurances,name'],
         ];
+
+        if ($request->assurance_id != null) {
+            $rules[] = ['assurance_id' => ['exists:assurances,name']];
+        }
 
         $validator = Validator::make($request->all(), $rules);
 
