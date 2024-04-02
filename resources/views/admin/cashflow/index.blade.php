@@ -104,6 +104,19 @@
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                                <!--begin::Select2-->
+                                <div class="w-100 mw-150px">
+                                    <!--begin::Select2-->
+                                    <select class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-placeholder="Rubrique" data-kt-filter="rubrique">
+                                        <option value="all">Tout</option>
+                                        @foreach ($rubriques as $rubrique)
+                                            <option value="{{ $rubrique->name }}">{{ $rubrique->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <!--end::Select2-->
+                                </div>
+                                <!--end::Select2-->
                                 <!--begin::Add user-->
 
                                 <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
@@ -181,7 +194,8 @@
                             <div class="input-style-1">
                                 <label class="form-label">Rubrique</label>
                             </div>
-                            <select id="selectOne" class="form-control" name="rubrique_id" data-control="select2" required>
+                            <select id="selectOne" class="form-control" name="rubrique_id" data-control="select2"
+                                required>
                                 @foreach ($rubriques as $rubrique)
                                     <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
                                 @endforeach
@@ -418,7 +432,8 @@
                             data: 'type'
                         },
                         {
-                            data: 'rubrique'
+                            data: 'rubrique',
+                            orderable: false,
                         },
                         {
                             data: 'reason'
@@ -453,11 +468,11 @@
                 });
             }
             var filterDatatable = () => {
-                const t = document.querySelector('[data-kt-filter="status"]');
+                const t = document.querySelector('[data-kt-filter="rubrique"]');
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.column(8).search(n).draw()
+                        datatable.search(n).draw()
                 }));
             }
 
