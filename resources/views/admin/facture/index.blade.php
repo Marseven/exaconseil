@@ -211,7 +211,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="input-style-1">
-                                <label class="form-label required" id=label-assuré>Assuré</label>
+                                <label class="form-label required" id=label-assure>Assuré</label>
                                 <input class="form-control" name="assure" type="text" placeholder="Assuré"
                                     required />
                             </div>
