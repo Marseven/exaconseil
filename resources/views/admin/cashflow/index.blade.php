@@ -472,7 +472,7 @@
                     let n = t.target.value;
                     console.log(n);
                     "all" === n && (n = ""),
-                        datatable.column(2).search(n).draw()
+                        datatable.search(n).draw()
                 }));
             }
 
