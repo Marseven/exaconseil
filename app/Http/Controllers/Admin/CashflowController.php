@@ -70,28 +70,48 @@ class CashflowController extends Controller
         $searchValue = $search_arr['value']; // Search value
         $_GET['search'] = $search_arr['value'];
 
+        $searchValue = explode($_GET['search'], '-');
+        $rub = 0;
+        if ($searchValue[0] == "r") {
+            $rub = $searchValue[1];
+        }
+
         // Total records
         $totalRecords = Cashflow::whereIn('cashbox_id', $cashboxs)->select('count(*) as allcount')->where('deleted', NULL)->count();
-        $totalRecordswithFilter = Cashflow::select('count(*) as allcount')
-            ->where(function ($query) {
-                $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
-                $query->Where('cashflows.reason', 'like', '%' . $searchValue . '%')
-                    ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%')
-                    ->orWhere('cashflows.rubrique_id',  $searchValue);
-            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)->count();
+        if ($rub == 0) {
+            $totalRecordswithFilter = Cashflow::select('count(*) as allcount')
+                ->where(function ($query) {
+                    $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
+                    $query->Where('cashflows.reason', 'like', '%' . $searchValue . '%')
+                        ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%')
+                        ->orWhere('cashflows.rubrique_id',  $searchValue);
+                })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)->count();
+        } else {
+            $totalRecordswithFilter = Cashflow::select('count(*) as allcount')
+                ->Where('cashflows.rubrique_id',  $rub)->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)->count();
+        }
 
-        // Fetch records
-        $records = Cashflow::orderBy($columnName, $columnSortOrder)
-            ->where(function ($query) {
-                $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
-                $query->Where('cashflows.reason', 'like', '%' . $searchValue . '%')
-                    ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%')
-                    ->orWhere('cashflows.rubrique_id',  $searchValue);
-            })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)
-            ->select('cashflows.*')
-            ->skip($start)
-            ->take($rowperpage)
-            ->get();
+        if ($rub == 0) {
+            // Fetch records
+            $records = Cashflow::orderBy($columnName, $columnSortOrder)
+                ->where(function ($query) {
+                    $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
+                    $query->Where('cashflows.reason', 'like', '%' . $searchValue . '%')
+                        ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%')
+                        ->orWhere('cashflows.rubrique_id',  $searchValue);
+                })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)
+                ->select('cashflows.*')
+                ->skip($start)
+                ->take($rowperpage)
+                ->get();
+        } else {
+            $records = Cashflow::orderBy($columnName, $columnSortOrder)
+                ->Where('cashflows.rubrique_id',  $rub)->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)
+                ->select('cashflows.*')
+                ->skip($start)
+                ->take($rowperpage)
+                ->get();
+        }
 
         $data_arr = array();
 

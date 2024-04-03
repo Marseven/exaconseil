@@ -111,7 +111,7 @@
                                         data-hide-search="true" data-placeholder="Rubrique" data-kt-filter="rubrique">
                                         <option value="all">Tout</option>
                                         @foreach ($rubriques as $rubrique)
-                                            <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
+                                            <option value="r-{{ $rubrique->id }}">{{ $rubrique->name }}</option>
                                         @endforeach
                                     </select>
                                     <!--end::Select2-->
