@@ -140,7 +140,7 @@ class CashflowController extends Controller
                 "id" => $id,
                 "type" => $type,
                 "reason" => $reason,
-                "rubrique" => $rubrique,
+                "rubrique_id" => $rubrique,
                 "amount" => $amount,
                 "date_cash" => $date,
                 "cashbox" => $caisse,

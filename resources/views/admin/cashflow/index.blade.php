@@ -432,9 +432,7 @@
                             data: 'type'
                         },
                         {
-                            data: 'rubrique',
-                            orderable: false,
-                            searchable: true,
+                            data: 'rubrique_id',
                         },
                         {
                             data: 'reason'
