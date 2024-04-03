@@ -77,7 +77,8 @@ class CashflowController extends Controller
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
-                    ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
+                    ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%')
+                    ->orWhere('cashflows.rubrique_id',  $searchValue);
             })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)->count();
 
         // Fetch records
@@ -86,7 +87,8 @@ class CashflowController extends Controller
                 $searchValue = isset($_GET['search']) ? $_GET['search'] : '';
                 $query->where('cashflows.type', 'like', '%' . $searchValue . '%')
                     ->orWhere('cashflows.reason', 'like', '%' . $searchValue . '%')
-                    ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%');
+                    ->orWhere('cashflows.amount', 'like', '%' . $searchValue . '%')
+                    ->orWhere('cashflows.rubrique_id',  $searchValue);
             })->whereIn('cashbox_id', $cashboxs)->where('deleted', NULL)->where('type', $type)
             ->select('cashflows.*')
             ->skip($start)
