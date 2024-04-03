@@ -434,6 +434,7 @@
                         {
                             data: 'rubrique',
                             orderable: false,
+                            searchable: true,
                         },
                         {
                             data: 'reason'
@@ -472,7 +473,7 @@
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
-                        datatable.search(n).draw()
+                        datatable.column(2).search(n).draw()
                 }));
             }
 
