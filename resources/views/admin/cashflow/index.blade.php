@@ -111,7 +111,7 @@
                                         data-hide-search="true" data-placeholder="Rubrique" data-kt-filter="rubrique">
                                         <option value="all">Tout</option>
                                         @foreach ($rubriques as $rubrique)
-                                            <option value="{{ $rubrique->name }}">{{ $rubrique->name }}</option>
+                                            <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
                                         @endforeach
                                     </select>
                                     <!--end::Select2-->
@@ -472,7 +472,7 @@
                     let n = t.target.value;
                     console.log(n);
                     "all" === n && (n = ""),
-                        datatable.search(n).draw()
+                        datatable.column(2).search(n).draw()
                 }));
             }
 
