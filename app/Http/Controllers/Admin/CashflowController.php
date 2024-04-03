@@ -70,7 +70,7 @@ class CashflowController extends Controller
         $searchValue = $search_arr['value']; // Search value
         $_GET['search'] = $search_arr['value'];
 
-        $searchValue = explode($_GET['search'], '-');
+        $searchValue = explode('-', $_GET['search']);
         $rub = 0;
         if ($searchValue[0] == "r") {
             $rub = $searchValue[1];
