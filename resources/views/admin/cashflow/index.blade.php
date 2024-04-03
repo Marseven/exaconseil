@@ -470,6 +470,7 @@
             }
             var filterDatatable = () => {
                 const t = document.querySelector('[data-kt-filter="rubrique"]');
+                console.log(t.target.value);
                 $(t).on("change", (t => {
                     let n = t.target.value;
                     "all" === n && (n = ""),
