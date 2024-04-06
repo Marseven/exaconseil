@@ -194,8 +194,8 @@
                             <div class="input-style-1">
                                 <label class="form-label">Rubrique</label>
                             </div>
-                            <select id="selectOne" class="form-control" name="rubrique_id" data-control="select2"
-                                required>
+                            <select id="selectOne" class="form-control" name="rubrique_id" data-control="select2">
+                                <option value="0">Choisir</option>
                                 @foreach ($rubriques as $rubrique)
                                     <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
                                 @endforeach

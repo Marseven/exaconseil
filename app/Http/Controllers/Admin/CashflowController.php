@@ -450,7 +450,7 @@ class CashflowController extends Controller
         $cashflow->amount = $request->amount;
         $cashflow->date_cash = $request->date_cash;
         $cashflow->cashbox_id =  $request->cashbox_id;
-        $cashflow->rubrique_id =  $request->rubrique_id;
+        if ($request->rubrique_id != 0) $cashflow->rubrique_id =  $request->rubrique_id;
         $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
         if ($request->service_id == 5) {
             if (!empty($request->entity_id)) {
