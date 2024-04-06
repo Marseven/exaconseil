@@ -29,6 +29,7 @@ class CashflowController extends Controller
         if (Auth::user()->entreprise_id == 0) {
             $cashboxes = Cashbox::all();
             $services = Service::all();
+            $rubriques = Rubrique::all();
         } else {
             $entrepriseId = Auth::user()->entreprise_id;
             $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
