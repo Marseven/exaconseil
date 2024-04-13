@@ -477,7 +477,7 @@ class CashflowController extends Controller
                     $cashflow->entity_id = null;
                 }
             }
-        } elseif ($request->service_id == 2 && $request->service_id == 3) {
+        } elseif ($request->service_id == 2 || $request->service_id == 3) {
             $cashflow->entity_id =  $request->entity_id[0];
         }
 
@@ -498,46 +498,47 @@ class CashflowController extends Controller
 
             if ($cashflow->type == 'credit') {
                 $cashbox->solde = $cashbox->solde + $request->amount;
-            } else {
-                $cashbox->solde = $cashbox->solde - $request->amount;
-            }
-
-            $cashbox->save();
-            if ($cashflow->service_id == 5) {
-                if ($cashflow->entity_id == null) {
-                    foreach ($request->entity_id as $entity) {
-                        if ($request->service_id == 5) {
-                            $facture = Facture::find($entity);
+                if ($cashflow->service_id == 5) {
+                    if ($cashflow->entity_id == null) {
+                        foreach ($request->entity_id as $entity) {
+                            if ($request->service_id == 5) {
+                                $facture = Facture::find($entity);
+                                $facture->cashflow_id = $cashflow->id;
+                                $facture->status = "paid";
+                                $facture->save();
+                            }
+                        }
+                    } else {
+                        $facture = Facture::find($cashflow->entity_id);
+                        if ($facture) {
                             $facture->cashflow_id = $cashflow->id;
                             $facture->status = "paid";
                             $facture->save();
                         }
                     }
-                } else {
-                    $facture = Facture::find($cashflow->entity_id);
-                    if ($facture) {
-                        $facture->cashflow_id = $cashflow->id;
-                        $facture->status = "paid";
-                        $facture->save();
+                }
+
+                if ($cashflow->service_id == 2) {
+                    $sinistre = Sinistre::find($cashflow->entity_id);
+                    if ($sinistre) {
+                        $sinistre->status = "paid";
+                        $sinistre->date_open = date('Y-m-d H:i:s');
+                        $sinistre->save();
                     }
                 }
+
+                if ($cashflow->service_id == 3) {
+                    $devis = Devis::find($cashflow->entity_id);
+                    if ($devis) {
+                        $devis->status = "paid";
+                        $devis->save();
+                    }
+                }
+            } else {
+                $cashbox->solde = $cashbox->solde - $request->amount;
             }
 
-            if ($cashflow->service_id == 2) {
-                $sinistre = Sinistre::find($cashflow->entity_id);
-                if ($sinistre) {
-                    $sinistre->status = "paid";
-                    $sinistre->save();
-                }
-            }
-
-            if ($cashflow->service_id == 3) {
-                $devis = Devis::find($cashflow->entity_id);
-                if ($devis) {
-                    $devis->status = "paid";
-                    $devis->save();
-                }
-            }
+            $cashbox->save();
 
             return back()->with('success', 'Transaction créé avec succès.');
         } else {
