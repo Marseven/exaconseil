@@ -478,7 +478,7 @@ class CashflowController extends Controller
                 }
             }
         } elseif ($request->service_id == 2 || $request->service_id == 3) {
-            $cashflow->entity_id =  $request->entity_id[0];
+            if (!empty($request->entity_id)) $cashflow->entity_id =  $request->entity_id[0];
         }
 
         if ($request->file('piece')) {
