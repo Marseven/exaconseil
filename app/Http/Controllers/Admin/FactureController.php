@@ -166,7 +166,7 @@ class FactureController extends Controller
             $title = "Facture N°" . $facture->id;
             $body = '
             <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Maison d\'Assurance</h6>
-                <p class="text-uppercase mb-0">' . $facture->assurance->name ?? '' . '</p>
+                <p class="text-uppercase mb-0">' . $facture->assurance ? $facture->assurance->name :  '-' . '</p>
             </div>
             <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Numéro de facture</h6>
                 <p class="text-uppercase mb-0">' . $facture->number_facture . '</p>
