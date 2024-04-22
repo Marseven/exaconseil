@@ -160,13 +160,13 @@ class FactureController extends Controller
         $facture = Facture::with('assurance')->find($request->id);
         $title = "";
         if ($request->action == "view") {
-            $facture->load(['user', 'mandat']);
+            $facture->load(['user', 'mandat', 'assurance']);
             $status = Controller::status($facture->status);
 
             $title = "Facture N°" . $facture->id;
             $body = '
             <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Maison d\'Assurance</h6>
-                <p class="text-uppercase mb-0">' . $facture->assurance ? $facture->assurance->name :  '-' . '</p>
+                <p class="text-uppercase mb-0">' . ($facture->assurance ? $facture->assurance->name :  "-") . '</p>
             </div>
             <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Numéro de facture</h6>
                 <p class="text-uppercase mb-0">' . $facture->number_facture . '</p>
