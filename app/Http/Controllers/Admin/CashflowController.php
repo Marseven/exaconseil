@@ -200,7 +200,7 @@ class CashflowController extends Controller
                 <p class="text-uppercase mb-0">' . $cashflow->type . '</p>
             </div>
             <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Rubrique</h6>
-                <p class="text-uppercase mb-0">' . $cashflow->rubrique->name . '</p>
+                <p class="text-uppercase mb-0">' . $cashflow->rubrique ? $cashflow->rubrique->name : "-" . '</p>
             </div>
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Description </h6>
