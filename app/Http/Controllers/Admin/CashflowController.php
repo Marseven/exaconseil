@@ -194,7 +194,7 @@ class CashflowController extends Controller
         $title = "";
         if ($request->action == "view") {
             $cashflow->load(['user', 'service', 'cashbox', 'rubrique']);
-
+            dd($cashflow->rubrique);
             $title = "Transaction N°" . $cashflow->id;
             $body = ' <div class="row"><div class="col-6 mb-5"><h6 class="text-uppercase fs-5 ls-2">Type</h6>
                 <p class="text-uppercase mb-0">' . $cashflow->type . '</p>
