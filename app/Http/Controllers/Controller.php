@@ -78,7 +78,7 @@ class Controller extends BaseController
         }
     }
 
-    function isBefore($date)
+    static function isBefore($date)
     {
         $dateTime = new DateTime($date);
         $hour = $dateTime->format('H');
