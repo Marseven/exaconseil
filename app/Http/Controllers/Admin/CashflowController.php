@@ -494,7 +494,7 @@ class CashflowController extends Controller
         $cashflow->user_id = Auth::user()->id;
 
         if ($cashflow->save()) {
-            $cashbox = Cashbox::find($request->cashbox_id);
+            $cashbox = Cashbox::where('id', $request->cashbox_id)->get()->first();
 
             if ($cashflow->type == 'credit') {
                 $cashbox->solde = $cashbox->solde + $request->amount;
@@ -502,14 +502,14 @@ class CashflowController extends Controller
                     if ($cashflow->entity_id == null) {
                         foreach ($request->entity_id as $entity) {
                             if ($request->service_id == 5) {
-                                $facture = Facture::find($entity);
+                                $facture = Facture::where('id', $entity)->get()->first();
                                 $facture->cashflow_id = $cashflow->id;
                                 $facture->status = "paid";
                                 $facture->save();
                             }
                         }
                     } else {
-                        $facture = Facture::find($cashflow->entity_id);
+                        $facture = Facture::where('id', $cashflow->entity_id)->get()->first();
                         if ($facture) {
                             $facture->cashflow_id = $cashflow->id;
                             $facture->status = "paid";
@@ -519,7 +519,7 @@ class CashflowController extends Controller
                 }
 
                 if ($cashflow->service_id == 2) {
-                    $sinistre = Sinistre::find($cashflow->entity_id);
+                    $sinistre = Sinistre::where('id', $cashflow->entity_id)->get()->first();
                     if ($sinistre) {
                         $sinistre->status = "paid";
                         $sinistre->date_open = date('Y-m-d H:i:s');
@@ -528,7 +528,7 @@ class CashflowController extends Controller
                 }
 
                 if ($cashflow->service_id == 3) {
-                    $devis = Devis::find($cashflow->entity_id);
+                    $devis = Devis::where('id', $cashflow->entity_id)->get()->first();
                     if ($devis) {
                         $devis->status = "paid";
                         $devis->save();
