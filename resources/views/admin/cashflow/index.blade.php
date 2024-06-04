@@ -77,7 +77,8 @@
                                 <div class="d-flex align-items-center position-relative my-1">
                                     @foreach ($cashboxes as $cashbox)
                                         <button type="button" class="btn btn-secondary m-5">
-                                            Solde {{ $cashbox->name }} : {{ $cashbox->solde }} FCFA
+                                            Solde {{ $cashbox->name }} : {{ number_format($cashbox->solde, 0, ',', ' ') }}
+                                            FCFA
                                         </button>
                                     @endforeach
                                 </div>
