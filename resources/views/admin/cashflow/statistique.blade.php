@@ -194,25 +194,25 @@
                                             <td>
                                                 <button style="padding: 10px !important" type="button"
                                                     class="btn btn-primary modal_view_action" data-bs-toggle="modal"
-                                                    data-id=" {{ $record->id }}"
-                                                    data-bs-target="#cardModalView{{ $record->id }}"><i
+                                                    data-id=" {{ $cashflow->id }}"
+                                                    data-bs-target="#cardModalView{{ $cashflow->id }}"><i
                                                         class="bi bi-eye"></i></button>
                                                 @if (
                                                     $role->hasPermissionTo('edit cashflow') &&
                                                         $user->hasService('Caisse') &&
-                                                        (App\Http\Controllers\Controller::isBefore($record->created_at) ||
+                                                        (App\Http\Controllers\Controller::isBefore($cashflow->created_at) ||
                                                             Auth::user()->roles->first()->name == 'Gerant') &&
-                                                        ($record->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant'))
+                                                        ($cashflow->user_id == Auth::user()->id || Auth::user()->roles->first()->name == 'Gerant'))
                                                     <button style="padding: 10px !important" type="button"
                                                         class="btn btn-secondary modal_edit_action" data-bs-toggle="modal"
-                                                        data-id="{{ $record->id }}"
-                                                        data-bs-target="#cardModal{{ $record->id }}">
+                                                        data-id="{{ $cashflow->id }}"
+                                                        data-bs-target="#cardModal{{ $cashflow->id }}">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
                                                     <button style="padding: 10px !important" type="button"
                                                         class="btn btn-danger modal_delete_action" data-bs-toggle="modal"
-                                                        data-id="{{ $record->id }}"
-                                                        data-bs-target="#cardModalCenter{{ $record->id }}">
+                                                        data-id="{{ $cashflow->id }}"
+                                                        data-bs-target="#cardModalCenter{{ $cashflow->id }}">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 @endif
