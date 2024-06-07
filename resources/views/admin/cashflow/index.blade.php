@@ -184,9 +184,9 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Type</label>
-                                <select class="form-control" name="type">
-                                    <option value="credit">CREDIT</option>
-                                    <option value="debit">DEBIT</option>
+                                <select class="form-control" name="type" disabled>
+                                    <option class="text-uppercase" selected value="{{ $type }}">{{ $type }}
+                                    </option>
                                 </select>
                             </div>
                         </div>

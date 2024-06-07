@@ -33,7 +33,7 @@ class CashflowController extends Controller
         } else {
             $entrepriseId = Auth::user()->entreprise_id;
             $cashboxes = Cashbox::where('entreprise_id', $entrepriseId)->get();
-            $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->get();
+            $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->where('type', $type)->get();
             $entreprise = Entreprise::with('services')->find($entrepriseId);
             $services = $entreprise->services()->whereNot('name', "Caisse")->whereNot('name', "Mandat")->get();
         }
