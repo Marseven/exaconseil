@@ -345,6 +345,7 @@
                     var option_html = "<option value='-1'>Choisir</option>";
                     let j = 0;
                     for (j = 0; j < result.length; j++) {
+                        var is_selected = $("#" + target).data('val') == result[j].id ? 'selected' : '';
                         option_html += "<option " + is_selected + "  value='" + result[j].id +
                             "'>  " + result[j].name + "</option>";
                     }
