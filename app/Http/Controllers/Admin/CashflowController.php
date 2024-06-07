@@ -259,9 +259,8 @@ class CashflowController extends Controller
                             <div class="input-style-1">
                                 <labelclass="form-label required">Type</label>
                                 <select class="form-control" name="type">
-                                    <option>' . $cashflow->type . '</option>
-                                    <option value="debit">DEBIT</option>
-                                    <option value="credit">CREDIT</option>
+                                    <option ' . ($cashflow->type == "credit" ? "selected" : "") . ' value="credit">CREDIT</option>
+                                    <option ' . ($cashflow->type == "debit" ? "selected" : "") . ' value="debit">DEBIT</option>
                                 </select>
                             </div>
                         </div>
@@ -700,6 +699,7 @@ class CashflowController extends Controller
         $rubrique = new Rubrique();
 
         $rubrique->name = $request->name;
+        $rubrique->type = $request->type;
         $rubrique->entreprise_id = $user->entreprise_id;
 
         if ($rubrique->save()) {
@@ -720,6 +720,7 @@ class CashflowController extends Controller
         } else {
 
             $rubrique->name = $request->name;
+            $rubrique->type = $request->type;
 
             if ($rubrique->save()) {
                 return back()->with('success', 'Rubrique mis à jour avec succès.');

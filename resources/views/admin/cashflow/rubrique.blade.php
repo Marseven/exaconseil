@@ -95,6 +95,7 @@
                                     <th>#</th>
                                     <th>Entreprise</th>
                                     <th>Libellé</th>
+                                    <th>Type</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -104,6 +105,7 @@
                                         <td>{{ $rubrique->id }}</td>
                                         <td>{{ $rubrique->entreprise->company_name }}</td>
                                         <td>{{ $rubrique->name ?? '-' }}</td>
+                                        <td class="text-uppercase">{{ $rubrique->type ?? '-' }}</td>
                                         <td>
                                             <button class="btn btn-xs btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#cardModal{{ $rubrique->id }}">Modifier</button>
@@ -144,6 +146,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="input-style-1">
+                                <label class="form-label required">Type</label>
+                                <select class="form-control" name="type">
+                                    <option value="credit">CREDIT</option>
+                                    <option value="debit">DEBIT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-style-1">
                                 <label>Nom</label>
                                 <input class="form-control" name="name" type="text"
                                     placeholder="Nom de la rubrique" />
@@ -173,6 +184,17 @@
                     <form action="{{ url('admin/rubrique/' . $rubrique->id) }}" method="POST">
                         @csrf
                         <div class="modal-body">
+                            <div class="mb-3">
+                                <div class="input-style-1">
+                                    <label class="form-label required">Type</label>
+                                    <select class="form-control" name="type">
+                                        <option {{ $rubrique->type == 'credit' ? 'selected' : '' }} value="credit">CREDIT
+                                        </option>
+                                        <option {{ $rubrique->type == 'credit' ? 'selected' : '' }} value="debit">DEBIT
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <div class="input-style-1">
                                     <label>Nom</label>

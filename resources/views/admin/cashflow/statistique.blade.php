@@ -75,7 +75,7 @@
                             <div class="d-flex align-items-center position-relative my-1">
                                 @foreach ($cashboxes as $cashbox)
                                     <button type="button" class="btn btn-secondary m-5">
-                                        Solde {{ $cashbox->name }} : {{ $cashbox->solde }} FCFA
+                                        Solde {{ $cashbox->name }} : {{ number_format($cashbox->solde, 0, ',', ' ') }} FCFA
                                     </button>
                                 @endforeach
                             </div>
@@ -93,8 +93,8 @@
                                     <div class="input-style-1">
                                         <label class="form-label required">Type</label>
                                         <select class="form-control" name="type">
-                                            <option value="debit">DEBIT</option>
                                             <option value="credit">CREDIT</option>
+                                            <option value="debit">DEBIT</option>
                                         </select>
                                     </div>
                                 </div>
@@ -147,7 +147,7 @@
 
                                     <!--begin::Add user-->
                                     <button type="button" class="btn btn-info m-5">
-                                        Total : <strong>{{ $totalAmount }} FCFA</strong>
+                                        Total : <strong>{{ number_format($totalAmount, 0, ',', ' ') }} FCFA</strong>
                                     </button>
 
                                     <button type="button" class="btn btn-secondary m-5" data-bs-toggle="modal"
@@ -186,7 +186,7 @@
                                             <td>{{ $cashflow->type == 'debit' ? 'DEBIT' : 'CREDIT' }}</td>
                                             <td>{{ $cashflow->rubrique->name }}</td>
                                             <td>{{ $cashflow->reason }}</td>
-                                            <td>{{ $cashflow->amount }} FCFA</td>
+                                            <td>{{ number_format($cashflow->amount, 0, ',', ' ') }} FCFA</td>
                                             <td>{{ $cashflow->date_cash }}</td>
                                             <td>{{ $cashflow->user != null ? $cashflow->user->firstname . ' ' . $cashflow->user->lastname : '-' }}
                                             </td>

@@ -185,8 +185,8 @@
                             <div class="input-style-1">
                                 <label class="form-label required">Type</label>
                                 <select class="form-control" name="type">
-                                    <option value="debit">DEBIT</option>
                                     <option value="credit">CREDIT</option>
+                                    <option value="debit">DEBIT</option>
                                 </select>
                             </div>
                         </div>
