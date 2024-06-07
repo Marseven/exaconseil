@@ -325,7 +325,7 @@
 
         $(".linked-select").change(function() {
             var target = $(this).attr('target');
-            type_value = $(this).value;
+            var type_value = $(this).val();
 
             $.ajax({
                 headers: {
