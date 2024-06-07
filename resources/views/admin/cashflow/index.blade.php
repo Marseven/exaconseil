@@ -184,8 +184,9 @@
                         <div class="mb-3">
                             <div class="input-style-1">
                                 <label class="form-label required">Type</label>
-                                <select class="form-control" name="type" disabled>
-                                    <option selected value="{{ $type }}">
+                                <input name="type" type="hidden" value="{{ $type }}" />
+                                <select class="form-control" disabled>
+                                    <option selected>
                                         <span class="text-uppercase">{{ $type }}</span>
                                     </option>
                                 </select>
