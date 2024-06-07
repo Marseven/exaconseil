@@ -729,4 +729,14 @@ class CashflowController extends Controller
             }
         }
     }
+
+    public function selectRubrique(Request $request)
+    {
+        $entrepriseId = Auth::user()->entreprise_id == 0 ? 1 : Auth::user()->entreprise_id;
+        $rubriques = Rubrique::where('entreprise_id', $entrepriseId)->where('type', $request->type)->get();
+
+        $response = json_encode($rubriques);
+
+        return response()->json($response);
+    }
 }

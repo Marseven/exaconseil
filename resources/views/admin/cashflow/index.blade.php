@@ -185,7 +185,8 @@
                             <div class="input-style-1">
                                 <label class="form-label required">Type</label>
                                 <select class="form-control" name="type" disabled>
-                                    <option class="text-uppercase" selected value="{{ $type }}">{{ $type }}
+                                    <option selected value="{{ $type }}">
+                                        <span class="text-uppercase">{{ $type }}</span>
                                     </option>
                                 </select>
                             </div>

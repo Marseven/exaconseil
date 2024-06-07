@@ -190,5 +190,6 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/select', [UserController::class, 'select'])->name('admin-select');
         Route::post('/select/service', [CashflowController::class, 'select'])->name('admin-select-service');
+        Route::post('/select/rubrique', [CashflowController::class, 'selectRubrique'])->name('admin-select-rubrique');
     });
 });

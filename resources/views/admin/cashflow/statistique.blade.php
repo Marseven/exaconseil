@@ -92,7 +92,9 @@
                                 <div class="m-5 col-lg-4">
                                     <div class="input-style-1">
                                         <label class="form-label required">Type</label>
-                                        <select class="form-control" name="type">
+                                        <select target="rubrique" class="form-control linked-select" id="type"
+                                            name="type">
+                                            <option value='-1'>Choisir</option>
                                             <option value="credit">CREDIT</option>
                                             <option value="debit">DEBIT</option>
                                         </select>
@@ -102,12 +104,12 @@
                                     <div class="input-style-1">
                                         <label class="form-label required">Rubrique</label>
                                     </div>
-                                    <select class="form-control" name="rubrique" data-control="select2"
+                                    <select class="form-control" id="rubrique" name="rubrique" data-control="select2"
                                         data-close-on-select="false" data-placeholder="Choisir" data-allow-clear="true"
                                         required>
-                                        @foreach ($rubriques as $rubrique)
+                                        {{-- @foreach ($rubriques as $rubrique)
                                             <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div class="mb-3 mt-5 col-lg-4">
@@ -322,9 +324,8 @@
         "use strict";
 
         $(".linked-select").change(function() {
-            var id = $(this).val();
             var target = $(this).attr('target');
-            var name = $("#service_" + id).data('name');
+            type_value = $(this).value;
 
             $.ajax({
                 headers: {
@@ -332,9 +333,9 @@
                             'meta[name="csrf-token"]')
                         .attr('content')
                 },
-                url: "{{ route('admin-select-service') }}",
+                url: "{{ route('admin-select-rubrique') }}",
                 data: {
-                    'id': id,
+                    'type': type_value,
                 },
                 method: 'POST',
                 dataType: 'json',
@@ -343,13 +344,9 @@
                     result = JSON.parse(result);
                     var option_html = "<option value='-1'>Choisir</option>";
                     let j = 0;
-                    let el_id = "";
                     for (j = 0; j < result.length; j++) {
-                        el_id = result[j].id;
-                        if (name == "Facture") el_id = result[j].number_facture;
-                        var is_selected = $("#" + target).data('val') == result[j].id ? 'selected' : '';
                         option_html += "<option " + is_selected + "  value='" + result[j].id +
-                            "'>  " + name + " N°" + el_id + "</option>";
+                            "'>  " + result[j].name + "</option>";
                     }
 
                     $("#" + target).html(option_html);
