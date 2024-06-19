@@ -5,7 +5,6 @@
             <th>Société / Particlier</th>
             <th>Marque</th>
             <th>Matricule</th>
-            <th>N° de châssis</th>
             <th>Contact</th>
             <th>Date de Début</th>
             <th>Date d'Expiration</th>
@@ -19,8 +18,8 @@
                 <td>{{ $devi->brand }}</td>
                 <td>{{ $devi->matricule }}</td>
                 <td>{{ $devi->contact }}</td>
-                <td>{{ $policy->date_begin ?? '-' }}</td>
-                <td>{{ $policy->date_expired ?? '-' }}</td>
+                <td>{{ $devi->date_begin ?? '-' }}</td>
+                <td>{{ $devi->date_expired ?? '-' }}</td>
             </tr>
         @endforeach
     </tbody>
