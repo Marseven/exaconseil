@@ -22,9 +22,9 @@ class DevisExport implements FromView
 
     public function view(): View
     {
-        $devis = Policy::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
-        return view('admin.devis.export', [
-            'devis' => $devis,
+        $policies = Policy::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
+        return view('admin.policy.export', [
+            'devis' => $policies,
         ]);
     }
 }
