@@ -23,8 +23,8 @@ class PoliciesExport implements FromView
     {
         $policies = Policy::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
 
-        return view('admin.policy.export', [
-            'policies' => $policies,
+        return view('admin.devis.export', [
+            'devis' => $policies,
         ]);
     }
 }

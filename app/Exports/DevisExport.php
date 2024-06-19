@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\Devis;
-use App\Models\Policy;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -22,9 +21,9 @@ class DevisExport implements FromView
 
     public function view(): View
     {
-        $policies = Policy::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
-        return view('admin.policy.export', [
-            'policies' => $policies,
+        $devis = Devis::where('created_at', '>=', $this->begin->format('Y-m-d'))->where('created_at', '<=', $this->end->format('Y-m-d'))->get();
+        return view('admin.devis.export', [
+            'devis' => $devis,
         ]);
     }
 }
