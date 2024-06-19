@@ -417,6 +417,6 @@ class PolicyController extends Controller
     public function export(Request $request)
     {
         $day = Carbon::now();
-        return Excel::download(new PoliciesExport($request->begin, $request->end), 'Polices - ' . $day . '.xlsx');
+        return Excel::download(new PoliciesExport($request->date_begin, $request->date_end), 'Polices - ' . $day . '.xlsx');
     }
 }
