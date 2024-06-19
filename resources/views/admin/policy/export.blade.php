@@ -22,5 +22,8 @@
                 <td>{{ $policy->date_expired }}</td>
             </tr>
         @endforeach
+        @php
+            dd($policies);
+        @endphp
     </tbody>
 </table>
