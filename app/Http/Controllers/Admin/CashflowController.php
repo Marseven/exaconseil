@@ -477,7 +477,13 @@ class CashflowController extends Controller
                 }
             }
         } elseif ($request->service_id == 2 || $request->service_id == 3) {
-            if (!empty($request->entity_id)) $cashflow->entity_id =  $request->entity_id[0];
+            if (!empty($request->entity_id)) {
+                if (count($request->entity_id) == 1) {
+                    $cashflow->entity_id =  $request->entity_id[0];
+                } else {
+                    $cashflow->entity_id = null;
+                }
+            }
         }
 
         if ($request->file('piece')) {
@@ -518,19 +524,46 @@ class CashflowController extends Controller
                 }
 
                 if ($cashflow->service_id == 2) {
-                    $sinistre = Sinistre::where('id', $cashflow->entity_id)->get()->first();
-                    if ($sinistre) {
-                        $sinistre->status = "paid";
-                        $sinistre->date_open = date('Y-m-d H:i:s');
-                        $sinistre->save();
+
+                    if ($cashflow->entity_id == null) {
+                        foreach ($request->entity_id as $entity) {
+                            if ($request->service_id == 5) {
+                                $sinistre = Sinistre::where('id', $entity)->get()->first();
+                                $sinistre->cashflow_id = $cashflow->id;
+                                $sinistre->status = "paid";
+                                $sinistre->date_open = date('Y-m-d H:i:s');
+                                $sinistre->save();
+                            }
+                        }
+                    } else {
+                        $sinistre = Sinistre::where('id', $cashflow->entity_id)->get()->first();
+                        if ($sinistre) {
+                            $sinistre->cashflow_id = $cashflow->id;
+                            $sinistre->status = "paid";
+                            $sinistre->date_open = date('Y-m-d H:i:s');
+                            $sinistre->save();
+                        }
                     }
                 }
 
                 if ($cashflow->service_id == 3) {
-                    $devis = Devis::where('id', $cashflow->entity_id)->get()->first();
-                    if ($devis) {
-                        $devis->status = "paid";
-                        $devis->save();
+
+                    if ($cashflow->entity_id == null) {
+                        foreach ($request->entity_id as $entity) {
+                            if ($request->service_id == 5) {
+                                $devis = Devis::where('id', $entity)->get()->first();
+                                $devis->cashflow_id = $cashflow->id;
+                                $devis->status = "paid";
+                                $devis->save();
+                            }
+                        }
+                    } else {
+                        $devis = Devis::where('id', $cashflow->entity_id)->get()->first();
+                        if ($devis) {
+                            $devis->cashflow_id = $cashflow->id;
+                            $devis->status = "paid";
+                            $devis->save();
+                        }
                     }
                 }
             } else {
