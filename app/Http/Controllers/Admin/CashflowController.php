@@ -449,39 +449,44 @@ class CashflowController extends Controller
         $cashflow->amount = $request->amount;
         $cashflow->date_cash = $request->date_cash;
         $cashflow->cashbox_id =  $request->cashbox_id;
+
         if ($request->rubrique_id != 0) $cashflow->rubrique_id =  $request->rubrique_id;
+
         $cashflow->service_id =  $request->service_id == -1 ? null : $request->service_id;
-        if ($request->service_id == 5) {
-            if (!empty($request->entity_id)) {
-                if (count($request->entity_id) == 1) {
-                    $cashflow->entity_id =  $request->entity_id[0];
-                    $facture = Facture::find($cashflow->entity_id);
-                    $amount = $facture->amount;
-                    if ($amount != floatval($request->amount)) {
-                        return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
-                    }
-                } else {
-                    $amount = 0;
-                    foreach ($request->entity_id as $entity) {
-                        if ($request->service_id == 5) {
-                            $facture = Facture::find($entity);
-                            $amount += $facture->amount;
+
+        if ($cashflow->type == 'credit') {
+            if ($request->service_id == 5) {
+                if (!empty($request->entity_id)) {
+                    if (count($request->entity_id) == 1) {
+                        $cashflow->entity_id =  $request->entity_id[0];
+                        $facture = Facture::find($cashflow->entity_id);
+                        $amount = $facture->amount;
+                        if ($amount != floatval($request->amount)) {
+                            return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
                         }
-                    }
+                    } else {
+                        $amount = 0;
+                        foreach ($request->entity_id as $entity) {
+                            if ($request->service_id == 5) {
+                                $facture = Facture::find($entity);
+                                $amount += $facture->amount;
+                            }
+                        }
 
-                    if ($amount != $request->amount) {
-                        return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
-                    }
+                        if ($amount != $request->amount) {
+                            return back()->with('error', "Le montant de la transaction ne correspond au montant total de facture(s).");
+                        }
 
-                    $cashflow->entity_id = null;
+                        $cashflow->entity_id = null;
+                    }
                 }
-            }
-        } elseif ($request->service_id == 2 || $request->service_id == 3) {
-            if (!empty($request->entity_id)) {
-                if (count($request->entity_id) == 1) {
-                    $cashflow->entity_id =  $request->entity_id[0];
-                } else {
-                    $cashflow->entity_id = null;
+            } elseif ($request->service_id == 2 || $request->service_id == 3) {
+                if (!empty($request->entity_id)) {
+                    if (count($request->entity_id) == 1) {
+                        $cashflow->entity_id =  $request->entity_id[0];
+                    } else {
+                        $cashflow->entity_id = null;
+                    }
                 }
             }
         }
