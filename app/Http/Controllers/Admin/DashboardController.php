@@ -139,6 +139,9 @@ class DashboardController extends Controller
                 $entities = Cashflow::find($id);
                 $entities->deleted = null;
                 $entities->save();
+                $cashbox = Cashbox::find($entities->cashbox_id);
+                $cashbox->solde = $cashbox->solde + $entities->amount;
+                $cashbox->save();
                 break;
             default:
                 return back()->with('error', "Aucun élément a été traité.");

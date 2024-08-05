@@ -586,12 +586,16 @@ class CashflowController extends Controller
     public function update(Request $request, Cashflow $cashflow)
     {
         if (isset($_POST['delete'])) {
+
             $cashflow->deleted = 1;
             $cashflow->deleted_at = date('Y-m-d H:i:s');
             if ($cashflow->save()) {
+                $cashbox = Cashbox::find($cashflow->cashbox_id);
+                $cashbox->solde = $cashbox->solde  - $cashflow->amount;
+                $cashbox->save();
                 return back()->with('success', "La transaction a été supprimé.");
             } else {
-                return back()->with('error', "La police n'a pas été supprimé.");
+                return back()->with('error', "La transaction n'a pas été supprimé.");
             }
         } else {
             $old_amount = $cashflow->amount;
