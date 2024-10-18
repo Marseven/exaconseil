@@ -217,6 +217,11 @@ class CashflowController extends Controller
                 <p class="mb-0">' .  date_format(date_create($cashflow->date_cash), 'd-m-Y') . '</p>
             </div>
             <div class="col-6 mb-5">
+                <h6 class="text-uppercase fs-5 ls-2">Date de création
+                </h6>
+                <p class="mb-0">' .  date_format(date_create($cashflow->created_at), 'd-m-Y') . '</p>
+            </div>
+            <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Service
                 </h6>
                 <p class="mb-0">' . ($cashflow->service ? $cashflow->service->name : "-") . '</p>
