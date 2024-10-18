@@ -219,7 +219,7 @@ class CashflowController extends Controller
             <div class="col-6 mb-5">
                 <h6 class="text-uppercase fs-5 ls-2">Service
                 </h6>
-                <p class="mb-0">' . $cashflow->service->name . '</p>
+                <p class="mb-0">' . ($cashflow->service ? $cashflow->service->name : "-") . '</p>
             </div>
             ';
             if ($cashflow->piece_url) {
