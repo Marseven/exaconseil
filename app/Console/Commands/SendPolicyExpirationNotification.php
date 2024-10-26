@@ -45,6 +45,8 @@ class SendPolicyExpirationNotification extends Command
         $policiesOneWeek = Policy::where('date_expired', '<=', $expirationDateLimitOneWeek)->get();
         $policiesTwoDays = Policy::where('date_expired', '<=', $expirationDateLimitTwoDays)->get();
 
+        dd($policiesOneMonth);
+
         if ($policiesTwoWeeks) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesTwoWeeks));
         if ($policiesOneMonth) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesOneMonth));
         if ($policiesOneWeek) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesOneWeek));
