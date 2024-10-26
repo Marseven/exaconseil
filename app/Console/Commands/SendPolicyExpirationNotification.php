@@ -40,10 +40,10 @@ class SendPolicyExpirationNotification extends Command
         $expirationDateLimitOneWeek = $currentDate->copy()->addWeek()->format('Y-m-d');
         $expirationDateLimitTwoDays = $currentDate->copy()->addDays(2)->format('Y-m-d');
 
-        $policiesOneMonth = Policy::where('date_expired', '<=', $expirationDateLimitMonth)->get();
-        $policiesTwoWeeks = Policy::where('date_expired', '<=', $expirationDateLimitTwoWeeks)->get();
-        $policiesOneWeek = Policy::where('date_expired', '<=', $expirationDateLimitOneWeek)->get();
-        $policiesTwoDays = Policy::where('date_expired', '<=', $expirationDateLimitTwoDays)->get();
+        $policiesOneMonth = Policy::where('date_expired', '>', $currentDate)->where('date_expired', '<=', $expirationDateLimitMonth)->get();
+        $policiesTwoWeeks = Policy::where('date_expired', '>', $currentDate)->where('date_expired', '<=', $expirationDateLimitTwoWeeks)->get();
+        $policiesOneWeek = Policy::where('date_expired', '>', $currentDate)->where('date_expired', '<=', $expirationDateLimitOneWeek)->get();
+        $policiesTwoDays = Policy::where('date_expired', '>', $currentDate)->where('date_expired', '<=', $expirationDateLimitTwoDays)->get();
 
         dd($policiesOneMonth);
 
