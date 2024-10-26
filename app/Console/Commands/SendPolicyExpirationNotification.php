@@ -45,6 +45,8 @@ class SendPolicyExpirationNotification extends Command
         $policiesOneWeek = Policy::where('date_expired', '<=', $expirationDateLimitOneWeek)->whereNotNull('date_expired')->get();
         $policiesTwoDays = Policy::where('date_expired', '<=', $expirationDateLimitTwoDays)->whereNotNull('date_expired')->get();
 
+        dd($policiesOneMonth);
+
         $admins = User::where('entreprise_id', 2)->get();
 
         if ($policiesOneMonth || $policiesTwoWeeks || $policiesTwoDays || $policiesOneWeek) {
