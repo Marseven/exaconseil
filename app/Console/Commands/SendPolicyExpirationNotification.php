@@ -45,15 +45,11 @@ class SendPolicyExpirationNotification extends Command
         $policiesOneWeek = Policy::where('date_expired', '<=', $expirationDateLimitOneWeek)->whereNotNull('date_expired')->get();
         $policiesTwoDays = Policy::where('date_expired', '<=', $expirationDateLimitTwoDays)->whereNotNull('date_expired')->get();
 
-        dd($policiesOneMonth);
-
         $admins = User::where('entreprise_id', 2)->get();
 
-        if ($policiesOneMonth || $policiesTwoWeeks || $policiesTwoDays || $policiesOneWeek) {
-            if ($policiesTwoWeeks) Mail::to("diane.nguede@eia.wiki")->send(new PolicyExpirationMail($policiesTwoWeeks));
-            if ($policiesOneMonth) Mail::to("diane.nguede@eia.wiki")->send(new PolicyExpirationMail($policiesOneMonth));
-            if ($policiesOneWeek) Mail::to("diane.nguede@eia.wiki")->send(new PolicyExpirationMail($policiesOneWeek));
-            if ($policiesTwoDays) Mail::to("diane.nguede@eia.wiki")->send(new PolicyExpirationMail($policiesTwoDays));
-        }
+        if ($policiesTwoWeeks) Mail::to("mebodoaristide@gmail.com")->send(new PolicyExpirationMail($policiesTwoWeeks));
+        if ($policiesOneMonth) Mail::to("mebodoaristide@gmail.com")->send(new PolicyExpirationMail($policiesOneMonth));
+        if ($policiesOneWeek) Mail::to("mebodoaristide@gmail.com")->send(new PolicyExpirationMail($policiesOneWeek));
+        if ($policiesTwoDays) Mail::to("mebodoaristide@gmail.com")->send(new PolicyExpirationMail($policiesTwoDays));
     }
 }
