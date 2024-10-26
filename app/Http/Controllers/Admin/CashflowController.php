@@ -596,7 +596,12 @@ class CashflowController extends Controller
             $cashflow->deleted_at = date('Y-m-d H:i:s');
             if ($cashflow->save()) {
                 $cashbox = Cashbox::find($cashflow->cashbox_id);
-                $cashbox->solde = $cashbox->solde  - $cashflow->amount;
+                if ($cashflow->type == 'debit') {
+                    $cashbox->solde += $cashflow->amount;
+                } else {
+                    $cashbox->solde -= $cashflow->amount;
+                }
+
                 $cashbox->save();
                 return back()->with('success', "La transaction a été supprimé.");
             } else {

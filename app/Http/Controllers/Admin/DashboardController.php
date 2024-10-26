@@ -140,7 +140,11 @@ class DashboardController extends Controller
                 $entities->deleted = null;
                 $entities->save();
                 $cashbox = Cashbox::find($entities->cashbox_id);
-                $cashbox->solde = $cashbox->solde + $entities->amount;
+                if ($entities->type == 'debit') {
+                    $cashbox->solde -= $entities->amount;
+                } else {
+                    $cashbox->solde += $entities->amount;
+                }
                 $cashbox->save();
                 break;
             default:
