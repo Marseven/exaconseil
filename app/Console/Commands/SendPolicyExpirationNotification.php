@@ -35,10 +35,10 @@ class SendPolicyExpirationNotification extends Command
         // Date actuelle
         $currentDate = Carbon::now();
 
-        $expirationDateLimitMonth = $currentDate->copy()->addMonth();
-        $expirationDateLimitTwoWeeks = $currentDate->copy()->addWeeks(2);
-        $expirationDateLimitOneWeek = $currentDate->copy()->addWeek();
-        $expirationDateLimitTwoDays = $currentDate->copy()->addDays(2);
+        $expirationDateLimitMonth = $currentDate->copy()->addMonth()->format('Y-m-d');
+        $expirationDateLimitTwoWeeks = $currentDate->copy()->addWeeks(2)->format('Y-m-d');
+        $expirationDateLimitOneWeek = $currentDate->copy()->addWeek()->format('Y-m-d');
+        $expirationDateLimitTwoDays = $currentDate->copy()->addDays(2)->format('Y-m-d');
 
         dd([$expirationDateLimitMonth, $expirationDateLimitTwoWeeks, $expirationDateLimitOneWeek, $expirationDateLimitTwoDays]);
 
