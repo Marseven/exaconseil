@@ -45,11 +45,9 @@ class SendPolicyExpirationNotification extends Command
         $policiesOneWeek = Policy::where('date_expired', '>', $currentDate)->where('date_expired', '<=', $expirationDateLimitOneWeek)->get();
         $policiesTwoDays = Policy::where('date_expired', '>', $currentDate)->where('date_expired', '<=', $expirationDateLimitTwoDays)->get();
 
-        dd([$policiesOneMonth->count(), $policiesTwoWeeks->count(), $policiesOneWeek->count(), $policiesTwoDays->count()]);
-
-        if ($policiesTwoWeeks) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesTwoWeeks));
-        if ($policiesOneMonth) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesOneMonth));
-        if ($policiesOneWeek) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesOneWeek));
-        if ($policiesTwoDays) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesTwoDays));
+        if ($policiesTwoWeeks->count() > 0) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesTwoWeeks));
+        if ($policiesOneMonth->count() > 0) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesOneMonth));
+        if ($policiesOneWeek->count() > 0) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesOneWeek));
+        if ($policiesTwoDays->count() > 0) Mail::to(["mebodoaristide@gmail.com", "corine.angue@eia.wiki", "syphar.ondo@eia.wiki", "diane.nguede@eia.wiki"])->send(new PolicyExpirationMail($policiesTwoDays));
     }
 }
