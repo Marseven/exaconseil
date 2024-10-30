@@ -68,7 +68,7 @@
             <div id="kt_content_container" class="container-xxl">
                 @include('layout.alert')
 
-                @if ($role->name == 'Gerant')
+                @if ($role->name == 'Gerant' || $user->email == 'farelle.medza@exaconseils.me')
                     <div class="card">
                         <!--begin::Card header-->
                         <div class="card-header border-0 pt-6">
